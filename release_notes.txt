@@ -1,0 +1,9 @@
+v15.2 — Novidades
+• GIRAR ÍCONES (CONFIGURAÇÕES › TELA): para quem usa a controladora
+  na vertical ou de cabeça pra baixo. O ícone e o nome de cada
+  footswitch giram 90°, 180° ou 270° no próprio eixo, sem girar a
+  tela. Vale para todos os presets, nas telas PRESET e LIVE, e a
+  prévia da tela no editor gira junto.
+• TONEX ONE: interruptor SIMULADOR DE GABINETE no card de cada TONEX
+  (SYSTEM › CONEXÕES › USB HOST › APARELHOS). Muda uma vez, a TONEX
+  guarda, sem precisar mandar o CC 117 pelo pé. Precisa do USB host 3.5.

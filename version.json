@@ -1,0 +1,146 @@
+{
+  "version": "15.2",
+  "generated": "2026-10-24T15:23:31.313Z",
+  "fw": {
+    "s3": {
+      "version": "15.2",
+      "file": "bin_S3/firmware.bin",
+      "size": 2158416,
+      "sha256": "402547f7b55a0faf01b5689305c4c1efb356e3dab3f84b87ce43c02e9a594eb4",
+      "built": "2026-10-23T17:14:17.273Z",
+      "flash": [
+        {
+          "file": "bin_S3/bootloader.bin",
+          "address": 0,
+          "size": 19984,
+          "sha256": "b41be55ae9a52aeeb21645c51b86c14027f84c2c91bf67bee6aa0e1b15d18e8b"
+        },
+        {
+          "file": "bin_S3/partitions.bin",
+          "address": 32768,
+          "size": 3072,
+          "sha256": "121d99567600bfb4e6b0f57f779838a4d77f2357a7ece5fd0288b04f2b9501ab"
+        },
+        {
+          "file": "bin_S3/firmware.bin",
+          "address": 65536,
+          "size": 2158416,
+          "sha256": "402547f7b55a0faf01b5689305c4c1efb356e3dab3f84b87ce43c02e9a594eb4"
+        },
+        {
+          "file": "bin_S3/otadata.bin",
+          "address": 7405568,
+          "size": 8192,
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0"
+        },
+        {
+          "file": "bin_S3/littlefs.bin",
+          "address": 7471104,
+          "size": 5242880,
+          "sha256": "6f2ec2c4c33d047cb9da2587f1b1abc0be3ef0fc7c984077abdbbb25d7e38e6f"
+        }
+      ],
+      "notes": "v15.2 — Novidades\n• GIRAR ÍCONES (CONFIGURAÇÕES › TELA): para quem usa a controladora\n  na vertical ou de cabeça pra baixo. O ícone e o nome de cada\n  footswitch giram 90°, 180° ou 270° no próprio eixo, sem girar a\n  tela. Vale para todos os presets, nas telas PRESET e LIVE, e a\n  prévia da tela no editor gira junto.\n• TONEX ONE: interruptor SIMULADOR DE GABINETE no card de cada TONEX\n  (SYSTEM › CONEXÕES › USB HOST › APARELHOS). Muda uma vez, a TONEX\n  guarda, sem precisar mandar o CC 117 pelo pé. Precisa do USB host 3.5."
+    },
+    "s2": {
+      "version": "15.2",
+      "file": "bin_S2/firmware.bin",
+      "size": 2114560,
+      "sha256": "c336e4337e4669f46cbe775e6c3309dd58d20d3dce55c2f55dffc38d8796ea40",
+      "built": "2026-10-23T17:13:54.544Z",
+      "flash": [
+        {
+          "file": "bin_S2/bootloader.bin",
+          "address": 4096,
+          "size": 21008,
+          "sha256": "9d9e215689ee68b8b859f724b842cf1966e58df6f791a30395b64886b95a27f1"
+        },
+        {
+          "file": "bin_S2/partitions.bin",
+          "address": 32768,
+          "size": 3072,
+          "sha256": "d9a882d96e959148c5f5132b954ed72d634be081dcac3a59e687f9cc4727d93b"
+        },
+        {
+          "file": "bin_S2/firmware.bin",
+          "address": 65536,
+          "size": 2114560,
+          "sha256": "c336e4337e4669f46cbe775e6c3309dd58d20d3dce55c2f55dffc38d8796ea40"
+        },
+        {
+          "file": "bin_S2/littlefs.bin",
+          "address": 2621440,
+          "size": 1572864,
+          "sha256": "936a5bcf1ac27d808fa8075f4832b48e47585f2af841da1f43b5ee5b0c706ae9"
+        }
+      ],
+      "notes": "v15.2 — Novidades\n• GIRAR ÍCONES (CONFIGURAÇÕES › TELA): para quem usa a controladora\n  na vertical ou de cabeça pra baixo. O ícone e o nome de cada\n  footswitch giram 90°, 180° ou 270° no próprio eixo, sem girar a\n  tela. Vale para todos os presets, nas telas PRESET e LIVE, e a\n  prévia da tela no editor gira junto.\n• TONEX ONE: interruptor SIMULADOR DE GABINETE no card de cada TONEX\n  (SYSTEM › CONEXÕES › USB HOST › APARELHOS). Muda uma vez, a TONEX\n  guarda, sem precisar mandar o CC 117 pelo pé. Precisa do USB host 3.5."
+    }
+  },
+  "webapp": {
+    "version": "15.2",
+    "build": "15.2+9984e06117c4",
+    "files": [
+      {
+        "path": "/app.css.gz",
+        "url": "data/app.css.gz",
+        "size": 102230,
+        "sha256": "4ec0435c78c7e0d315f3c4411b6dbee14010deaf3c4d19bde8a7f93f151d189b"
+      },
+      {
+        "path": "/app.js.gz",
+        "url": "data/app.js.gz",
+        "size": 389799,
+        "sha256": "88cd91e0efa66d993005623c064c9c69aac7148c0fd2d99cc9fa2f33c19a903e"
+      },
+      {
+        "path": "/icons/app-192.png",
+        "url": "data/icons/app-192.png",
+        "size": 19440,
+        "sha256": "6cbb4bbe2f498ee5107de4549925845cb82ce98c0d648b518fbade9a40060642"
+      },
+      {
+        "path": "/icons/app.svg",
+        "url": "data/icons/app.svg",
+        "size": 913,
+        "sha256": "30e927e92ed32ae273c2435c6ae262461960661bda0ce28ca5d33a79ffe2ce5f"
+      },
+      {
+        "path": "/icons/sw-modes/sw-mode-banner.jpg",
+        "url": "data/icons/sw-modes/sw-mode-banner.jpg",
+        "size": 32280,
+        "sha256": "0a9fa9974f6271f139237f9cfcd726475dd68bec67614d4bd5c7a52db2734f24"
+      },
+      {
+        "path": "/icons/sw-sheet.png",
+        "url": "data/icons/sw-sheet.png",
+        "size": 87060,
+        "sha256": "754389f1d549eaf3d375ebba60cd58fdf0bc316179417f2597ee8e5f87ef33ea"
+      },
+      {
+        "path": "/index.html",
+        "url": "data/index.html",
+        "size": 1940,
+        "sha256": "31921ddc4a19a28ac2a3d2e075c74e832b11490cba1acbaae08dc3a6d7f1eb30"
+      },
+      {
+        "path": "/manifest.webmanifest",
+        "url": "data/manifest.webmanifest",
+        "size": 824,
+        "sha256": "2798fc6bdf65605ff9fc422a2b03f2b9dfe7c07c709d9ae080af3ac1a70f921c"
+      },
+      {
+        "path": "/sw.js",
+        "url": "data/sw.js",
+        "size": 3557,
+        "sha256": "a1e1398ffb443cd3ef84580d181b25bf735562f42c18825193dacb12eb4e2243"
+      },
+      {
+        "path": "/webapp_version.txt",
+        "url": "data/webapp_version.txt",
+        "size": 17,
+        "sha256": "d35f1d098a21cd1288b03689cb6f3d3345a4cbb08e46508cae59ac9d88a33896"
+      }
+    ]
+  }
+}

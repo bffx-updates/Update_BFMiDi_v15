@@ -1,0 +1,2789 @@
+<!doctype html>
+<html lang="pt-BR" data-step="1" data-mode="idle">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atualizador BFMiDi V15</title>
+  <meta name="description" content="Atualize o firmware da sua controladora BFMiDi pelo cabo USB, passo a passo, direto do navegador." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23F0552F'/%3E%3Cpath d='M32 12v26M22 22l10-10 10 10' fill='none' stroke='%231a0c06' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='48' r='6' fill='%231a0c06'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ══════════════════════════════════════════════════════════════════
+       ATUALIZADOR BFMiDi — passo a passo (out/2026)
+       Um card central com o trilho de passos no alto, o quadro de
+       ilustração à esquerda e o texto + ações à direita. A ilustração
+       muda a cada passo (updater_art.js) e, quando a controladora é
+       reconhecida, vira a foto/desenho do modelo.
+       ══════════════════════════════════════════════════════════════════ */
+    :root {
+      --w: 1280px;
+      --bg: #0a0e15;
+      --bg-2: #0f141d;
+      --panel: rgba(16,21,30,.84);
+      --card: #131924;
+      --card-2: #171e2a;
+      --inset: #0d1219;
+      --line: rgba(255,255,255,.075);
+      --line-2: rgba(255,255,255,.14);
+      --text: #f1f4f8;
+      --muted: #9ba5b8;
+      --faint: #6c7589;
+      --accent: #FF6A3D;
+      --accent-2: #FFA06A;
+      --accent-ink: #ffffff;
+      --grad: linear-gradient(135deg, #FF8A4C, #F0552F 60%, #DE3F27);
+      --blue: #4F8CFF;
+      --green: #35D49A;
+      --amber: #F5B84A;
+      --red: #FF5C5C;
+      --teal: #2DD4BF;
+      --sans: "Sora", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --disp: "Space Grotesk", "Sora", system-ui, sans-serif;
+      --r-xl: 24px; --r-lg: 20px; --r-md: 14px; --r-sm: 10px;
+      --shadow: 0 40px 90px -40px rgba(0,0,0,.8);
+    }
+    * { box-sizing: border-box; }
+    html { height: 100%; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; min-height: 100%; font-family: var(--sans); color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      background:
+        radial-gradient(760px 540px at 0% 100%, rgba(255,106,61,.22), transparent 62%),
+        radial-gradient(620px 520px at 100% 42%, rgba(255,106,61,.15), transparent 60%),
+        radial-gradient(900px 600px at 56% 0%, rgba(79,140,255,.11), transparent 60%),
+        linear-gradient(180deg, #0c1119, #090d13);
+      display: flex; flex-direction: column; align-items: center;
+      padding: 22px 26px 40px;
+    }
+    a { color: inherit; }
+    button { font: inherit; color: inherit; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    /* ─── topo ─── */
+    .top {
+      position: relative; z-index: 1; width: 100%; max-width: var(--w);
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+    .brand { display: flex; align-items: center; gap: 16px; text-decoration: none; }
+    .brand .logo {
+      width: 60px; height: 60px; border-radius: 17px; flex: 0 0 auto;
+      background: var(--grad);
+      box-shadow: 0 14px 34px -12px rgba(255,106,61,.85), inset 0 1px 0 rgba(255,255,255,.35);
+      display: grid; place-items: center;
+    }
+    .brand .logo svg { width: 32px; height: 32px; }
+    .brand .wm { font-family: var(--disp); font-weight: 700; font-size: 34px; letter-spacing: -.02em; line-height: 1; }
+    .brand .wm i { font-style: normal; color: var(--accent); }
+    .brand .sub { display: flex; align-items: baseline; gap: 12px; font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: .24em; color: var(--muted); margin-top: 7px; }
+    .brand .sub i { font-style: normal; letter-spacing: .06em; color: var(--faint); font-weight: 500; }
+    .top-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .top-right .sep { width: 1px; height: 26px; background: var(--line-2); }
+    .pill {
+      display: inline-flex; align-items: center; gap: 10px; padding: 13px 18px; border-radius: 14px;
+      background: rgba(20,26,36,.86); border: 1px solid var(--line-2); font-size: 15.5px; font-weight: 500; color: var(--text);
+      text-decoration: none; white-space: nowrap; box-shadow: 0 10px 24px -16px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .pill svg { width: 20px; height: 20px; color: var(--muted); flex: 0 0 auto; }
+    .pill b { color: var(--text); font-family: var(--disp); font-weight: 700; }
+    .pill .d { width: 10px; height: 10px; border-radius: 50%; background: var(--faint); box-shadow: 0 0 10px currentColor; }
+    .pill.is-ok .d { background: var(--green); color: var(--green); }
+    .pill.is-busy .d { background: var(--accent); color: var(--accent); animation: pulse 1s infinite; }
+    .pill.is-err .d { background: var(--red); color: var(--red); }
+    a.pill:hover { border-color: rgba(255,255,255,.26); }
+    a.pill:hover svg { color: var(--text); }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+    /* ─── painel principal: o trilho no alto e os dois cards embaixo ─── */
+    .wiz {
+      position: relative; z-index: 1; width: 100%; max-width: var(--w);
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--r-xl); box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.05);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      padding: 20px 22px 22px;
+    }
+
+    /* trilho de passos: círculos numerados ligados por uma linha; feito = cheio
+       em laranja, atual = aro laranja com brilho, os próximos em cinza */
+    .rail {
+      display: grid; grid-template-columns: repeat(var(--n, 5), 1fr); gap: 0; padding: 6px 10px 8px;
+      position: relative;
+    }
+    .rail .st { display: flex; flex-direction: column; align-items: center; gap: 11px; position: relative; text-align: center; }
+    .rail .st::before, .rail .st::after {
+      content: ""; position: absolute; top: 21px; height: 2px; width: calc(50% - 30px); background: var(--line-2);
+      transition: background .4s;
+    }
+    .rail .st::before { left: 0; } .rail .st::after { right: 0; }
+    .rail .st:first-child::before, .rail .st:last-child::after { display: none; }
+    .rail .st .n {
+      width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+      font-family: var(--disp); font-weight: 700; font-size: 17px; color: var(--muted);
+      background: #0f141d; border: 2px solid rgba(255,255,255,.18);
+      transition: all .35s;
+    }
+    .rail .st .n svg { display: none; }
+    .rail .st .t { font-size: 13px; font-weight: 700; letter-spacing: .2em; color: var(--faint); transition: color .3s; }
+    .rail .st.is-active .n { border-color: var(--accent); color: var(--text); background: #0f141d; box-shadow: 0 0 0 5px rgba(255,106,61,.16), 0 0 28px rgba(255,106,61,.5); }
+    .rail .st.is-active .t { color: var(--text); }
+    .rail .st.is-done .n { border-color: transparent; background: var(--grad); color: #fff; box-shadow: 0 8px 22px -8px rgba(255,106,61,.85); }
+    .rail .st.is-done .t { color: var(--muted); }
+    .rail .st.is-done::before, .rail .st.is-done::after, .rail .st.is-active::before { background: var(--accent); }
+    [data-mode="error"] .rail .st.is-active .n { border-color: var(--red); background: color-mix(in srgb, var(--red) 20%, var(--bg-2)); box-shadow: 0 0 0 5px color-mix(in srgb, var(--red) 14%, transparent); }
+
+    .body { display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); gap: 22px; margin-top: 22px; }
+
+    /* card da esquerda: a ilustração do passo ou a placa de status */
+    .visual {
+      position: relative; padding: 22px; min-height: 440px; display: flex; flex-direction: column; gap: 12px;
+      border-radius: var(--r-lg); background: linear-gradient(180deg, #141a26, #10161f);
+      border: 1px solid var(--line); box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .frame {
+      position: relative; flex: 1; border-radius: var(--r-md); overflow: hidden; min-height: 330px;
+      display: grid; place-items: center;
+    }
+    /* a ilustração dos passos fica num quadro próprio; a placa toma o card inteiro */
+    .frame:has(> .ar), .frame:has(> .pdlg), .frame:has(> .ring) {
+      background:
+        radial-gradient(70% 60% at 50% 42%, rgba(255,255,255,.05), transparent 70%),
+        linear-gradient(180deg, #0f141c, #0b0f15);
+      border: 1px solid var(--line);
+    }
+    .frame > * { grid-area: 1 / 1; }
+    .frame .ar { width: 100%; height: auto; max-height: 100%; display: block; }
+    .frame .ar { animation: fade-in .45s ease both; }
+    .caption { font-size: 14px; color: var(--muted); line-height: 1.5; text-align: center; min-height: 18px; }
+    .caption:empty { display: none; }
+    .caption b { color: var(--text); font-weight: 600; }
+    .caption .k { display: inline-flex; align-items: center; gap: 6px; margin: 0 6px; }
+    .caption .k i { width: 9px; height: 9px; border-radius: 3px; background: var(--accent); display: inline-block; }
+    .caption .k i.c { background: var(--blue); }
+    @keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    /* placa de status (card da esquerda nos passos 2 e 5): modelo em letra
+       grande, o desenho estilizado da controladora, as pastilhas de chip/série/ID
+       e uma linha-card por peça (controladora, USB Host) */
+    .plate { width: 100%; height: 100%; display: flex; flex-direction: column; gap: 16px; animation: fade-in .45s ease both; }
+    .plate-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; align-items: center; padding: 2px 2px 0; }
+    .plate-fam { font-size: 14px; font-weight: 700; letter-spacing: .24em; color: var(--muted); }
+    .plate-var { font-family: var(--disp); font-weight: 700; font-size: clamp(44px, 5vw, 72px); line-height: .95; letter-spacing: -.035em; margin-top: 8px; overflow-wrap: anywhere; }
+    .plate-dev { width: clamp(150px, 17vw, 236px); height: auto; justify-self: end; filter: drop-shadow(0 18px 22px rgba(0,0,0,.55)); }
+    .plate-dev .pd-fam { fill: #fff; font: 700 12.5px var(--disp); letter-spacing: .02em; }
+    .plate-dev .pd-fam tspan { fill: var(--accent); }
+    .plate-dev .pd-var { fill: #d3dae6; font: 700 27px var(--disp); letter-spacing: -.02em; }
+    .plate-meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+    .plate-meta span { display: inline-flex; align-items: center; gap: 8px; font-family: var(--disp); font-size: 13.5px; font-weight: 600; color: var(--muted); padding: 8px 13px; border-radius: 11px; background: var(--inset); border: 1px solid var(--line); white-space: nowrap; }
+    .plate-meta span svg { width: 15px; height: 15px; color: var(--faint); }
+    .plate-rows { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+    .prow { flex: 1; min-height: 150px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "ic t b" "v v a"; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 16px; background: var(--card-2); border: 1px solid var(--line); box-shadow: inset 0 1px 0 rgba(255,255,255,.03); }
+    .prow-ic { grid-area: ic; width: 48px; height: 48px; border-radius: 13px; display: grid; place-items: center; background: rgba(255,106,61,.13); border: 1px solid rgba(255,106,61,.4); color: var(--accent); box-shadow: 0 0 22px -6px rgba(255,106,61,.55); }
+    .prow-ic svg { width: 24px; height: 24px; }
+    .prow-t { grid-area: t; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .prow-t b { font-size: 19px; font-weight: 600; letter-spacing: -.01em; }
+    .prow-t span { font-size: 14px; color: var(--muted); }
+    .prow .badge { grid-area: b; justify-self: end; }
+    .prow-v { grid-area: v; display: flex; align-items: center; gap: 16px; min-height: 62px; padding: 10px 20px; border-radius: 12px; background: var(--inset); border: 1px solid var(--line); font-family: var(--disp); font-weight: 700; font-size: 34px; letter-spacing: -.02em; line-height: 1; }
+    .prow-v b { font-weight: 700; } .prow-v b.is-new { color: var(--accent); } .prow-v b.is-ok { color: var(--green); } .prow-v b.is-warn { color: var(--amber); }
+    .prow-v b.is-small { font-size: 20px; font-weight: 600; color: var(--muted); }
+    .prow-arrow { display: flex; color: var(--faint); } .prow-arrow svg { width: 24px; height: 24px; }
+    /* botão de atualização INDEPENDENTE por linha (pedido do dono, 24/out):
+       quem só quer a controladora, ou só o USB Host, aciona daqui */
+    .prow-act { grid-area: a; justify-self: end; height: 60px; padding: 0 24px 0 20px; border-radius: 14px; border: 1px solid var(--line-2); background: var(--card); color: var(--text); display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; cursor: pointer; white-space: nowrap; transition: background .2s, border-color .2s, transform .15s, opacity .2s, box-shadow .2s, filter .2s; }
+    .prow-act svg { width: 22px; height: 22px; }
+    .prow-act:hover:not(:disabled) { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.3); transform: translateY(-1px); }
+    .prow-act.is-new { border: none; color: #fff; background: var(--grad); box-shadow: 0 14px 30px -12px rgba(255,106,61,.9), inset 0 1px 0 rgba(255,255,255,.3); }
+    .prow-act.is-new:hover:not(:disabled) { filter: brightness(1.06); }
+    .prow-act:disabled { opacity: .4; cursor: default; }
+    .prow-act:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+    @media (max-width: 480px) { .prow { grid-template-areas: "ic t t" "b b b" "v v v" "a a a"; } .prow .badge { justify-self: start; } .prow-act { justify-self: stretch; justify-content: center; } }
+
+    /* anel de progresso (passo 4) */
+    .ring { width: min(100%, 300px); aspect-ratio: 1; display: grid; place-items: center; position: relative; animation: fade-in .4s ease both; }
+    .ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+    .ring .track { fill: none; stroke: rgba(255,255,255,.08); stroke-width: 10; }
+    .ring .bar { fill: none; stroke: var(--accent); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 339.3; stroke-dashoffset: 339.3; transition: stroke-dashoffset .35s ease, stroke .4s; filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 60%, transparent)); }
+    .ring.is-app .bar { stroke: var(--blue); filter: drop-shadow(0 0 10px color-mix(in srgb, var(--blue) 60%, transparent)); }
+    .ring.is-data .bar { stroke: var(--green); filter: drop-shadow(0 0 10px color-mix(in srgb, var(--green) 60%, transparent)); }
+    .ring.is-host .bar { stroke: var(--teal); filter: drop-shadow(0 0 10px color-mix(in srgb, var(--teal) 60%, transparent)); }
+    .ring.is-wait .bar { stroke-dasharray: 40 299.3; animation: ring-spin 1.2s linear infinite; }
+    @keyframes ring-spin { to { stroke-dashoffset: -339.3; } }
+    .ring .inner { position: relative; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .ring .pct { font-family: var(--disp); font-weight: 700; font-size: 58px; line-height: 1; letter-spacing: -.03em; }
+    .ring .pct sup { font-size: 20px; color: var(--muted); font-weight: 600; margin-left: 2px; }
+    .ring .lab { font-size: 11px; font-weight: 700; letter-spacing: .22em; color: var(--muted); }
+    .ring .sublab { font-size: 12px; color: var(--faint); min-height: 16px; }
+
+    /* janela de porta do navegador (passo 3, autorização) */
+    .pdlg {
+      position: relative; width: min(100%, 330px); padding: 14px 15px 13px; border-radius: 12px;
+      background: #2b2c30; color: #e8eaed; text-align: left;
+      box-shadow: 0 16px 40px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.08);
+      font: 500 12.5px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; overflow: hidden;
+      animation: fade-in .4s ease both;
+    }
+    .pdlg .ti { font-weight: 600; margin-bottom: 10px; }
+    .pdlg .list { border-radius: 8px; padding: 4px; background: rgba(127,127,127,.14); }
+    .pdlg .row { display: flex; align-items: center; gap: 9px; padding: 9px 10px; border-radius: 6px; font-weight: 600; background: color-mix(in srgb, var(--accent) 22%, transparent); box-shadow: inset 0 0 0 2px var(--accent); overflow-wrap: anywhere; }
+    .pdlg .row svg { width: 15px; height: 15px; flex: 0 0 auto; }
+    .pdlg .btns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+    .pdlg .btn { padding: 6px 14px; border-radius: 16px; box-shadow: inset 0 0 0 1px rgba(127,127,127,.45); font-weight: 600; font-size: 12px; }
+    .pdlg .btn.is-primary { background: #1a73e8; color: #fff; box-shadow: 0 0 0 2px var(--accent); }
+    .pdlg .cursor { position: absolute; left: 46%; top: 44%; width: 22px; height: 22px; fill: #fff; stroke: #111; stroke-width: 1.3; stroke-linejoin: round; filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.4)); pointer-events: none; }
+
+    /* card da direita: ícone redondo do passo + título, texto e ações */
+    .copy {
+      padding: 24px 26px 24px; display: flex; flex-direction: column; gap: 18px; min-height: 440px;
+      border-radius: var(--r-lg); background: linear-gradient(180deg, #141a26, #10161f);
+      border: 1px solid var(--line); box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .copy-head { display: flex; align-items: center; gap: 22px; }
+    .copy-ic {
+      width: 88px; height: 88px; border-radius: 50%; flex: 0 0 auto; display: grid; place-items: center; color: var(--accent);
+      background: radial-gradient(circle at 50% 38%, #1b2230, #0f141c 72%);
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 0 7px rgba(255,106,61,.1), 0 0 38px -4px rgba(255,106,61,.55), inset 0 0 26px rgba(255,106,61,.18);
+      transition: color .3s, border-color .3s, box-shadow .3s;
+    }
+    .copy-ic svg { width: 38px; height: 38px; }
+    .copy-ic:empty { display: none; }
+    [data-mode="done"] .copy-ic { color: var(--green); border-color: var(--green); box-shadow: 0 0 0 7px rgba(53,212,154,.1), 0 0 38px -4px rgba(53,212,154,.5), inset 0 0 26px rgba(53,212,154,.16); }
+    [data-mode="error"] .copy-ic { color: var(--red); border-color: var(--red); box-shadow: 0 0 0 7px rgba(255,92,92,.1), 0 0 38px -4px rgba(255,92,92,.5), inset 0 0 26px rgba(255,92,92,.16); }
+    .copy-ht { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+    .eyebrow { font-size: 14px; font-weight: 700; letter-spacing: .22em; color: var(--accent); }
+    h1.title { margin: 0; font-family: var(--disp); font-weight: 500; font-size: clamp(28px, 3vw, 44px); letter-spacing: -.025em; line-height: 1.1; overflow-wrap: anywhere; }
+    h1.title em { font-style: normal; font-weight: 700; color: var(--text); }
+    .desc { margin: 0; font-size: 17px; line-height: 1.55; color: var(--muted); }
+    .desc b { color: var(--text); font-weight: 600; }
+    .tips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tip { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 12px; background: var(--inset); border: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+    .tip svg { width: 16px; height: 16px; color: var(--accent); }
+    .tip.is-warn { border-color: color-mix(in srgb, var(--amber) 45%, transparent); color: var(--amber); background: color-mix(in srgb, var(--amber) 10%, transparent); }
+    .tip.is-warn svg { color: var(--amber); }
+
+    /* versões: INSTALADA → NOVA */
+    .vt { display: flex; align-items: stretch; gap: 10px; }
+    .vt-h { font-size: 10.5px; font-weight: 700; letter-spacing: .2em; color: var(--faint); margin: 2px 0 -8px; display: flex; align-items: center; gap: 8px; }
+    .vt-h .badge { margin-left: auto; padding: 4px 9px; font-size: 10px; }
+    .vt-wrap { display: flex; flex-direction: column; gap: 14px; }
+    .vt-tile { flex: 1; border-radius: var(--r-md); padding: 12px 14px; background: var(--card-2); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .vt-tile .k { font-size: 10.5px; font-weight: 700; letter-spacing: .18em; color: var(--faint); }
+    .vt-tile b { font-family: var(--disp); font-weight: 700; font-size: 26px; letter-spacing: -.02em; line-height: 1; }
+    .vt-tile.is-new { border-color: color-mix(in srgb, var(--accent) 55%, transparent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+    .vt-tile.is-new b { color: var(--accent); }
+    .vt-tile.is-same { border-color: color-mix(in srgb, var(--green) 50%, transparent); background: color-mix(in srgb, var(--green) 10%, transparent); }
+    .vt-tile.is-same b { color: var(--green); }
+    .vt-arrow { align-self: center; color: var(--faint); display: flex; }
+    .vt-arrow svg { width: 22px; height: 22px; }
+    .badge { display: inline-flex; align-items: center; gap: 7px; align-self: flex-start; padding: 7px 12px; border-radius: 999px; font-size: 11.5px; font-weight: 700; letter-spacing: .12em; border: 1px solid transparent; white-space: nowrap; }
+    .badge svg { width: 13px; height: 13px; }
+    .badge.is-new { background: color-mix(in srgb, var(--accent) 12%, transparent); border-color: color-mix(in srgb, var(--accent) 50%, transparent); color: var(--accent); }
+    .badge.is-same { background: color-mix(in srgb, var(--green) 12%, transparent); border-color: color-mix(in srgb, var(--green) 45%, transparent); color: var(--green); }
+    .badge.is-unk { background: color-mix(in srgb, var(--amber) 12%, transparent); border-color: color-mix(in srgb, var(--amber) 45%, transparent); color: var(--amber); }
+    .badge .d { width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+
+    /* "Versão disponível no servidor: X" — abre as novidades */
+    details.notes { border: 1px solid var(--line); border-radius: 14px; background: var(--inset); }
+    details.notes summary { cursor: pointer; list-style: none; padding: 15px 18px; font-size: 16px; font-weight: 500; color: var(--muted); display: flex; align-items: center; gap: 12px; }
+    details.notes summary::-webkit-details-marker { display: none; }
+    details.notes summary b { color: var(--text); font-weight: 700; font-family: var(--disp); }
+    details.notes summary svg { width: 20px; height: 20px; color: var(--muted); flex: 0 0 auto; }
+    details.notes summary svg.chev { margin-left: auto; width: 18px; height: 18px; color: var(--faint); transition: transform .25s; }
+    details.notes[open] summary svg.chev { transform: rotate(90deg); }
+    details.notes pre { margin: 0; padding: 0 18px 16px; white-space: pre-wrap; font: 14.5px/1.55 var(--sans); color: var(--muted); max-height: 200px; overflow: auto; }
+
+    /* opções */
+    .opt { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: var(--r-md); border: 1px solid var(--line); background: var(--card); cursor: pointer; }
+    .opt .sw { position: relative; width: 40px; height: 22px; flex: 0 0 auto; margin-top: 1px; }
+    .opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .opt .tr { position: absolute; inset: 0; border-radius: 999px; background: rgba(255,255,255,.14); box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); transition: .25s; }
+    .opt .tr::before { content: ""; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: #c9d0dc; top: 3px; left: 3px; transition: .25s; }
+    .opt input:checked + .tr { background: var(--accent); box-shadow: none; }
+    .opt input:checked + .tr::before { transform: translateX(18px); background: #1a0c06; }
+    .opt input:focus-visible + .tr { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+    .opt .ot { display: flex; flex-direction: column; gap: 2px; }
+    .opt .ot b { font-size: 15px; font-weight: 600; }
+    .opt .ot span { font-size: 13.5px; color: var(--muted); line-height: 1.45; }
+    .opt.is-danger input:checked + .tr { background: var(--red); }
+    details.adv summary { cursor: pointer; list-style: none; font-size: 13.5px; font-weight: 600; color: var(--faint); display: inline-flex; align-items: center; gap: 6px; padding: 4px 0; }
+    details.adv summary::-webkit-details-marker { display: none; }
+    details.adv summary svg { width: 13px; height: 13px; transition: transform .25s; }
+    details.adv[open] summary svg { transform: rotate(90deg); }
+    details.adv .opt { margin-top: 8px; }
+
+    /* lista de sub-etapas (passos 3 e 4) */
+    .tasks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .tasks li { display: flex; align-items: center; gap: 12px; padding: 11px 13px; border-radius: var(--r-md); border: 1px solid transparent; color: var(--faint); font-size: 15px; transition: all .3s; }
+    .tasks li .ic { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--line-2); display: grid; place-items: center; flex: 0 0 auto; position: relative; }
+    .tasks li .ic svg { width: 12px; height: 12px; display: none; }
+    .tasks li .tx { flex: 1; }
+    .tasks li .pc { font-family: var(--disp); font-weight: 600; font-size: 14px; color: var(--muted); min-width: 36px; text-align: right; }
+    .tasks li.is-active { color: var(--text); border-color: var(--line); background: var(--card-2); }
+    .tasks li.is-active .ic { border-color: var(--accent); border-top-color: transparent; animation: spin .9s linear infinite; }
+    .tasks li.is-done { color: var(--muted); }
+    .tasks li.is-done .ic { border-color: var(--green); background: color-mix(in srgb, var(--green) 18%, transparent); color: var(--green); }
+    .tasks li.is-done .ic svg { display: block; }
+    .tasks li.is-skip { opacity: .5; text-decoration: line-through; }
+    .tasks li.is-fail .ic { border-color: var(--red); background: color-mix(in srgb, var(--red) 18%, transparent); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hold { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: var(--r-md); background: color-mix(in srgb, var(--amber) 12%, transparent); border: 1px solid color-mix(in srgb, var(--amber) 40%, transparent); color: var(--amber); font-size: 14px; font-weight: 600; }
+    .hold svg { width: 16px; height: 16px; flex: 0 0 auto; }
+
+    /* ações: a fileira principal (laranja + Configurações) e, embaixo, a barra
+       secundária (USB Host | Trocar de controladora) */
+    .actions { margin-top: auto; display: flex; flex-direction: column; gap: 14px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .actions:empty { display: none; }
+    .actions-main { display: flex; flex-wrap: wrap; align-items: stretch; gap: 14px; }
+    .actions-main .btn.is-primary { flex: 1 1 240px; justify-content: center; }
+    .actions-main .btn.is-ghost { flex: 0 0 auto; }
+    .btn {
+      border: none; cursor: pointer; border-radius: 16px; padding: 0 26px; min-height: 66px; font-weight: 700; font-size: 19px;
+      display: inline-flex; align-items: center; gap: 12px; transition: transform .16s, filter .16s, opacity .2s, box-shadow .2s, background .2s;
+    }
+    .btn svg { width: 22px; height: 22px; }
+    .btn svg.chev { width: 20px; height: 20px; margin-left: 4px; opacity: .9; }
+    .btn.is-primary { color: #fff; background: var(--grad); box-shadow: 0 16px 38px -14px rgba(255,106,61,.9), inset 0 1px 0 rgba(255,255,255,.3); text-shadow: 0 1px 1px rgba(0,0,0,.15); }
+    .btn.is-primary:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.06); }
+    .btn.is-primary.is-pulse { animation: cta-pulse 1.6s ease-in-out infinite; }
+    @keyframes cta-pulse { 0%,100% { box-shadow: 0 16px 38px -14px rgba(255,106,61,.9), 0 0 0 0 rgba(255,106,61,.45); } 50% { box-shadow: 0 16px 38px -14px rgba(255,106,61,.9), 0 0 0 12px rgba(255,106,61,0); } }
+    .btn.is-ghost { background: var(--card-2); border: 1px solid var(--line-2); color: var(--text); }
+    .btn.is-ghost:hover:not(:disabled) { background: rgba(255,255,255,.1); }
+    .btn.is-link { background: none; color: var(--muted); padding: 10px 12px; min-height: 0; font-weight: 600; font-size: 14.5px; border-radius: 10px; }
+    .btn.is-link:hover { color: var(--text); }
+    .btn:disabled { cursor: default; opacity: .5; }
+    .btn:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+    [data-mode="done"] .btn.is-primary { background: linear-gradient(135deg, #4BE3AE, #22B07A); box-shadow: 0 16px 38px -14px rgba(53,212,154,.8); color: #04140d; text-shadow: none; }
+    [data-mode="error"] .btn.is-primary { background: linear-gradient(135deg, #FF7A7A, #E4453F); box-shadow: 0 16px 38px -14px rgba(255,92,92,.8); color: #fff; }
+    .abar { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 14px; background: var(--inset); border: 1px solid var(--line); flex-wrap: wrap; }
+    .abar .sep { width: 1px; height: 30px; background: var(--line-2); margin: 0 4px; }
+    .abtn { border: 1px solid transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; padding: 0 20px; min-height: 52px; border-radius: 11px; background: transparent; color: var(--muted); font-weight: 600; font-size: 17px; transition: background .2s, color .2s, border-color .2s; }
+    .abtn svg { width: 20px; height: 20px; flex: 0 0 auto; }
+    .abtn span { white-space: nowrap; }
+    .abtn:hover:not(:disabled) { color: var(--text); background: rgba(255,255,255,.05); }
+    .abtn.is-hi { background: #1b2230; border-color: var(--line-2); color: var(--text); box-shadow: inset 0 1px 0 rgba(255,255,255,.05); }
+    .abtn.is-hi svg { color: var(--accent); }
+    .abtn:disabled { opacity: .45; cursor: default; }
+    .abtn:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+
+    .note { font-size: 14px; color: var(--faint); line-height: 1.5; margin: 0; }
+    .note a { color: var(--muted); }
+    .errbox { border-radius: var(--r-md); border: 1px solid color-mix(in srgb, var(--red) 40%, transparent); background: color-mix(in srgb, var(--red) 10%, transparent); padding: 13px 15px; font-size: 14.5px; color: #ffb3b3; line-height: 1.5; }
+    .errbox code { font-family: var(--disp); font-size: 13px; color: var(--text); word-break: break-word; }
+    .okbox { border-radius: var(--r-md); border: 1px solid color-mix(in srgb, var(--green) 35%, transparent); background: color-mix(in srgb, var(--green) 10%, transparent); padding: 13px 15px; font-size: 14.5px; color: #bff3de; line-height: 1.5; }
+    .okbox ul, .errbox ul { margin: 6px 0 0; padding-left: 18px; }
+    .warnbox { border-radius: var(--r-md); border: 1px solid color-mix(in srgb, var(--amber) 40%, transparent); background: color-mix(in srgb, var(--amber) 10%, transparent); padding: 13px 15px; font-size: 14.5px; color: #ffe2a8; line-height: 1.5; }
+
+    /* painel USB HOST · status e ferramentas */
+    .hdlg { border: 1px solid var(--line-2); border-radius: var(--r-xl); background: linear-gradient(180deg, #151a23, #0e1117); color: var(--text); padding: 0; width: min(94vw, 740px); box-shadow: var(--shadow); }
+    .hdlg::backdrop { background: rgba(4,6,10,.72); backdrop-filter: blur(6px); }
+    .hdlg-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 22px 26px 14px; }
+    .hdlg-head h2 { margin: 6px 0 0; font-family: var(--disp); font-size: 26px; letter-spacing: -.02em; }
+    .hdlg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; padding: 4px 26px 14px; }
+    .hrow { display: flex; flex-direction: column; gap: 4px; padding: 11px 13px; border-radius: var(--r-md); background: var(--card-2); border: 1px solid var(--line); min-width: 0; }
+    .hrow.is-wide { grid-column: 1 / -1; }
+    .hrow span { font-size: 11px; letter-spacing: .16em; font-weight: 700; color: var(--faint); }
+    .hrow b { font-family: var(--disp); font-size: 15.5px; font-weight: 600; overflow-wrap: anywhere; }
+    .hrow b.is-ok { color: var(--green); } .hrow b.is-warn { color: var(--amber); } .hrow b.is-new { color: var(--accent); }
+    .hdlg-tools { display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 26px 10px; }
+    .hdlg-tools .btn { padding: 11px 14px; font-size: 14px; border-radius: 12px; }
+    .hdlg-tools .btn svg { width: 16px; height: 16px; }
+    .hdlg-msg { min-height: 22px; padding: 4px 26px 22px; font-size: 14.5px; color: var(--muted); line-height: 1.5; }
+    .hdlg-msg.is-ok { color: var(--green); } .hdlg-msg.is-warn { color: var(--amber); }
+    .hdlg.is-cfg { width: min(94vw, 560px); }
+    .cfg-body { display: flex; flex-direction: column; gap: 10px; padding: 4px 26px 24px; }
+    .cfg-body .opt { background: var(--card-2); }
+    .cfg-body .adv { margin-top: 2px; }
+    @media (max-width: 600px) { .hdlg-grid { grid-template-columns: 1fr; } .hdlg-head, .hdlg-grid, .hdlg-tools, .hdlg-msg, .cfg-body { padding-left: 18px; padding-right: 18px; } }
+
+    /* cards de recursos */
+    /* (dentro de Opções avançadas, no popup Configurações) */
+    .adv-h { font-size: 11px; font-weight: 700; letter-spacing: .18em; color: var(--faint); margin: 14px 2px 6px; }
+    .more { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .res { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 13px; background: var(--card-2); border: 1px solid var(--line); text-decoration: none; transition: border-color .2s, background .2s; min-width: 0; }
+    .res:hover { border-color: var(--line-2); background: rgba(255,255,255,.08); }
+    .res .ri { width: 40px; height: 40px; border-radius: 11px; flex: 0 0 auto; display: grid; place-items: center; background: rgba(79,140,255,.14); border: 1px solid rgba(79,140,255,.35); color: var(--blue); }
+    .res .ri svg { width: 20px; height: 20px; }
+    .res.is-pack .ri { background: rgba(255,106,61,.13); border-color: rgba(255,106,61,.4); color: var(--accent); }
+    .res .rt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .res .rt b { font-weight: 600; font-size: 15px; letter-spacing: -.01em; }
+    .res .rt i { font-style: normal; font-size: 13px; color: var(--muted); }
+    .res .ra { margin-left: auto; color: var(--faint); display: flex; flex: 0 0 auto; } .res .ra svg { width: 18px; height: 18px; }
+
+    /* rodapé: registro técnico à esquerda, assinatura à direita */
+    .footbar { position: relative; z-index: 1; width: 100%; max-width: var(--w); margin-top: 14px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .logwrap { flex: 1 1 420px; min-width: 0; margin: 0; }
+    .logwrap summary { cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 10px; font-size: 15.5px; font-weight: 500; color: var(--muted); padding: 10px 6px; }
+    .logwrap summary:hover { color: var(--text); }
+    .logwrap summary::-webkit-details-marker { display: none; }
+    .logwrap summary svg { width: 18px; height: 18px; transition: transform .25s; }
+    .logwrap[open] summary svg { transform: rotate(180deg); }
+    .logbox { margin-top: 6px; max-height: 240px; overflow: auto; padding: 14px 16px; border-radius: var(--r-md); background: rgba(0,0,0,.45); border: 1px solid var(--line); font-family: "Space Grotesk", ui-monospace, Menlo, monospace; font-size: 11.5px; line-height: 1.6; color: #8a95b3; white-space: pre-wrap; word-break: break-word; }
+    .logtools { display: flex; gap: 8px; margin-top: 6px; }
+    .footer { margin: 0; padding: 10px 6px; font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 10px; white-space: nowrap; flex-wrap: wrap; }
+    .footer .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--faint); }
+    .footer svg { width: 20px; height: 14px; border-radius: 2px; }
+
+    /* ─── ILUSTRAÇÕES (updater_art.js) ─── */
+    .ar {
+      --ar-top: #272b32; --ar-face: #14161a; --ar-face-lip: rgba(255,255,255,.11); --ar-hole: #040507;
+      --ar-metal: #c6cbd3; --ar-tag: #eef0f3; --ar-tag-ink: #14161a; --ar-screen: #0a0b0e; --ar-screen-lit: #0e1b2e;
+      --ar-boot: #3a3e46; --ar-boot-hi: rgba(255,255,255,.15); --ar-cable: #555a64;
+      --ar-accent: var(--accent); --ar-ok: var(--green); --ar-err: var(--red);
+      --ar-laptop: #5a606a; --ar-laptop-scr: #12233a; --ar-dash: rgba(238,241,246,.4);
+      border-radius: var(--r-md); overflow: hidden;
+    }
+    .ar .ar-top { fill: var(--ar-top); }
+    .ar .ar-face { fill: var(--ar-face); }
+    .ar .ar-face-lip { stroke: var(--ar-face-lip); stroke-width: .5; }
+    .ar .ar-hole { fill: var(--ar-hole); }
+    .ar .ar-metal { fill: var(--ar-metal); }
+    .ar .ar-tag rect { fill: var(--ar-tag); }
+    .ar .ar-tag text { fill: var(--ar-tag-ink); font: 800 6.6px/1 ui-monospace, Menlo, monospace; letter-spacing: .06em; }
+    .ar .ar-tag.is-hot rect { fill: var(--ar-accent); }
+    .ar .ar-tag.is-hot text { fill: #fff; }
+    .ar .ar-target { fill: color-mix(in srgb, var(--ar-accent) 14%, transparent); stroke: var(--ar-accent); stroke-width: 1; }
+    .ar .ar-cable { fill: none; stroke: var(--ar-cable); stroke-width: 4.4; stroke-linecap: round; }
+    .ar .ar-boot { fill: var(--ar-boot); }
+    .ar .ar-boot-hi { fill: var(--ar-boot-hi); }
+    .ar .ar-tip { fill: var(--ar-metal); }
+    .ar .ar-bezel { fill: #15171b; stroke: rgba(255,255,255,.08); stroke-width: 1; }
+    .ar .ar-screen { fill: var(--ar-screen); }
+    .ar .ar-screen-glow { fill: var(--ar-screen-lit); }
+    .ar .ar-tile { opacity: .92; }
+    .ar .ar-tile.is-a { fill: #E5484D; } .ar .ar-tile.is-b { fill: #F5B84A; } .ar .ar-tile.is-c { fill: #3B82F6; }
+    .ar .ar-tile.is-d { fill: #8B5CF6; } .ar .ar-tile.is-e { fill: #22C55E; } .ar .ar-tile.is-f { fill: #EE5A31; }
+    .ar .ar-arrow { fill: none; stroke: var(--ar-accent); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+    .ar .ar-badge circle { fill: var(--ar-ok); stroke: rgba(0,0,0,.25); stroke-width: 1; }
+    .ar .ar-badge.is-err circle { fill: var(--ar-err); }
+    .ar .ar-badge path { fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+    .ar .ar-laptop rect, .ar .ar-laptop path { fill: var(--ar-laptop); }
+    .ar .ar-laptop .ar-laptop-scr { fill: var(--ar-laptop-scr); }
+    .ar .ar-dash { fill: none; stroke: var(--ar-dash); stroke-width: 1.8; stroke-dasharray: 3 4; stroke-linecap: round; }
+    .ar .ar-cloud path { fill: #3b4150; stroke: rgba(255,255,255,.12); stroke-width: .8; }
+    .ar .ar-cloud .ar-cloud-arrow { fill: none; stroke: #fff; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+    .ar .ar-cloud-dots circle { fill: var(--ar-accent); opacity: 0; }
+    .ar .ar-dl-track { fill: rgba(255,255,255,.1); }
+    .ar .ar-dl-fill { fill: var(--ar-accent); transform-origin: 124px 178px; transform: scaleX(.6); }
+    .ar .ar-chip rect { fill: #1d2430; stroke: var(--ar-accent); stroke-width: 1.8; }
+    .ar .ar-chip .ar-chip-pins { fill: none; stroke: var(--ar-accent); stroke-width: 1.6; stroke-linecap: round; }
+    .ar .ar-chip .ar-chip-arrow { fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .ar .ar-chip .ar-chip-halo { fill: color-mix(in srgb, var(--ar-accent) 22%, transparent); }
+    .ar .ar-data circle { fill: var(--ar-accent); opacity: 0; }
+    .ar.is-backup .ar-data circle, .ar.is-scan .ar-data circle { fill: var(--blue); }
+    .ar.is-restore .ar-data circle { fill: var(--ar-ok); }
+    .ar .ar-stay { fill: none; stroke: var(--ar-accent); stroke-width: 1.3; opacity: .85; }
+    .ar .ar-plug.is-gear .ar-boot, .ar .ar-gear { fill: #2c4a6a; }
+    .ar .ar-gear-knob { fill: #a6bdd4; }
+    .ar .ar-plug.anim-out-first { transform: translateY(-16px); }
+    .ar.is-hostFlash .ar-data circle { fill: var(--teal); }
+    .ar .ar-lbl rect { fill: rgba(255,255,255,.07); stroke: rgba(255,255,255,.14); stroke-width: .8; }
+    .ar .ar-lbl .l1 { fill: #fff; font: 700 10px var(--disp); letter-spacing: .04em; }
+    .ar .ar-lbl .l2 { fill: #9aa4ba; font: 600 7px var(--sans); letter-spacing: .06em; }
+    .ar .seq-a { opacity: 1; } .ar .seq-b { opacity: 0; }
+    .ar .ar-screen-lit.anim-reboot { opacity: .35; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .ar .ar-plug.anim-in { animation: ar-plug-in 3.6s cubic-bezier(.3,.7,.3,1) infinite; }
+      .ar .ar-plug.anim-in.anim-late { animation-delay: 1.8s; animation-fill-mode: both; }
+      .ar .ar-plug.anim-out-first { animation: ar-out-first 4.8s cubic-bezier(.4,0,.3,1) infinite; }
+      .ar .ar-plug.anim-swap-in { animation: ar-swap-in 4.8s cubic-bezier(.3,.7,.3,1) infinite; }
+      .ar.is-plug .seq-a { animation: ar-seq-a 7.2s linear infinite; }
+      .ar.is-plug .seq-b { animation: ar-seq-b 7.2s linear infinite; }
+      .ar .ar-target { animation: ar-target 1.2s ease-in-out infinite; }
+      .ar .ar-arrows .ar-arrow { animation: ar-arrow 1.2s ease-in-out infinite; }
+      .ar .ar-arrows.is-down .a1, .ar .ar-arrows.is-up .a3 { animation-delay: 0s; }
+      .ar .ar-arrows .a2 { animation-delay: .2s; }
+      .ar .ar-arrows.is-down .a3, .ar .ar-arrows.is-up .a1 { animation-delay: .4s; }
+      .ar .ar-badge.anim-badge { transform-box: fill-box; transform-origin: center; animation: ar-badge 3.6s cubic-bezier(.3,.7,.3,1) infinite; }
+      .ar .ar-chip.anim-pulse .ar-chip-halo-wrap { transform-box: fill-box; transform-origin: center; animation: ar-halo 1.6s ease-out infinite; }
+      .ar .ar-data circle { animation: ar-data 1.2s linear infinite; }
+      .ar .ar-data.is-up circle { animation-name: ar-data-up; }
+      .ar .ar-data .d2 { animation-delay: .4s; } .ar .ar-data .d3 { animation-delay: .8s; }
+      .ar .ar-cloud-dots circle { animation: ar-cloud 1.5s linear infinite; }
+      .ar .ar-cloud-dots .c2 { animation-delay: .5s; } .ar .ar-cloud-dots .c3 { animation-delay: 1s; }
+      .ar .ar-dl-fill { animation: ar-dl 2.4s ease-in-out infinite; }
+      .ar .ar-dash { animation: ar-dash 1s linear infinite; }
+      .ar .ar-dash.is-up { animation-direction: reverse; }
+      .ar .ar-stay-wrap { transform-box: fill-box; transform-origin: center; animation: ar-stay 1.8s ease-out infinite; }
+      .ar .ar-screen-lit.anim-reboot { animation: ar-reboot 4.2s ease-in-out infinite; }
+      .pdlg .cursor { animation: pd-cursor 3.6s ease-in-out infinite; }
+      .pdlg .row { animation: pd-row 3.6s ease-in-out infinite; }
+      .pdlg .btn.is-primary { animation: pd-connect 3.6s ease-in-out infinite; }
+    }
+    @keyframes ar-plug-in { 0% { transform: translateY(-44px); opacity: 0; } 10% { transform: translateY(-44px); opacity: 1; } 40% { transform: translateY(0); opacity: 1; } 86% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(0); opacity: 0; } }
+    @keyframes ar-out-first { 0% { transform: translateY(0); opacity: 1; } 12% { transform: translateY(0); opacity: 1; } 36% { transform: translateY(-44px); opacity: 1; } 44%, 100% { transform: translateY(-44px); opacity: 0; } }
+    @keyframes ar-swap-in { 0%, 50% { transform: translateY(-44px); opacity: 0; } 56% { transform: translateY(-44px); opacity: 1; } 78% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(0); opacity: 1; } }
+    @keyframes ar-seq-a { 0%, 47% { opacity: 1; } 50%, 97% { opacity: 0; } 100% { opacity: 1; } }
+    @keyframes ar-seq-b { 0%, 49% { opacity: 0; } 52%, 97% { opacity: 1; } 100% { opacity: 0; } }
+    @keyframes ar-target { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+    @keyframes ar-arrow { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+    @keyframes ar-badge { 0%, 55% { transform: scale(0); opacity: 0; } 68% { transform: scale(1.15); opacity: 1; } 76%, 94% { transform: scale(1); opacity: 1; } 100% { transform: scale(1); opacity: 0; } }
+    @keyframes ar-halo { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(1.5); opacity: 0; } }
+    @keyframes ar-data { 0% { opacity: 0; transform: translateY(0); } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; transform: translateY(96px); } }
+    @keyframes ar-data-up { 0% { opacity: 0; transform: translateY(96px); } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; transform: translateY(0); } }
+    @keyframes ar-cloud { 0% { opacity: 0; transform: translateY(0); } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(38px); } }
+    @keyframes ar-dl { 0% { transform: scaleX(.05); } 70%, 100% { transform: scaleX(1); } }
+    @keyframes ar-dash { to { stroke-dashoffset: -14; } }
+    @keyframes ar-stay { 0% { transform: scale(.72); opacity: .9; } 100% { transform: scale(1.3); opacity: 0; } }
+    @keyframes ar-reboot { 0%, 24% { opacity: 1; } 34%, 58% { opacity: 0; } 70%, 100% { opacity: 1; } }
+    @keyframes pd-cursor { 0%, 12% { left: 80%; top: 86%; } 34%, 50% { left: 46%; top: 44%; } 72%, 88% { left: 86%; top: 84%; } 100% { left: 80%; top: 86%; } }
+    @keyframes pd-row { 0%, 30% { box-shadow: inset 0 0 0 2px transparent; background: transparent; } 40%, 100% { box-shadow: inset 0 0 0 2px var(--accent); background: color-mix(in srgb, var(--accent) 22%, transparent); } }
+    @keyframes pd-connect { 0%, 70% { box-shadow: 0 0 0 0 transparent; } 78%, 100% { box-shadow: 0 0 0 2px var(--accent); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rail .st.is-active .n, .btn.is-primary.is-pulse, .tasks li.is-active .ic, .ring.is-wait .bar, .pill.is-busy .d { animation: none !important; }
+    }
+
+    /* ─── responsivo ─── */
+    @media (max-width: 960px) {
+      body { padding: 16px 12px 32px; }
+      .wiz { padding: 16px 14px; }
+      .body { grid-template-columns: 1fr; gap: 16px; margin-top: 16px; }
+      .visual { min-height: 0; padding: 18px; }
+      .frame { min-height: 250px; }
+      .copy { min-height: 0; padding: 20px 18px 20px; gap: 16px; }
+      .copy-head { gap: 16px; }
+      .copy-ic { width: 66px; height: 66px; } .copy-ic svg { width: 28px; height: 28px; }
+      h1.title { font-size: clamp(26px, 6vw, 34px); }
+      .rail { padding: 4px 4px 6px; }
+      .rail .st .t { font-size: 10px; letter-spacing: .1em; }
+      .rail .st .n { width: 34px; height: 34px; font-size: 14px; }
+      .rail .st::before, .rail .st::after { top: 16px; width: calc(50% - 22px); }
+      .brand .wm { font-size: 26px; }
+      .brand .logo { width: 48px; height: 48px; } .brand .logo svg { width: 26px; height: 26px; }
+      .prow { min-height: 0; }
+      .btn { min-height: 58px; font-size: 17px; padding: 0 20px; }
+    }
+    @media (max-width: 520px) {
+      .rail .st .t { display: none; }
+      .rail .st.is-active .t { display: block; position: absolute; top: 40px; white-space: nowrap; }
+      .rail { padding-bottom: 18px; }
+      .dev-rows { grid-template-columns: auto auto; }
+      .actions-main .btn { flex: 1 1 auto; justify-content: center; }
+      .plate-dev { display: none; }
+      .plate-head { grid-template-columns: 1fr; }
+      .top-right .sep { display: none; }
+      .pill { padding: 10px 14px; font-size: 14px; }
+      .abar { flex-direction: column; align-items: stretch; } .abar .sep { display: none; } .abtn { justify-content: center; font-size: 16px; padding: 0 14px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="top">
+    <a class="brand" href="./">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"/><path d="M8.5 7.5 12 4l3.5 3.5"/><circle cx="12" cy="18" r="2.6"/><path d="M4 18h5.4M14.6 18H20"/></svg>
+      </span>
+      <span><span class="wm">BF<i>MiDi</i></span><span class="sub">ATUALIZADOR<i>v15</i></span></span>
+    </a>
+    <div class="top-right">
+      <span class="pill" id="pillState"><span class="d"></span><span id="pillText">Aguardando a controladora</span></span>
+      <span class="sep" aria-hidden="true"></span>
+      <span class="pill" id="pillVer" title="Versão publicada neste atualizador"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 17.9 8.5 4 4 0 0 1 17.5 18H7z"/></svg><span>Publicada</span><b id="pubVer">…</b></span>
+      <span class="sep" aria-hidden="true"></span>
+      <a class="pill" href="https://bffx-updates.github.io/MANUAL_USER/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v16H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5A2.5 2.5 0 0 1 4 20.5z"/><path d="M9 7h7M9 10.5h5"/></svg><span>Manual</span></a>
+    </div>
+  </header>
+
+  <main class="wiz" aria-live="polite">
+    <nav class="rail" id="rail" aria-label="Passos"></nav>
+
+    <div class="body">
+      <section class="visual">
+        <div class="frame" id="frame"></div>
+        <div class="caption" id="caption"></div>
+      </section>
+      <section class="copy">
+        <div class="copy-head">
+          <div class="copy-ic" id="copyIc" aria-hidden="true"></div>
+          <div class="copy-ht">
+            <div class="eyebrow" id="eyebrow">PASSO 1 DE 5</div>
+            <h1 class="title" id="title">Conecte a controladora</h1>
+          </div>
+        </div>
+        <p class="desc" id="desc"></p>
+        <div id="extra"></div>
+        <div class="actions" id="actions"></div>
+      </section>
+    </div>
+  </main>
+
+
+  <div class="footbar">
+  <details class="logwrap" id="logwrap">
+    <summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>Registro técnico</summary>
+    <div class="logbox" id="log"></div>
+    <div class="logtools">
+      <button class="btn is-link" id="logCopy" type="button">Copiar registro</button>
+      <button class="btn is-link" id="dlBackup" type="button" hidden>Baixar backup guardado</button>
+    </div>
+  </details>
+  <p class="footer"><span>BFX Technologies</span><span class="dot"></span><span>Atualizador v15</span><span class="dot"></span><span>Produzido no Brasil</span><svg viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="1.5" fill="#1E9E46"/><path d="M10 1.8 18.2 7 10 12.2 1.8 7Z" fill="#F8D23B"/><circle cx="10" cy="7" r="2.9" fill="#1E4FB0"/></svg></p>
+  </div>
+
+  <dialog class="hdlg" id="hostDlg">
+    <div class="hdlg-head"><div><div class="eyebrow">USB HOST</div><h2>Status e ferramentas</h2></div><button type="button" class="btn is-ghost" id="hostDlgClose">Fechar</button></div>
+    <div class="hdlg-grid" id="hostDlgGrid"></div>
+    <div class="hdlg-tools" id="hostDlgTools"></div>
+    <div class="hdlg-msg" id="hostDlgMsg"></div>
+  </dialog>
+
+  <dialog class="hdlg is-cfg" id="cfgDlg">
+    <div class="hdlg-head"><div><div class="eyebrow">ATUALIZAÇÃO</div><h2>Configurações</h2></div><button type="button" class="btn is-ghost" id="cfgDlgClose">Fechar</button></div>
+    <div class="cfg-body" id="cfgDlgBody"></div>
+  </dialog>
+
+  <!-- crypto-js: usado pelo esptool-js pra conferir o MD5 do que foi gravado. -->
+  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
+  <script type="module">
+    // ══════════════════════════════════════════════════════════════════
+    // FLUXO EM 5 PASSOS. A LÓGICA DE GRAVAÇÃO (porta, reset por DTR/RTS e
+    // 1200 bps, gate de PID, fix de porta fantasma, bins por chip, reset
+    // final do S3 por watchdog, backup automático) é a MESMA validada no
+    // hardware pela página anterior — só a camada que pinta o DOM e a
+    // identificação do modelo/versão pelo cabo são novas. Não mexer no
+    // núcleo connect/flash sem motivo.
+    //
+    // ?demo=1      percorre o fluxo com uma controladora FALSA (updater_demo.js)
+    // ?demo=auth   idem, com a porta nova exigindo autorização
+    // ?demo=same   idem, com a controladora já na versão publicada
+    // ?demo=s2|boot|legacy|mute|fail   outras situações (ver updater_demo.js)
+    // ?demo=hostok|hostmute|hostonly     o USB HOST em dia / mudo / só ele desatualizado
+    // ══════════════════════════════════════════════════════════════════
+    import { ESPLoader as RealESPLoader, Transport as RealTransport } from "./esptool-bundle.js";
+    import * as AB from "./autobackup.js";
+    import { art } from "./updater_art.js";
+
+    const qs = new URLSearchParams(location.search);
+    const DEMO = qs.get("demo");
+    let ESPLoader = RealESPLoader, Transport = RealTransport;
+    let demo = null;
+    if (DEMO) {
+      demo = await import("./updater_demo.js");
+      demo.install(DEMO);              // substitui navigator.serial por uma controladora falsa
+      ESPLoader = demo.ESPLoader; Transport = demo.Transport;
+    }
+
+    const $ = (id) => document.getElementById(id);
+    const root = document.documentElement;
+    const els = {
+      frame: $("frame"), caption: $("caption"), eyebrow: $("eyebrow"), title: $("title"), desc: $("desc"),
+      extra: $("extra"), actions: $("actions"), log: $("log"), logwrap: $("logwrap"), copyIc: $("copyIc"),
+      pillState: $("pillState"), pillText: $("pillText"), pubVer: $("pubVer"), dl: $("dlBackup"),
+    };
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const IS_MAC = /Mac|iPhone|iPad/.test(navigator.platform || "") || /Mac OS/.test(navigator.userAgent);
+
+    // ── constantes do hardware ──
+    const defaultFilters = [
+      { usbVendorId: 0x303a, usbProductId: 0x80c2 },  // app BFMiDi (S2 e S3)
+      { usbVendorId: 0x303a, usbProductId: 0x0002 },  // bootloader ROM S2
+      { usbVendorId: 0x303a, usbProductId: 0x0009 },  // bootloader ROM S3 (USB-OTG)
+      { usbVendorId: 0x303a, usbProductId: 0x1001 },  // S3 USB-Serial-JTAG
+      { usbVendorId: 0x303a },
+    ];
+    const BOOTLOADER_PIDS = [0x0002, 0x0009, 0x1001];
+    // USB HOST (o módulo ESP32-S3 de 4 MB dentro das BFMiDi 3 e S3). Os bins e
+    // o version.json vêm do repo do host (o Pages serve CORS *). O ROM do host
+    // tem o MESMO VID/PID e CHIP_NAME do ROM da controladora S3: quem separa é
+    // a flash (4 MB × 16 MB), conferida antes de gravar.
+    const HOST_BASE = "https://bffx-updates.github.io/BFMiDi3_USB_HOST/";
+    const HOST_FLASH_IMAGES = [
+      { path: "bootloader.bin", address: 0x0 }, { path: "partition-table.bin", address: 0x8000 }, { path: "app.bin", address: 0x10000 },
+    ];
+    const HOST_ROM_PIDS = [0x1001, 0x0009];   // 1001 = USB-Serial-JTAG, 0009 = USB-OTG
+    const HOST_UPDATE_PID = 0x4002;            // modo update dos hosts anteriores ao 3.0
+    const HOST_FLASH_KB = 4096;
+    // Mapa de gravação por chip (reserva, quando o version.json não carrega).
+    // Offsets: variants/*/partitions.csv no repo.
+    const IMAGES_BY_CHIP = {
+      s2: { label: "ESP32-S2", flashSize: "4MB", files: [
+        { file: "bin_S2/bootloader.bin", address: 0x1000 }, { file: "bin_S2/partitions.bin", address: 0x8000 },
+        { file: "bin_S2/firmware.bin", address: 0x10000 }, { file: "bin_S2/littlefs.bin", address: 0x280000 } ] },
+      s3: { label: "ESP32-S3", flashSize: "16MB", files: [
+        { file: "bin_S3/bootloader.bin", address: 0x0 }, { file: "bin_S3/partitions.bin", address: 0x8000 },
+        { file: "bin_S3/firmware.bin", address: 0x10000 }, { file: "bin_S3/otadata.bin", address: 0x710000 },
+        { file: "bin_S3/littlefs.bin", address: 0x720000 } ] },
+    };
+
+    // ── estado ──
+    const S = {
+      mode: "idle",        // idle | reading | ready | prepare | await-port | flash | restore | done | error
+      step: "connect",     // chave do passo no trilho (S.rail)
+      device: null,        // SerialPort
+      lastPortInfo: null,
+      ctl: null,           // canal CDC aberto (identificação → início da gravação)
+      info: null,          // { board, chip, fw, webapp, id, mac, serial, legacy, bootloader }
+      manifest: null,
+      hostManifest: null,  // version.json do USB HOST
+      // USB HOST desta controladora: lido na identificação, usado no passo HOST.
+      host: { has: false, version: "", seen: false, online: false, product: "", need: false, inRom: false, before: [], pkg: null, result: null },
+      wantHost: true,      // opção "Atualizar também o USB Host"
+      plan: { ctrl: true, host: false },
+      rail: ["connect", "identify", "prepare", "flash", "done"],
+      chipKey: null,
+      images: null,        // [{file,address,size,sha256,data}]
+      flashSize: "keep",
+      transport: null, esploader: null,
+      pendingBackup: null, recoveredBackup: null,
+      backupStats: null, restoreStats: null, restoreWarn: null,
+      backupListed: [],    // categorias de mídia cuja lista foi lida na extração (espelhadas na volta)
+      wantBackup: true, wantErase: false,
+      manualDisconnect: false,
+      busy: false,
+      lastError: null,
+      retryFromRom: false, // falha depois do reset: a controladora ficou no ROM
+      // PORTA CERTA: portas 303A que já estavam no PC antes do reset da
+      // controladora (não podem ser "a nova") e portas que o esptool provou
+      // serem o outro chip (recusadas até o fim da rodada).
+      beforePorts: [], badPorts: new Set(),
+      hostFailed: false,   // a falha foi no passo do USB HOST (a controladora já está pronta)
+    };
+
+    // ── log ──
+    const logLines = [];
+    function log(msg) {
+      const t = new Date().toLocaleTimeString("pt-BR", { hour12: false });
+      const line = `[${t}] ${msg}`;
+      logLines.push(line);
+      console.log(msg);
+      const d = document.createElement("div");
+      d.textContent = line;
+      els.log.appendChild(d);
+      els.log.scrollTop = els.log.scrollHeight;
+    }
+    $("logCopy").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(logLines.join("\n")); log("Registro copiado."); } catch { }
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    // UI
+    // ══════════════════════════════════════════════════════════════════
+    const svgIcon = {
+      check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+      chev: '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
+      arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+      usb: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="1.6"/><path d="M12 5.6V20"/><path d="M12 11l-4 3v3"/><circle cx="8" cy="17" r="1.6"/><path d="M12 9l4 2.5V15"/><rect x="14.4" y="14" width="3.2" height="3.2" rx=".5"/></svg>',
+      browser: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3a9 9 0 0 1 7.8 4.5L13.5 9"/><path d="M3.9 16.5 9 13.5"/><path d="M12 21l1.5-6"/></svg>',
+      cable: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="8" rx="2"/><path d="M12 11v4"/><path d="M12 15c0 3-5 3-5 6"/></svg>',
+      warn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 20h19L12 3z"/><path d="M12 10v4M12 17.5v.5"/></svg>',
+      bolt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
+      shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>',
+      refresh: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg>',
+      download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>',
+      spark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>',
+      gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+      cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 17.9 8.5 4 4 0 0 1 17.5 18H7z"/></svg>',
+      chip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 10.5h4v3h-4z"/><path d="M9 3v4M15 3v4M9 17v4M15 17v4M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>',
+      device: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="11" rx="2.5"/><circle cx="8" cy="12.5" r="1.4"/><circle cx="12" cy="12.5" r="1.4"/><circle cx="16" cy="12.5" r="1.4"/><path d="M7.5 7V5h9v2"/></svg>',
+      swap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h14M14 4l4 4-4 4"/><path d="M20 16H6M10 12l-4 4 4 4"/></svg>',
+      hash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h14M5 15h14M10 3 8 21M16 3l-2 18"/></svg>',
+      tag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V5a2 2 0 0 1 2-2h7l9 9-9 9-9-9z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>',
+      upload: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>',
+    };
+
+    function setMode(mode) {
+      S.mode = mode;
+      root.setAttribute("data-mode", mode);
+      const pill = {
+        idle: ["Aguardando a controladora", ""], reading: ["Identificando…", "is-busy"], ready: ["Controladora conectada", "is-ok"],
+        prepare: ["Preparando…", "is-busy"], "await-port": ["Autorize a porta", "is-busy"], flash: ["Gravando…", "is-busy"],
+        restore: ["Devolvendo os dados…", "is-busy"], done: ["Atualizada", "is-ok"], error: ["Algo deu errado", "is-err"],
+      }[mode] || ["", ""];
+      els.pillText.textContent = pill[0];
+      els.pillState.className = "pill " + pill[1];
+    }
+    // O trilho é montado da lista S.rail: 5 passos de sempre, mais USB HOST
+    // (entre GRAVAR e PRONTO) quando o host também vai ser atualizado, ou só
+    // CONECTAR · IDENTIFICAR · USB HOST · PRONTO quando é só ele.
+    const RAIL_LABEL = { connect: "CONECTAR", identify: "IDENTIFICAR", prepare: "PREPARAR", flash: "GRAVAR", host: "USB HOST", done: "PRONTO" };
+    function setRail(keys) {
+      S.rail = keys;
+      const rail = $("rail");
+      rail.style.setProperty("--n", String(keys.length));
+      rail.innerHTML = keys.map((k, i) => `<div class="st" data-k="${k}"><div class="n"><span>${i + 1}</span>${svgIcon.check}</div><div class="t">${RAIL_LABEL[k]}</div></div>`).join("");
+      if (S.step && keys.includes(S.step)) setStep(S.step);
+    }
+    function setStep(key) {
+      if (!S.rail.includes(key)) {
+        // o passo pedido não está no trilho atual (ex.: HOST numa rodada só de
+        // controladora): acrescenta antes do PRONTO
+        const keys = S.rail.filter((k) => k !== "done"); keys.push(key, "done"); setRail(keys);
+      }
+      S.step = key;
+      const n = S.rail.indexOf(key);
+      root.setAttribute("data-step", String(n + 1));
+      document.querySelectorAll(".rail .st").forEach((el, i) => {
+        el.classList.toggle("is-active", i === n);
+        el.classList.toggle("is-done", i < n);
+      });
+      els.eyebrow.textContent = key === "done" ? "CONCLUÍDO" : `PASSO ${n + 1} DE ${S.rail.length}`;
+      if (els.copyIc) els.copyIc.innerHTML = svgIcon[STEP_ICON[key] || "device"];
+    }
+    // o ícone redondo ao lado do título, por passo (a tela pode trocar por setCopy({ icon }))
+    const STEP_ICON = { connect: "cable", identify: "device", prepare: "download", flash: "bolt", host: "usb", done: "check" };
+    function setCopy({ title, desc, extra, caption, icon }) {
+      if (icon !== undefined && els.copyIc) els.copyIc.innerHTML = svgIcon[icon] || "";
+      if (title !== undefined) els.title.innerHTML = title;
+      if (desc !== undefined) els.desc.innerHTML = desc;
+      if (extra !== undefined) els.extra.innerHTML = extra;
+      if (caption !== undefined) els.caption.innerHTML = caption;
+    }
+    // Botões da coluna de texto. Cada item: { label, kind, onClick, pulse, disabled, icon }
+    // kind primary/ghost vão na fileira principal; kind "bar" (destacado) e
+    // "link" vão na barra secundária embaixo dela (USB Host | Trocar de
+    // controladora). `chev` põe a seta no fim do botão principal.
+    function setActions(list) {
+      els.actions.innerHTML = "";
+      const main = document.createElement("div"); main.className = "actions-main";
+      let bar = null;
+      for (const b of list) {
+        if (!b) continue;
+        const kind = b.kind || "primary";
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.disabled = !!b.disabled;
+        if (b.id) btn.id = b.id;
+        btn.addEventListener("click", b.onClick);
+        if (kind === "bar" || kind === "link") {
+          if (!bar) { bar = document.createElement("div"); bar.className = "abar"; }
+          else { const sep = document.createElement("span"); sep.className = "sep"; sep.setAttribute("aria-hidden", "true"); bar.appendChild(sep); }
+          btn.className = "abtn" + (kind === "bar" ? " is-hi" : "");
+          btn.innerHTML = (b.icon ? svgIcon[b.icon] : "") + "<span>" + esc(b.label) + "</span>";
+          bar.appendChild(btn);
+          continue;
+        }
+        btn.className = "btn is-" + kind + (b.pulse ? " is-pulse" : "");
+        btn.innerHTML = (b.icon ? svgIcon[b.icon] : "") + "<span>" + esc(b.label) + "</span>" + (b.chev ? svgIcon.chev : "");
+        main.appendChild(btn);
+      }
+      if (main.childElementCount) els.actions.appendChild(main);
+      if (bar) els.actions.appendChild(bar);
+    }
+    function showArt(kind, opts) {
+      els.frame.innerHTML = art(kind, Object.assign({ deviceC: deviceIsUsbC() }, opts || {}));
+    }
+    function showFrameHtml(html) { els.frame.innerHTML = html; }
+
+    // O anel de progresso do passo 4. `tone` = fw | app | data | wait.
+    function showRing(tone, label, sub) {
+      els.frame.innerHTML = `<div class="ring is-${tone}" id="ring">
+        <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="54"/><circle class="bar" cx="60" cy="60" r="54"/></svg>
+        <div class="inner"><div class="pct" id="ringPct"><span>0</span><sup>%</sup></div><div class="lab" id="ringLab">${esc(label)}</div><div class="sublab" id="ringSub">${esc(sub || "")}</div></div></div>`;
+    }
+    function setRing(pct, tone, label, sub) {
+      const ring = $("ring");
+      if (!ring) return;
+      if (tone) ring.className = "ring is-" + tone;
+      const bar = ring.querySelector(".bar");
+      const p = Math.max(0, Math.min(100, pct | 0));
+      if (tone !== "wait") bar.style.strokeDashoffset = String(339.3 * (1 - p / 100));
+      $("ringPct").firstChild.textContent = String(p);
+      if (label !== undefined) $("ringLab").textContent = label;
+      if (sub !== undefined) $("ringSub").textContent = sub;
+    }
+
+    // Lista de sub-etapas dos passos 3/4 (coluna de texto).
+    let taskDefs = [];
+    function showTasks(defs) {
+      taskDefs = defs;
+      els.extra.innerHTML = `<ul class="tasks" id="tasks">` + defs.map((d) =>
+        `<li data-k="${d.k}" class="${d.skip ? "is-skip" : ""}"><span class="ic">${svgIcon.check}</span><span class="tx">${esc(d.label)}</span><span class="pc"></span></li>`).join("") + `</ul>` +
+        `<div class="hold">${svgIcon.warn}<span>Não desligue a controladora nem solte o cabo até o fim.</span></div>`;
+    }
+    function task(k, state, pct) {
+      const li = document.querySelector(`#tasks li[data-k="${k}"]`);
+      if (!li) return;
+      li.classList.remove("is-active", "is-done", "is-skip", "is-fail");
+      if (state) li.classList.add("is-" + state);
+      li.querySelector(".pc").textContent = (typeof pct === "number") ? pct + "%" : (pct || "");
+    }
+    function taskDoneUpTo(k) {
+      for (const d of taskDefs) { if (d.k === k) break; const li = document.querySelector(`#tasks li[data-k="${d.k}"]`); if (li && !li.classList.contains("is-skip")) task(d.k, "done"); }
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MODELO / VERSÕES
+    // ══════════════════════════════════════════════════════════════════
+    const LEGACY = { "BFMIDI-3 6S": "BFMIDI-3 6SW+", "BFMIDI-3 7SW+V2": "BFMIDI-S3 8SW+", "BFMIDI-3 8SW+": "BFMIDI-S3 8SW+", "BFMIDI-3 NANO+ V2": "BFMIDI-S3 NANO+" };
+    const SWITCHES = { "7S": 8, "7SW+": 8, "8SW+": 8, "4S": 4, "NANO": 6, "NANO+": 6, "MICRO": 4, "6S": 6, "6SW+": 6 };
+    function canonicalBoard(b) { const s = String(b || "").trim(); return LEGACY[s] || s; }
+    function prettyBoard(b) {
+      const s = canonicalBoard(b);
+      const m = /^BFMIDI-(S3|1|2|3)\s+(.+)$/i.exec(s);
+      if (!m) return { family: "BFMiDi", variant: s || "—", switches: 6, slim: false, raw: s };
+      const fam = m[1].toUpperCase() === "S3" ? "BFMiDi S3" : "BFMiDi " + m[1];
+      const variant = m[2].replace(/_[A-Z]\d$/i, "").trim();          // 7S_A1 → 7S
+      return { family: fam, variant, switches: SWITCHES[variant.toUpperCase()] || 6, slim: /^4S$/i.test(variant), raw: s };
+    }
+    // BFMiDi S3: DEVICE USB-B. BFMiDi 1, 2 e 3: USB-C. Sem modelo: null (alterna).
+    function deviceIsUsbC() {
+      const b = S.info && S.info.board;
+      if (!b) return null;
+      return !canonicalBoard(b).startsWith("BFMIDI-S3");
+    }
+    function cmpVersions(a, b) {
+      const parts = (v) => String(v || "").split("+")[0].split(".").map((n) => parseInt(n, 10) || 0);
+      const pa = parts(a), pb = parts(b), len = Math.max(pa.length, pb.length);
+      for (let i = 0; i < len; i++) { const d = (pa[i] || 0) - (pb[i] || 0); if (d) return d; }
+      return 0;
+    }
+    function latestFor(chip) {
+      const m = S.manifest;
+      if (!m) return "";
+      return (chip && m.fw && m.fw[chip] && m.fw[chip].version) || m.version || "";
+    }
+    function notesFor(chip) {
+      const m = S.manifest;
+      return (m && m.fw && m.fw[chip] && m.fw[chip].notes) || "";
+    }
+    function flashListFor(chip) {
+      const m = S.manifest;
+      const list = m && m.fw && m.fw[chip] && Array.isArray(m.fw[chip].flash) ? m.fw[chip].flash : null;
+      if (list && list.length) return list.map((f) => ({ file: f.file, address: f.address, size: f.size, sha256: f.sha256 }));
+      return IMAGES_BY_CHIP[chip].files.map((f) => ({ file: f.file, address: f.address }));
+    }
+
+    function modelHasUsbHost(board) { const b = canonicalBoard(board); return b.includes("BFMIDI-3") || b.includes("BFMIDI-S3"); }
+    // Host SEM versão (anterior ao 3.0) conta como mais antigo que qualquer
+    // versão publicada — regra do produto.
+    function hostNeedsUpdate(installed, available) { if (!available) return false; if (!installed) return true; return cmpVersions(installed, available) < 0; }
+    async function loadHostManifest() {
+      if (demo && demo.hostManifest) { S.hostManifest = demo.hostManifest(); return; }
+      try {
+        const ctrl = new AbortController(); const timer = setTimeout(() => ctrl.abort(), 8000);
+        const r = await fetch(HOST_BASE + "version.json?t=" + Date.now(), { cache: "no-store", signal: ctrl.signal });
+        clearTimeout(timer);
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        const m = await r.json();
+        if (m && m.version && Array.isArray(m.files) && m.files.length) { S.hostManifest = m; log("USB Host publicado: " + m.version); }
+      } catch (e) { log("version.json do USB Host indisponível (" + e.message + ")."); }
+    }
+    async function loadManifest() {
+      try {
+        const r = await fetch("./version.json?t=" + Date.now(), { cache: "no-store" });
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        S.manifest = await r.json();
+        els.pubVer.textContent = "v" + (S.manifest.version || "?");
+        log("Manifesto carregado: versão publicada " + S.manifest.version);
+      } catch (e) {
+        els.pubVer.textContent = "—";
+        log("version.json indisponível (" + e.message + ") — usando o mapa de gravação embutido.");
+      }
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // TELAS
+    // ══════════════════════════════════════════════════════════════════
+    function screenNeedBrowser() {
+      setStep("connect"); setMode("idle");
+      showArt("plug");
+      setCopy({
+        title: "Abra esta página no <em>Chrome</em> ou <em>Edge</em>",
+        desc: "O atualizador grava a controladora pelo cabo USB e, pra isso, precisa do <b>Web Serial</b> — que só existe no Chrome e no Edge, no computador (Windows, macOS ou Linux). Safari, Firefox e navegadores de celular não servem.",
+        extra: `<div class="tips"><span class="tip">${svgIcon.browser}Chrome ou Edge</span><span class="tip">${svgIcon.cable}Computador, não celular</span></div>`,
+        caption: "Copie o endereço desta página e abra no Chrome ou no Edge.",
+      });
+      setActions([{ label: "Navegador sem Web Serial", disabled: true }]);
+    }
+
+    function screenConnect(notice) {
+      setStep("connect"); setMode("idle");
+      showArt("plug");
+      setCopy({
+        title: "Conecte a controladora ao <em>computador</em>",
+        desc: "Cabo USB <b>de dados</b> na porta <b>DEVICE</b> da controladora. Ela liga pelo cabo — não precisa de fonte.",
+        extra: (notice ? `<div class="warnbox">${esc(notice)}</div>` : "") +
+          `<div class="tips">
+             <span class="tip">${svgIcon.cable}Porta <b>&nbsp;DEVICE</b>, não a HOST</span>
+             <span class="tip">${svgIcon.browser}Chrome ou Edge</span>
+           </div>`,
+        caption: `<b>USB-C</b> na BFMiDi 1, 2 e 3 · <b>USB-B</b> na BFMiDi S3`,
+      });
+      setActions([{ label: "Procurar a controladora", icon: "usb", onClick: () => connectFlow(true) }]);
+    }
+
+    function screenReading() {
+      setStep("identify"); setMode("reading");
+      showArt("scan");
+      setCopy({
+        title: "Identificando a controladora…",
+        desc: "Lendo modelo e versões pelo cabo.",
+        extra: "", caption: "",
+      });
+      setActions([{ label: "Identificando…", disabled: true }]);
+    }
+
+    // ── PLACA DE STATUS (quadro da esquerda nos passos 2 e 5) ──
+    // Só fatos, em letra grande: modelo, chip, série e uma linha de versão por
+    // peça (controladora, USB Host). Sem foto nem desenho do pedal — quem está
+    // atualizando já sabe qual é a controladora dele (pedido do dono, 24/out).
+    function versionBadge(kind) {
+      const map = { update: ["is-new", "ATUALIZAÇÃO"], same: ["is-same", "EM DIA"], newer: ["is-unk", "VERSÃO DE TESTE"], unknown: ["is-new", "ATUALIZAÇÃO"],
+        nolatest: ["is-unk", "SEM LISTA"], bootloader: ["is-unk", "MODO DE GRAVAÇÃO"], mute: ["is-unk", "SEM RESPOSTA"], done: ["is-same", "ATUALIZADO"], warn: ["is-unk", "CONFERIR"] };
+      const [cls, txt] = map[kind] || ["is-unk", String(kind).toUpperCase()];
+      const ico = cls === "is-new" ? svgIcon.upload : cls === "is-same" ? svgIcon.check : svgIcon.warn;
+      return `<span class="badge ${cls}">${ico}${txt}</span>`;
+    }
+    // ícone e subtítulo de cada linha da placa
+    const ROW_META = { "Controladora": ["chip", "Firmware principal do sistema"], "USB Host": ["usb", "Módulo de comunicação USB"] };
+    // desenho estilizado da controladora no cabeçalho da placa (sem foto por
+    // modelo: o mesmo desenho com o nome e o número de footswitches da placa)
+    function plateDeviceSvg(fam, variant, switches) {
+      const famParts = /^(BFMiDi)\s*(.*)$/.exec(fam || "") || [null, fam || "BFMiDi", ""];
+      const n = Math.max(4, Math.min(6, switches || 6));
+      const sw = Array.from({ length: n }, (_, i) => { const x = 40 + i * (160 / (n - 1)); return `<circle cx="${x.toFixed(1)}" cy="92" r="7"/>`; }).join("");
+      return `<svg class="plate-dev" viewBox="0 0 240 130" aria-hidden="true">
+        <defs>
+          <linearGradient id="pdBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a303b"/><stop offset=".55" stop-color="#171c25"/><stop offset="1" stop-color="#0e1218"/></linearGradient>
+          <linearGradient id="pdLed" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF8A4C"/><stop offset="1" stop-color="#F0552F"/></linearGradient>
+          <linearGradient id="pdScr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a2a44"/><stop offset="1" stop-color="#0b1220"/></linearGradient>
+        </defs>
+        <ellipse cx="120" cy="119" rx="104" ry="8" fill="rgba(0,0,0,.5)"/>
+        <rect x="14" y="16" width="212" height="94" rx="16" fill="url(#pdBody)" stroke="rgba(255,255,255,.14)"/>
+        <rect x="26" y="30" width="72" height="46" rx="6" fill="url(#pdScr)" stroke="rgba(255,255,255,.1)"/>
+        <g opacity=".9"><rect x="32" y="36" width="18" height="15" rx="2.5" fill="#E5484D"/><rect x="53" y="36" width="18" height="15" rx="2.5" fill="#F5B84A"/><rect x="74" y="36" width="18" height="15" rx="2.5" fill="#3B82F6"/>
+        <rect x="32" y="55" width="18" height="15" rx="2.5" fill="#22C55E"/><rect x="53" y="55" width="18" height="15" rx="2.5" fill="#8B5CF6"/><rect x="74" y="55" width="18" height="15" rx="2.5" fill="#EE5A31"/></g>
+        <text x="112" y="47" class="pd-fam">${esc(famParts[1])}${famParts[2] ? ` <tspan>${esc(famParts[2])}</tspan>` : ""}</text>
+        <text x="214" y="73" class="pd-var" text-anchor="end">${esc(variant || "")}</text>
+        <g fill="#0b0e13" stroke="rgba(255,255,255,.2)" stroke-width="1.2">${sw}</g>
+        <rect x="22" y="104" width="196" height="8" rx="4" fill="url(#pdLed)" opacity=".35"/>
+        <rect x="24" y="106" width="192" height="3" rx="1.5" fill="url(#pdLed)"/>
+      </svg>`;
+    }
+    // `act` = { id: 'ctrl' | 'host', title } põe o botão redondo de atualizar
+    // SÓ aquele item (laranja quando há versão nova, neutro = reinstalar).
+    function plateRow(label, from, to, kind, act) {
+      const toCls = (kind === "update" || kind === "unknown" || kind === "bootloader") ? "is-new" : (kind === "same" || kind === "done") ? "is-ok" : kind === "warn" ? "is-warn" : "";
+      const fromCls = (kind === "same" && !to) ? "is-ok" : (/^(sem resposta|modo de gravação|antiga|sem versão|antigo|\?)$/.test(String(from)) ? "is-small" : "");
+      const arrow = to ? `<span class="prow-arrow">${svgIcon.arrow}</span><b class="${toCls}">${esc(to)}</b>` : "";
+      const isNew = kind === "update" || kind === "unknown";
+      const btn = act ? `<button type="button" class="prow-act${isNew ? " is-new" : ""}" data-act="${act.id}" title="${esc(act.title)}">${isNew ? svgIcon.upload : svgIcon.refresh}<span>${esc(act.label || (isNew ? "Atualizar" : "Reinstalar"))}</span></button>` : "";
+      const [ico, sub] = ROW_META[label] || ["device", ""];
+      return `<div class="prow"><div class="prow-ic">${svgIcon[ico]}</div><div class="prow-t"><b>${esc(label)}</b>${sub ? `<span>${esc(sub)}</span>` : ""}</div>${versionBadge(kind)}${btn}<div class="prow-v"><b class="${fromCls}">${esc(from || "—")}</b>${arrow}</div></div>`;
+    }
+    function plateHtml(rows) {
+      const info = S.info || {};
+      const p = prettyBoard(info.board);
+      const chipKey = /^s[23]$/.test(info.chip) ? info.chip : S.chipKey;
+      const meta = [];
+      if (chipKey) meta.push(["chip", chipKey === "s3" ? "ESP32-S3" : "ESP32-S2"]);
+      if (info.serial) meta.push(["tag", "Nº " + info.serial]);
+      if (info.id) meta.push(["hash", "ID " + info.id]);
+      const fam = info.board ? p.family : "BFMiDi";
+      const variant = info.board ? p.variant : (info.bootloader ? "em modo de gravação" : "controladora");
+      return `<div class="plate">
+        <div class="plate-head"><div><div class="plate-fam">${esc(fam)}</div><div class="plate-var">${esc(variant)}</div></div>
+          ${plateDeviceSvg(fam, info.board ? p.variant : "", p.switches)}
+          ${meta.length ? `<div class="plate-meta">${meta.map(([i, m]) => `<span>${svgIcon[i]}${esc(m)}</span>`).join("")}</div>` : ""}</div>
+        <div class="plate-rows">${rows.join("")}</div></div>`;
+    }
+    function versionState(info) {
+      const latest = latestFor(info.chip);
+      if (!latest) return { kind: "nolatest", latest: "" };
+      if (info.bootloader) return { kind: "bootloader", latest };
+      if (!info.fw) return { kind: "unknown", latest };
+      const c = cmpVersions(latest, info.fw);
+      return { kind: c > 0 ? "update" : c === 0 ? "same" : "newer", latest };
+    }
+
+    // As opções moram no popup CONFIGURAÇÕES (botão de engrenagem no passo 2;
+    // pedido do dono, 24/out: tela limpa, backup automático ligado por padrão).
+    // Start Packs e páginas irmãs: moravam em cards no pé da página e foram pra
+    // dentro de Opções avançadas, no popup Configurações (pedido do dono, 24/out:
+    // "essa parte toda coloque dentro de avançados"). Só aparecem, portanto,
+    // com a controladora identificada.
+    const RESOURCES_HTML = `
+<a class="res is-pack" href="./Pack_2.4.json" download="BFMiDi_StartPack_2.4.json" data-pack>
+      <span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+      <span class="rt"><b>Start Pack 2.4″</b><i>BFMiDi 1 e 2</i></span>
+      <span class="ra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+    </a>
+<a class="res is-pack" href="./Pack_3.5.json" download="BFMiDi_StartPack_3.5.json" data-pack>
+      <span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+      <span class="rt"><b>Start Pack 3.5″</b><i>BFMiDi 3 e S3</i></span>
+      <span class="ra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+    </a>
+<a class="res" href="https://bffx-updates.github.io/BFMiDi3_USB_HOST/" target="_blank" rel="noopener">
+      <span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="1.6"/><path d="M12 5.6V20"/><path d="M12 11l-4 3v3"/><circle cx="8" cy="17" r="1.6"/><path d="M12 9l4 2.5V15"/><rect x="14.4" y="14" width="3.2" height="3.2" rx=".5"/></svg></span>
+      <span class="rt"><b>USB Host</b><i>Página de gravação direta</i></span>
+      <span class="ra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+    </a>
+<a class="res" href="https://bffx-updates.github.io/Download_Apps/" target="_blank" rel="noopener">
+      <span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M10 18.5h4"/></svg></span>
+      <span class="rt"><b>Editor BFMiDi</b><i>Apps e PWA</i></span>
+      <span class="ra"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+    </a>
+    `;
+    function optionsHtml(allowBackup, allowHost) {
+      return `
+        <label class="opt" ${allowBackup ? "" : 'style="opacity:.55"'}>
+          <span class="sw"><input type="checkbox" id="optBackup" ${S.wantBackup && allowBackup ? "checked" : ""} ${allowBackup ? "" : "disabled"} /><span class="tr"></span></span>
+          <span class="ot"><b>Backup automático</b><span>${allowBackup
+            ? "Presets, imagens e ícones são guardados antes e devolvidos no fim. A configuração global não é tocada."
+            : "Indisponível em modo de gravação: os presets voltam ao padrão de fábrica."}</span></span>
+        </label>
+        ${allowHost ? `<label class="opt"><span class="sw"><input type="checkbox" id="optHost" ${S.wantHost ? "checked" : ""} /><span class="tr"></span></span>
+          <span class="ot"><b>Atualizar o USB Host junto</b><span>Depois da controladora, quando ele também tiver versão nova. Precisa de um segundo cabo USB na porta HOST.</span></span></label>` : ""}
+        <details class="adv"><summary>${svgIcon.chev}Opções avançadas</summary>
+          <label class="opt is-danger">
+            <span class="sw"><input type="checkbox" id="optErase" ${S.wantErase ? "checked" : ""} /><span class="tr"></span></span>
+            <span class="ot"><b>Apagar toda a memória antes de gravar</b><span>Zera também a configuração global (modelo, cores, Wi‑Fi).</span></span>
+          </label>
+          <div class="adv-h">Downloads e páginas</div>
+          <div class="more" aria-label="Mais recursos">${RESOURCES_HTML}</div>
+        </details>`;
+    }
+    const cfgDlg = $("cfgDlg");
+    let cfgCtx = { allowBackup: true, allowHost: false };
+    function openCfgDialog() {
+      $("cfgDlgBody").innerHTML = optionsHtml(cfgCtx.allowBackup, cfgCtx.allowHost);
+      wireOptions();
+      if (!cfgDlg.open) cfgDlg.showModal();
+    }
+    $("cfgDlgClose").addEventListener("click", () => cfgDlg.close());
+    cfgDlg.addEventListener("close", () => renderOptNote());
+    // Fora do padrão (backup desligado, apagar memória) fica visível na tela.
+    function optNoteHtml() {
+      const items = [];
+      if (cfgCtx.allowBackup && !S.wantBackup) items.push(`<span class="tip is-warn">${svgIcon.warn}Backup automático desligado</span>`);
+      if (S.wantErase) items.push(`<span class="tip is-warn">${svgIcon.warn}Apagar toda a memória</span>`);
+      if (cfgCtx.allowHost && !S.wantHost) items.push(`<span class="tip">${svgIcon.usb}USB Host fica de fora</span>`);
+      return items.length ? `<div class="tips" id="optNote">${items.join("")}</div>` : `<div id="optNote"></div>`;
+    }
+    function renderOptNote() { const n = $("optNote"); if (n) n.outerHTML = optNoteHtml(); }
+    function wireOptions() {
+      const b = $("optBackup"), e = $("optErase"), h = $("optHost");
+      if (b) b.addEventListener("change", () => { S.wantBackup = b.checked; log("Backup automático: " + (b.checked ? "ligado" : "desligado")); });
+      if (h) h.addEventListener("change", () => { S.wantHost = h.checked; log("Atualizar o USB Host junto: " + (h.checked ? "sim" : "não")); });
+      if (e) e.addEventListener("change", () => { S.wantErase = e.checked; log("Apagar memória: " + (e.checked ? "SIM" : "não")); });
+    }
+
+    function screenReady() {
+      setStep("identify"); setMode("ready");
+      const info = S.info;
+      const vs = versionState(info);
+      const p = prettyBoard(info.board);
+      const name = info.board ? `${p.family} ${p.variant}` : "Controladora BFMiDi";
+      const latest = vs.latest;
+      const hostWant = S.hostManifest && S.hostManifest.version;
+      const notes = notesFor(info.chip).replace(/\r/g, "").replace(/\n(?![•\-–\n])[ \t]*/g, " ").trim();
+      const notesHtml = notes ? `<details class="notes"><summary>${svgIcon.cloud}<span>Versão disponível no servidor: <b>${esc(latest)}</b></span>${svgIcon.chev}</summary><pre>${esc(notes)}</pre></details>` : "";
+      const rows = [];
+      const secondary = [];
+      let title, desc, primary, hostOpt = "";
+
+      if (info.bootloader) {
+        rows.push(plateRow("Controladora", "modo de gravação", latest, "bootloader"));
+        title = "Controladora em <em>modo de gravação</em>";
+        desc = `Nesse modo não dá pra ler o modelo nem a versão: o chip é identificado na gravação${latest ? ` e recebe a <b>${esc(latest)}</b>` : ""}. Se esta porta for o USB Host, a página percebe pela memória e não grava.`;
+        primary = { label: latest ? `Gravar o firmware ${latest}` : "Gravar o firmware", icon: "upload", onClick: startUpdate };
+      } else if (info.unidentified) {
+        rows.push(plateRow("Controladora", "sem resposta", latest, "mute"));
+        title = "Controladora conectada, <em>sem resposta</em>";
+        desc = "A porta abriu, mas a controladora não respondeu. Dá pra gravar mesmo assim, só que <b>sem o backup automático</b>.";
+        primary = { label: "Gravar mesmo assim", icon: "upload", onClick: startUpdate };
+      } else if (vs.kind === "update") {
+        rows.push(plateRow("Controladora", info.fw, latest, "update", { id: "ctrl", title: `Atualizar só a controladora (${latest})`, label: "Atualizar" }));
+        title = `<em>${esc(name)}</em> encontrada`;
+        desc = `A versão <b>${esc(latest)}</b> está disponível. Leva uns dois minutos e seus presets voltam sozinhos.`;
+        primary = { label: `Atualizar para ${latest}`, icon: "upload", onClick: startUpdate };
+      } else if (vs.kind === "same") {
+        rows.push(plateRow("Controladora", info.fw, "", "same", { id: "ctrl", title: `Reinstalar só a controladora (${latest})`, label: "Reinstalar" }));
+        title = `<em>${esc(name)}</em> em dia`;
+        desc = `A <b>${esc(info.fw)}</b> é a versão mais recente.`;
+        primary = { label: `Reinstalar a ${latest}`, kind: "ghost", icon: "refresh", onClick: startUpdate };
+      } else if (vs.kind === "newer") {
+        rows.push(plateRow("Controladora", info.fw, latest, "newer", { id: "ctrl", title: `Instalar só a controladora (${latest} publicada)`, label: "Instalar" }));
+        title = `<em>${esc(name)}</em> com versão de teste`;
+        desc = `A <b>${esc(info.fw)}</b> instalada é mais nova que a publicada (${esc(latest)}). Só grave a publicada se a BFX pedir.`;
+        primary = { label: `Instalar a ${latest} publicada`, kind: "ghost", icon: "refresh", onClick: startUpdate };
+      } else if (vs.kind === "nolatest") {
+        rows.push(plateRow("Controladora", info.fw || "?", "", "nolatest", { id: "ctrl", title: "Gravar só a controladora", label: "Gravar" }));
+        title = `<em>${esc(name)}</em> encontrada`;
+        desc = "Sem acesso à lista de versões (sem internet?). Dá pra gravar o firmware deste atualizador.";
+        primary = { label: "Gravar o firmware", icon: "upload", onClick: startUpdate };
+      } else {
+        rows.push(plateRow("Controladora", "antiga", latest, "unknown", { id: "ctrl", title: `Atualizar só a controladora (${latest})`, label: "Atualizar" }));
+        title = `<em>${esc(name)}</em> com firmware antigo`;
+        desc = `Firmware anterior ao sistema de versões. A <b>${esc(latest)}</b> traz o editor novo.`;
+        primary = { label: `Atualizar para ${latest}`, icon: "upload", onClick: startUpdate };
+      }
+
+      // USB HOST: a segunda linha da placa e o que ela pede do usuário.
+      if (S.host.has && !info.bootloader && !info.unidentified) {
+        if (!S.host.seen) {
+          rows.push(plateRow("USB Host", "sem resposta", "", "mute"));
+        } else if (S.host.need && hostWant) {
+          rows.push(plateRow("USB Host", S.host.version || "sem versão", hostWant, "update", { id: "host", title: `Atualizar só o USB Host (${hostWant})`, label: "Atualizar" }));
+          if (vs.kind === "same") {
+            title = `Só o <em>USB Host</em> precisa atualizar`;
+            desc = `A controladora está em dia. O USB Host vai da <b>${esc(S.host.version || "versão antiga")}</b> para a <b>${esc(hostWant)}</b> — precisa de um segundo cabo na porta HOST.`;
+            primary = { label: `Atualizar o USB Host para ${hostWant}`, icon: "upload", onClick: () => startHostOnly() };
+          } else {
+            hostOpt = "host";   // a opção "USB Host junto" entra nas configurações
+          }
+        } else {
+          rows.push(plateRow("USB Host", S.host.version, "", "same", hostWant ? { id: "host", title: `Regravar só o USB Host (${hostWant})`, label: "Regravar" } : null));
+          if (vs.kind === "same") desc = "Controladora e USB Host estão nas versões mais recentes. Os botões redondos regravam cada item separadamente.";
+        }
+        if (S.ctl) secondary.push({ label: "USB Host", kind: "bar", icon: "usb", onClick: openHostDialog });
+      }
+
+      if (primary) primary.chev = true;
+      showFrameHtml(plateHtml(rows));
+      cfgCtx = { allowBackup: !info.unidentified && !info.bootloader, allowHost: hostOpt === "host" };
+      setCopy({ title, desc, extra: notesHtml + optNoteHtml(), caption: "" });
+      setActions([
+        primary,
+        { label: "Configurações", kind: "ghost", icon: "gear", onClick: openCfgDialog },
+        ...secondary,
+        { label: "Trocar de controladora", kind: "link", icon: "swap", onClick: () => disconnectManual() },
+      ]);
+    }
+    function screenAwaitPort(note) {
+      setStep("prepare"); setMode("await-port");
+      const rowName = S.chipKey === "s2" || (S.info && S.info.chip === "s2")
+        ? "USB Serial Device" : "USB JTAG/serial debug unit";
+      const suffix = IS_MAC ? "(cu.usbmodem…)" : "(COM…)";
+      showFrameHtml(`<div class="pdlg" aria-hidden="true">
+        <div class="ti">${esc(location.host || "esta página")} quer se conectar a uma porta serial</div>
+        <div class="list"><div class="row">${svgIcon.usb}<span>${esc(rowName)} ${esc(suffix)}</span></div></div>
+        <div class="btns"><span class="btn">Cancelar</span><span class="btn is-primary">Conectar</span></div>
+        <svg class="cursor" viewBox="0 0 24 24"><path d="M5 3 L5 19 L9.5 15 L12.6 21.4 L15.2 20.2 L12.2 13.9 L18.4 13.6 Z"/></svg></div>`);
+      setCopy({
+        title: "Autorize a <em>nova porta</em>",
+        desc: "Em modo de gravação a controladora aparece como um aparelho novo, e o navegador pede uma confirmação. Clique abaixo, escolha a linha destacada e confirme em <b>Conectar</b>.",
+        extra: (note ? `<div class="warnbox">${esc(note)}</div>` : "") +
+          `<div class="tips"><span class="tip">${svgIcon.usb}${esc(rowName)}</span><span class="tip is-warn">${svgIcon.warn}Tela da controladora parada ou apagada é normal</span></div>
+           <p class="note">Escolheu a linha errada? A página confere a memória do chip antes de gravar e pede de novo. Nada é gravado na porta errada.</p>`,
+        caption: "A janela do navegador parece com esta.",
+      });
+      setActions([{ label: "Autorizar a porta", icon: "usb", pulse: true, onClick: () => continueAfterReset(true) }]);
+    }
+
+    function screenDone() {
+      setStep("done"); setMode("done");
+      const info = S.info || {};
+      const p = prettyBoard(info.board);
+      const name = info.board ? `${p.family} ${p.variant}` : "Controladora";
+      const newVer = latestFor(S.chipKey) || "";
+      const hr = S.host.result;
+      const hostOnly = !S.plan.ctrl;
+      const rows = [];
+      if (S.plan.ctrl) rows.push(plateRow("Controladora", info.fw || "antiga", newVer || "nova", "done"));
+      else if (info.fw) rows.push(plateRow("Controladora", info.fw, "", "same"));
+      if (hr) {
+        if (hr.outcome === "ok") rows.push(plateRow("USB Host", hr.from || "antigo", hr.version, "done"));
+        else if (hr.outcome === "oldVersion") rows.push(plateRow("USB Host", hr.version, hr.want, "warn"));
+        else rows.push(plateRow("USB Host", S.host.version || "?", hr.version || "", "warn"));
+      } else if (S.host.has && S.host.seen && !info.bootloader) {
+        rows.push(plateRow("USB Host", S.host.version || "sem versão", "", S.host.need ? "update" : "same"));
+      }
+      showFrameHtml(plateHtml(rows));
+
+      const st = S.restoreStats;
+      let box = "";
+      if (hr && hr.outcome === "oldVersion") box += `<div class="warnbox">O USB Host foi gravado, mas respondeu com a versão ${esc(hr.version)} em vez da ${esc(hr.want)}. Desligue e ligue a controladora e abra esta página de novo.</div>`;
+      else if (hr && hr.outcome === "unverified") box += `<div class="warnbox">O USB Host foi gravado, mas a controladora não confirmou a versão. Desligue e ligue e confira no editor (SYSTEM › CONEXÕES › USB HOST).</div>`;
+      if (S.restoreWarn) box += `<div class="warnbox"><b>Atenção:</b> ${esc(S.restoreWarn)}${S.pendingBackup ? " O backup foi baixado — restaure pelo editor em SYSTEM › MANUTENÇÃO › RESTAURAR." : ""}</div>`;
+      else if (st && S.plan.ctrl) box += `<div class="okbox">${st.presets} presets, ${st.images} imagens e ${st.icons} ícones${st.userPedals ? ` e ${st.userPedals} aparelhos personalizados` : ""} devolvidos.</div>`;
+      else if (S.plan.ctrl && (!S.wantBackup || info.bootloader)) box += `<div class="okbox">A controladora subiu com os presets de fábrica.</div>`;
+
+      setCopy({
+        title: hostOnly ? `<em>USB Host</em> atualizado` : `<em>${esc(name)}</em> atualizada`,
+        desc: hostOnly ? "Pode desligar os dois cabos." : "A controladora reiniciou e pode ser desconectada. Se o editor estava aberto, recarregue a página.",
+        extra: box,
+        caption: hr || hostOnly ? "Pode desligar os cabos." : "Pode desligar o cabo.",
+      });
+      setActions([
+        { label: "Atualizar outra controladora", icon: "refresh", onClick: () => resetAll() },
+        S.pendingBackup ? { label: "Baixar o backup", kind: "ghost", icon: "download", onClick: () => AB.downloadBackup(S.pendingBackup) } : null,
+      ]);
+    }
+    function friendlyError(err) {
+      const m = String(err && err.message || err || "");
+      const low = m.toLowerCase();
+      if (/porta desconectada|device has been lost|the device has been lost/.test(low)) return ["O cabo foi desconectado no meio do caminho.", "Conecte de novo e recomece. Se a gravação tinha começado, a controladora pode estar em modo de gravação — ela aparece como pronta pra gravar."];
+      if (/failed to connect|no serial data|invalid head of packet|timed out waiting for packet/.test(low)) return ["A controladora não respondeu em modo de gravação.", "Desligue o cabo USB, espere 3 segundos e ligue de novo. Depois clique em Tentar de novo. Se a tela dela ficou apagada, ela já está em modo de gravação e vai aparecer como pronta."];
+      if (/failed to open serial port|invalidstateerror|networkerror|access denied|em uso|busy|already open/.test(low)) return ["A porta USB está em uso por outro programa.", "Feche o editor BFMiDi (aba ou app), feche outras páginas que usem a porta e tente de novo."];
+      if (err && err.wrongDevice) return ["A porta escolhida não é a do USB Host.", m + ". Escolha a porta que apareceu DEPOIS de ligar o cabo na HOST; a porta DEVICE continua sendo a da controladora."];
+      if (err && err.hostNoSync) return ["O USB Host não respondeu em modo de gravação.", m + ". Confira o cabo na porta HOST (sem hub) e tente de novo. Se a BFMiDi foi desligada no meio, ligue de novo e repita."];
+      if (err && err.hostNoMode) return ["O USB Host não entrou em modo de gravação.", m + ". Desligue e ligue a controladora e tente de novo."];
+      if (/chip não suportado|chip nao suportado/.test(low)) return ["Este chip não é de uma controladora BFMiDi.", m];
+      if (/arquivo não encontrado|http 404|não encontrado/.test(low)) return ["Faltou um arquivo da atualização no servidor.", m + ". Tente mais tarde — se continuar, avise a BFX."];
+      if (/sha-256|tamanho diferente|corrompido|integridade/.test(low)) return ["O download chegou incompleto ou corrompido.", m + ". Verifique a internet e tente de novo."];
+      if (/pedal nao respondeu|não respondeu ao ping/.test(low)) return ["A controladora não respondeu pela porta.", "Confira se é a BFMiDi na janela de portas (e não outro aparelho) e tente de novo."];
+      return ["Não foi possível concluir.", m];
+    }
+
+    function screenError(err) {
+      S.lastError = err;
+      setMode("error");
+      const [head, hint] = friendlyError(err);
+      showArt(S.hostFailed ? "hostFail" : "fail");
+      els.logwrap.open = true;
+      setCopy({
+        title: "Algo deu <em>errado</em>",
+        desc: esc(head),
+        extra: `<div class="errbox">${esc(hint)}<br/><code>${esc(String(err && err.message || err || ""))}</code></div>` +
+          (S.pendingBackup ? `<p class="note">Seus dados foram guardados e podem ser baixados pelo botão abaixo.</p>` : ""),
+        caption: "O registro técnico, no pé da página, ajuda o suporte.", icon: "warn",
+      });
+      setActions([
+        { label: "Tentar de novo", icon: "refresh", onClick: () => retryAfterError() },
+        S.pendingBackup ? { label: "Baixar o backup", kind: "ghost", icon: "download", onClick: () => AB.downloadBackup(S.pendingBackup) } : null,
+      ]);
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // PORTA SERIAL
+    // ══════════════════════════════════════════════════════════════════
+    const serialLib = () => navigator.serial || null;
+
+    function portInfo(p) { try { return p.getInfo() || {}; } catch { return {}; } }
+    function isBfPort(p) {
+      const info = portInfo(p);
+      return defaultFilters.some((f) => f.usbVendorId === info.usbVendorId && (!f.usbProductId || f.usbProductId === info.usbProductId));
+    }
+    function setDevice(p) {
+      S.device = p;
+      const info = portInfo(p);
+      S.lastPortInfo = { usbVendorId: info.usbVendorId, usbProductId: info.usbProductId };
+      log(`Porta: VID=0x${(info.usbVendorId || 0).toString(16)} PID=0x${(info.usbProductId || 0).toString(16)}${p.connected === false ? " [lembrada/offline]" : ""}`);
+    }
+
+    // Porta já autorizada e FISICAMENTE conectada (sem diálogo). Descarta
+    // portas lembradas mas offline (fantasmas de sessões em bootloader) — sem
+    // isto uma porta PID 0x0002 velha era auto-selecionada, isBootloader
+    // virava true e o reset era pulado inteiro.
+    // `afterReset` = procurando o ROM da controladora depois do reset: fora as
+    // portas que já estavam lá antes (o USB Host em modo computador, por
+    // exemplo) e as já recusadas; aí a preferência é pelo PID de download.
+    // Fora do reset só a porta de APP (80C2) entra sozinha: uma porta de
+    // bootloader solta pode ser o USB Host em modo computador (303A:1001), e
+    // essa escolha fica com o usuário, na janela de portas.
+    async function findGrantedPort(afterReset) {
+      const lib = serialLib();
+      if (!lib) return null;
+      let matches = [];
+      try { matches = (await lib.getPorts()).filter(isBfPort).filter((p) => !S.badPorts.has(p)); } catch (e) { log("getPorts falhou: " + e.message); return null; }
+      if (afterReset) matches = matches.filter((p) => !S.beforePorts.includes(p));
+      else matches = matches.filter((p) => !BOOTLOADER_PIDS.includes(portInfo(p).usbProductId));
+      const live = matches.filter((p) => p.connected === true);
+      if (live.length) matches = live;
+      else if (matches.some((p) => p.connected === false)) return null;
+      // Prefere a porta de APP; só cai num PID de download se for a única.
+      const romFirst = afterReset ? -1 : 1;
+      matches.sort((a, b) => romFirst * ((BOOTLOADER_PIDS.includes(portInfo(a).usbProductId) ? 1 : 0) - (BOOTLOADER_PIDS.includes(portInfo(b).usbProductId) ? 1 : 0)));
+      return matches[0] || null;
+    }
+
+    async function requestPort(filters) {
+      const lib = serialLib();
+      try {
+        return await lib.requestPort({ filters: filters || defaultFilters });
+      } catch (err) {
+        if (err.name === "NotFoundError") return null;   // o usuário fechou a janela
+        throw err;
+      }
+    }
+
+    async function waitForReconnect(timeoutMs) {
+      const lib = serialLib();
+      const deadline = Date.now() + timeoutMs;
+      while (Date.now() < deadline) {
+        const ports = await lib.getPorts();
+        // nunca a porta que já estava lá antes do reset, nem uma já recusada
+        const cands = ports.filter((p) => portInfo(p).usbVendorId === 0x303a && !S.beforePorts.includes(p) && !S.badPorts.has(p));
+        const match = cands.find((p) => p.connected === true) || cands.find((p) => p.connected !== false);
+        if (match) { setDevice(match); log("Reconectado na porta nova."); return match; }
+        await sleep(250);
+      }
+      return null;
+    }
+
+    function wrapSignals(t) {
+      const wrap = (fn) => async (val) => { try { return await fn.call(t, val); } catch (err) { log("Signal error: " + err.message); } };
+      if (t && t.setDTR) t.setDTR = wrap(t.setDTR);
+      if (t && t.setRTS) t.setRTS = wrap(t.setRTS);
+      return t;
+    }
+    async function closeTransportSafe(t) {
+      if (!t) return;
+      try { await t.disconnect(); await (t.waitForUnlock && t.waitForUnlock(200)); } catch (e) { }
+    }
+    // Reset clássico por DTR/RTS (o USB CDC do arduino-esp32 o emula). É a
+    // rede de segurança quando a cascata do canal de controle não pega.
+    async function pulseBootMode(t) {
+      log("Enviando sequência de boot (DTR/RTS)...");
+      await t.setRTS?.(true); await t.setDTR?.(true); await sleep(100);
+      await t.setRTS?.(false); await sleep(50);
+      await t.setDTR?.(false); await sleep(50);
+    }
+    async function closeCtl() {
+      if (S.ctl) { try { await S.ctl.close(); } catch (e) { } S.ctl = null; }
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // PASSO 1 → 2: conectar e identificar
+    // ══════════════════════════════════════════════════════════════════
+    async function connectFlow(fromClick) {
+      if (S.busy) return;
+      S.busy = true;
+      try {
+        // Depois de "Trocar de controladora" a janela de portas é obrigatória:
+        // senão a mesma porta autorizada voltaria sozinha.
+        let port = S.manualDisconnect ? null : await findGrantedPort();
+        if (!port && fromClick) port = await requestPort();
+        if (!port) { S.busy = false; return; }
+        S.manualDisconnect = false;
+        setDevice(port);
+        await identify();
+      } catch (err) {
+        log("Falha ao conectar: " + err.message);
+        screenError(err);
+      } finally { S.busy = false; }
+    }
+
+    async function identify() {
+      const pid = S.lastPortInfo && S.lastPortInfo.usbProductId;
+      S.info = { board: "", chip: "", fw: "", webapp: "", id: "", mac: "", serial: "", bootloader: false, unidentified: false };
+      if (BOOTLOADER_PIDS.includes(pid)) {
+        // Já em modo download: S2 = 0x0002; S3 = 0x0009 (OTG) / 0x1001 (JTAG).
+        S.info.bootloader = true;
+        S.info.chip = pid === 0x0002 ? "s2" : "s3";
+        log("Controladora já em modo de gravação (PID 0x" + pid.toString(16) + ").");
+        screenReady();
+        return;
+      }
+      screenReading();
+      let ctl = null;
+      try {
+        ctl = await AB.openControl(S.device, log);
+      } catch (err) {
+        log("Canal de controle indisponível: " + err.message);
+        S.info.unidentified = true;
+        screenReady();
+        return;
+      }
+      S.ctl = ctl;
+      const tryCall = async (path, ms) => { try { return await ctl.call("GET", path, undefined, ms); } catch (e) { log(`${path}: ${e.message}`); return null; } };
+      const v = await tryCall("/version", 5000);
+      if (v && (v.fw || v.chip)) {
+        S.info.fw = String(v.fw || ""); S.info.webapp = String(v.webapp || "");
+        S.info.chip = String(v.chip || ""); S.info.board = String(v.board || "");
+      }
+      if (!S.info.board || !S.info.chip) {
+        const g = await tryCall("/config/global", 5000);
+        if (g) { if (g.board) S.info.board = String(g.board); if (g.chip && !S.info.chip) S.info.chip = String(g.chip); }
+      }
+      const ping = await tryCall("/ping", 3000);
+      if (ping) { S.info.id = String(ping.device_id || ""); S.info.mac = String(ping.mac || ""); }
+      const cert = await tryCall("/hardtest/cert", 3000);
+      if (cert && cert.serial) S.info.serial = String(cert.serial);
+      if (!/^s[23]$/.test(S.info.chip)) S.info.chip = "";
+      S.info.legacy = !S.info.fw;
+      // USB HOST: pede um status NOVO (a controladora manda o SysEx de pedido)
+      // e lê o cache um instante depois — o host responde em milissegundos.
+      S.host = { has: modelHasUsbHost(S.info.board), version: "", seen: false, online: false, product: "", need: false, inRom: false, before: [], pkg: null, result: null };
+      if (S.host.has) {
+        let st = await tryCall("/usb_host/status", 6000);
+        if (st && !st.status_seen) { await sleep(900); st = (await tryCall("/usb_host/status?cached=1", 4000)) || st; }
+        if (st && typeof st === "object" && !st.offline) {
+          S.host.seen = !!st.status_seen; S.host.online = !!st.online;
+          S.host.version = String(st.host_version || ""); S.host.product = String(st.product || "");
+          S.host.pcMode = /Computador na porta HOST/i.test(S.host.product);
+        }
+        const want = S.hostManifest && S.hostManifest.version;
+        S.host.need = S.host.seen && hostNeedsUpdate(S.host.version, want);
+        log(`USB Host: ${S.host.seen ? (S.host.version || "sem versão") : "não respondeu"}${want ? ` · publicado ${want}` : ""}${S.host.need ? " · ATUALIZAR" : ""}`);
+      }
+      log(`Identificada: ${S.info.board || "(sem modelo)"} · chip ${S.info.chip || "?"} · fw ${S.info.fw || "(antigo)"} · editor ${S.info.webapp || "?"}` +
+          (S.info.id ? ` · id ${S.info.id}` : "") + (S.info.serial ? ` · serial ${S.info.serial}` : ""));
+      await sleep(350);   // deixa a animação de leitura aparecer
+      screenReady();
+    }
+
+    async function disconnectManual() {
+      S.manualDisconnect = true;
+      await closeCtl();
+      S.device = null; S.lastPortInfo = null; S.info = null;
+      screenConnect();
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // DOWNLOAD + VERIFICAÇÃO (antes de encostar na controladora)
+    // ══════════════════════════════════════════════════════════════════
+    const binCache = new Map();   // "file|sha" → binary string
+    async function sha256Hex(buf) {
+      if (!(crypto && crypto.subtle)) return null;
+      const h = await crypto.subtle.digest("SHA-256", buf);
+      return [...new Uint8Array(h)].map((b) => b.toString(16).padStart(2, "0")).join("");
+    }
+    function bufToBinaryString(buf) {
+      const bytes = new Uint8Array(buf);
+      let s = "";
+      for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+      return s;
+    }
+    async function fetchBin(entry, onPct) {
+      const key = (entry.base || "") + entry.file + "|" + (entry.sha256 || "");
+      if (binCache.has(key)) return binCache.get(key);
+      if (demo) { const s = await demo.fetchBin(entry, onPct); binCache.set(key, s); return s; }
+      let lastErr = null;
+      for (let attempt = 0; attempt < 4; attempt++) {
+        if (attempt) await sleep(1000 * Math.pow(2, attempt - 1));
+        try {
+          const res = await fetch((entry.base || "./") + entry.file + "?t=" + Date.now(), { cache: "no-store" });
+          if (res.status === 404) throw new Error("Arquivo não encontrado: " + entry.file);
+          if (!res.ok) { lastErr = new Error("HTTP " + res.status + " em " + entry.file); continue; }
+          const total = entry.size || +res.headers.get("content-length") || 0;
+          const reader = res.body && res.body.getReader ? res.body.getReader() : null;
+          let buf;
+          if (reader) {
+            const chunks = []; let got = 0;
+            while (true) {
+              const { value, done } = await reader.read();
+              if (done) break;
+              chunks.push(value); got += value.length;
+              if (total && onPct) onPct(Math.min(99, Math.floor(got / total * 100)));
+            }
+            buf = new Uint8Array(got); let off = 0;
+            for (const c of chunks) { buf.set(c, off); off += c.length; }
+            buf = buf.buffer;
+          } else {
+            buf = await res.arrayBuffer();
+          }
+          if (entry.size && buf.byteLength !== entry.size) { lastErr = new Error(`tamanho diferente em ${entry.file} (${buf.byteLength} ≠ ${entry.size})`); continue; }
+          if (entry.sha256) {
+            const h = await sha256Hex(buf);
+            if (h && h !== entry.sha256) { lastErr = new Error("SHA-256 não confere em " + entry.file); continue; }
+          }
+          const s = bufToBinaryString(buf);
+          binCache.set(key, s);
+          if (onPct) onPct(100);
+          return s;
+        } catch (e) {
+          if (/não encontrado/.test(e.message)) throw e;
+          lastErr = e;
+        }
+      }
+      throw lastErr || new Error("falha no download de " + entry.file);
+    }
+    async function prefetchImages(chip, onProgress) {
+      const list = flashListFor(chip);
+      const total = list.reduce((a, f) => a + (f.size || 1), 0);
+      let doneBytes = 0;
+      for (const f of list) {
+        const sz = f.size || 1;
+        f.data = await fetchBin(f, (p) => onProgress(Math.floor((doneBytes + sz * p / 100) / total * 100)));
+        doneBytes += sz;
+        onProgress(Math.floor(doneBytes / total * 100));
+      }
+      S.images = list;
+      S.flashSize = IMAGES_BY_CHIP[chip].flashSize;
+      log(`Arquivos prontos: ${list.length} (${IMAGES_BY_CHIP[chip].label}, flash ${S.flashSize}).`);
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // PASSO 3: preparar (download → backup → modo de gravação → conectar)
+    // ══════════════════════════════════════════════════════════════════
+    const TASKS_PREP = (hasChip, backup) => [
+      { k: "dl", label: "Baixar e conferir o firmware", skip: !hasChip },
+      { k: "bk", label: "Guardar seus presets, imagens e ícones", skip: !backup },
+      { k: "boot", label: "Reiniciar em modo de gravação" },
+      { k: "con", label: "Conectar ao chip" },
+    ];
+    const TASKS_FLASH = (restore) => [
+      { k: "fw", label: "Gravar o firmware" },
+      { k: "app", label: "Gravar o editor (WebApp)" },
+      { k: "rb", label: "Reiniciar a controladora" },
+      { k: "rs", label: restore === "pack" ? "Aplicar o pacote de fábrica" : "Devolver seus dados", skip: !restore },
+    ];
+
+    function backupPhaseLabel(p) {
+      return { presets: "presets", imagens: "imagens", icones: "ícones", aparelhos: "aparelhos personalizados" }[p.phase] || p.phase || "";
+    }
+
+    async function startUpdate(opts) {
+      if (S.busy) return;
+      S.busy = true;
+      S.pendingBackup = null; S.backupStats = null; S.restoreStats = null; S.restoreWarn = null;
+      const info = S.info || {};
+      const canBackup = !info.bootloader && !info.unidentified && !!S.ctl;
+      const doBackup = canBackup && S.wantBackup;
+      const chipKnown = /^s[23]$/.test(info.chip) ? info.chip : null;
+      S.chipKey = chipKnown;
+      // `opts.hostToo` = o botão da linha da controladora (só ela); sem ele vale
+      // a opção "Atualizar também o USB Host". Chamado como handler de clique o
+      // primeiro argumento é o evento, que não tem `hostToo`.
+      const hostToo = (opts && typeof opts.hostToo === "boolean") ? opts.hostToo : S.wantHost;
+      S.plan = { ctrl: true, host: !!(S.host.has && S.host.need && hostToo && S.hostManifest) };
+      S.hostFailed = false;
+      setRail(S.plan.host ? ["connect", "identify", "prepare", "flash", "host", "done"] : ["connect", "identify", "prepare", "flash", "done"]);
+
+      setStep("prepare"); setMode("prepare");
+      setCopy({
+        title: "Preparando a <em>atualização</em>",
+        desc: doBackup ? "Baixo o firmware, guardo seus dados e só então a controladora reinicia em modo de gravação." : "Baixando o firmware e colocando a controladora em modo de gravação.",
+        caption: "",
+      });
+      showTasks(TASKS_PREP(!!chipKnown, doBackup));
+      setActions([]);
+
+      try {
+        // a) download + verificação, ANTES de encostar na controladora
+        if (chipKnown) {
+          task("dl", "active", 0);
+          showArt("download");
+          els.caption.textContent = `Baixando o firmware ${latestFor(chipKnown) || ""} para ${IMAGES_BY_CHIP[chipKnown].label}…`;
+          await prefetchImages(chipKnown, (p) => task("dl", "active", p));
+          task("dl", "done");
+        }
+
+        if (info.bootloader) {
+          // Já está no ROM: pula backup e reset.
+          task("boot", "done", "já estava");
+          await connectEsptoolAndFlash();
+          return;
+        }
+
+        // b) backup pelo canal já aberto
+        if (doBackup) {
+          task("bk", "active", 0);
+          showArt("backup");
+          els.caption.textContent = "Lendo os dados da controladora…";
+          try {
+            const { obj, stats } = await AB.extractBackup(S.ctl, {
+              log, onProgress: (p) => {
+                const pct = typeof p.pct === "number" ? p.pct : undefined;
+                const kb = p.bytes ? ` (${(p.bytes / 1024).toFixed(0)} KB)` : "";
+                els.caption.textContent = `Guardando ${backupPhaseLabel(p)}${kb}…`;
+                task("bk", "active", pct);
+              },
+            });
+            S.pendingBackup = obj; S.backupStats = stats;
+            S.backupListed = stats.listed || [];
+            await AB.stashBackup(obj);
+            els.dl.hidden = false;
+            log(`Backup: ${stats.presets} presets, ${stats.images} imagens, ${stats.icons} ícones, ${stats.userPedals} aparelhos.`);
+            task("bk", "done", `${stats.presets} presets`);
+            if (S.wantErase) log("ATENÇÃO: 'Apagar memória' também apaga a NVS — placa, cores, brilho e Wi-Fi voltam ao padrão.");
+          } catch (err) {
+            log("Backup automático falhou: " + err.message);
+            task("bk", "fail");
+            const go = window.confirm(
+              "Não foi possível guardar os dados desta controladora.\n\nMotivo: " + err.message +
+              "\n\nSe continuar, a gravação vai APAGAR presets, imagens e ícones.\nCancele se preferir fazer o backup pelo editor antes.");
+            if (!go) {
+              log("Gravação cancelada pelo usuário (sem backup).");
+              S.busy = false;
+              screenReady();
+              return;
+            }
+          }
+        }
+
+        // c) modo de gravação — cascata VERIFICADA do autobackup.js (pulso
+        //    DTR/RTS na porta aberta → 1200 bps touch); só devolve true quando
+        //    o USB re-enumerou. Em false, o Transport + pulseBootMode é a rede
+        //    de segurança (sem isso o esptool morria em "Failed to connect").
+        task("boot", "active");
+        showArt("reboot");
+        els.caption.textContent = "A tela apaga por um instante: é o reinício em modo de gravação.";
+        try { S.beforePorts = (await serialLib().getPorts()).filter((p) => p !== S.device && p.connected === true); } catch { S.beforePorts = []; }
+        let resetOk = false;
+        if (S.ctl) {
+          try { resetOk = await S.ctl.resetToBootloader(); } catch (e) { log("resetToBootloader: " + e.message); }
+          S.ctl = null;
+        }
+        if (!resetOk) {
+          log("Reset pelo canal de controle não pegou — tentando pelo esptool.");
+          let pre = null;
+          try {
+            pre = wrapSignals(new Transport(S.device, true));
+            await pre.connect(115200);
+            await pulseBootMode(pre);
+          } catch (e) { log("Boot pulse warning: " + e.message); }
+          finally { await closeTransportSafe(pre); }
+        }
+        log("Aguardando re-enumeração USB...");
+        await sleep(2000);
+        const re = await waitForReconnect(3000);
+        if (!re) {
+          // S2 troca de PID ao entrar no bootloader: o navegador precisa de
+          // uma nova autorização do usuário (um clique).
+          log("Porta nova ainda não autorizada — pedindo ao usuário.");
+          S.device = null; S.lastPortInfo = null;
+          S.busy = false;
+          screenAwaitPort();
+          return;
+        }
+        task("boot", "done");
+        await connectEsptoolAndFlash();
+      } catch (err) {
+        if (err && err.wrongDevice) return wrongPortRetry(err);
+        log("Erro: " + err.message);
+        if (err.stack) log(err.stack);
+        await disconnectEsp();
+        S.busy = false;
+        screenError(err);
+      }
+    }
+
+    // Volta do passo "autorize a porta" (clique do usuário) e da nova
+    // tentativa depois de um erro com a controladora já no ROM.
+    async function continueAfterReset(fromClick) {
+      if (S.busy) return;
+      S.busy = true;
+      try {
+        let port = await findGrantedPort(true);
+        if (!port && fromClick) port = await requestPort();
+        if (!port) { S.busy = false; screenAwaitPort(); return; }
+        if (S.badPorts.has(port)) { S.busy = false; screenAwaitPort("Essa é a porta recusada há pouco (não é a controladora). Escolha a outra linha."); return; }
+        setDevice(port);
+        if (!BOOTLOADER_PIDS.includes(S.lastPortInfo.usbProductId)) {
+          // A controladora voltou a rodar o app (a tela acendeu): o fluxo
+          // recomeça pela identificação, sem gravar nada.
+          log("A porta escolhida é a do app — recomeçando pela identificação.");
+          S.busy = false;
+          await identify();
+          return;
+        }
+        setStep("prepare"); setMode("prepare");
+        setCopy({ title: "Preparando a <em>atualização</em>", desc: "Porta autorizada. Conectando ao chip da controladora.", caption: "" });
+        showTasks(TASKS_PREP(!!S.chipKey, false).map((t) => (t.k === "con" ? t : Object.assign(t, { skip: false }))));
+        taskDoneUpTo("con");
+        setActions([]);
+        await connectEsptoolAndFlash();
+      } catch (err) {
+        if (err && err.wrongDevice) return wrongPortRetry(err);
+        log("Erro: " + err.message);
+        await disconnectEsp();
+        S.busy = false;
+        screenError(err);
+      }
+    }
+
+    async function disconnectEsp() {
+      try { if (S.transport) await S.transport.disconnect(); } catch (e) { }
+      S.transport = null; S.esploader = null;
+    }
+
+    const espLoaderTerminal = { clean() { }, writeLine(d) { log(d); }, write(d) { log(d); } };
+
+    // ══════════════════════════════════════════════════════════════════
+    // esptool: conectar (com retry), identificar o chip, gravar, reiniciar
+    // ══════════════════════════════════════════════════════════════════
+    // A PORTA CERTA? O ROM da controladora S3 e o do USB HOST têm o mesmo
+    // VID/PID, o mesmo nome no navegador e o mesmo CHIP_NAME; o que os separa
+    // é a FLASH: controladora S3 = 16 MB (N16R8), USB Host = 4 MB, controladora
+    // S2 = 4 MB num ESP32-S2. Sem confirmar, nada é gravado — o mapa da
+    // controladora S3 no host escreveria bootloader e app errados antes de o
+    // esptool tropeçar nos 4 MB. (O mesmo guard, invertido, protege o host:
+    // assertIsHostChip.)
+    async function assertIsControllerChip(loader, chipKey) {
+      const kb = await readFlashSizeKb(loader);
+      const want = chipKey === "s3" ? 16384 : 4096;
+      if (!kb) { const e = new Error("não consegui confirmar a memória da controladora"); e.wrongDevice = true; e.nothingWritten = true; throw e; }
+      if (kb !== want) {
+        const e = new Error(chipKey === "s3" && kb === 4096
+          ? "esta porta é o USB Host (ESP32-S3 de 4 MB), não a controladora"
+          : `memória de ${kb / 1024} MB — a controladora ${chipKey === "s3" ? "S3 tem 16 MB" : "S2 tem 4 MB"}`);
+        e.wrongDevice = true; e.nothingWritten = true; throw e;
+      }
+      log(`Flash confirmada: ${kb / 1024} MB (${IMAGES_BY_CHIP[chipKey].label}).`);
+    }
+    // Porta errada depois do reset: a controladora continua em modo de gravação
+    // em OUTRA linha. Marca a porta recusada, volta ao passo da porta com o
+    // motivo e deixa escolher de novo — sem tela de erro, sem gravar nada.
+    async function wrongPortRetry(err) {
+      log("Porta errada: " + err.message);
+      if (S.device) S.badPorts.add(S.device);
+      await disconnectEsp();
+      S.device = null; S.lastPortInfo = null;
+      S.busy = false; S.retryFromRom = true;
+      screenAwaitPort("Essa porta não é a da controladora: " + err.message + ". Nada foi gravado. Escolha a outra linha.");
+    }
+    async function connectEsptoolAndFlash() {
+      task("con", "active");
+      showArt("boot");
+      els.caption.textContent = "Conectando ao chip em modo de gravação…";
+      log("Aguardando estabilização da porta...");
+      await sleep(1000);
+
+      let connected = false, lastError = null;
+      const maxRetries = 3;
+      for (let attempt = 1; attempt <= maxRetries && !connected; attempt++) {
+        try {
+          log(`Tentativa de conexão ${attempt}/${maxRetries}...`);
+          if (S.transport) { await closeTransportSafe(S.transport); S.transport = null; S.esploader = null; await sleep(300); }
+          S.transport = wrapSignals(new Transport(S.device, true));
+          S.esploader = new ESPLoader({ transport: S.transport, baudrate: 115200, terminal: espLoaderTerminal, romBaudrate: 115200 });
+          await S.esploader.main("no_reset");
+          connected = true;
+          log("Conexão estabelecida.");
+
+          // O esptool identifica o silício de verdade — é isto que decide o
+          // conjunto de bins e os offsets (S2 × S3).
+          let chipName = "";
+          try { chipName = String(S.esploader.chip?.CHIP_NAME || ""); } catch (e) { }
+          if (!/S[23]/.test(chipName)) {
+            try { chipName = String(await S.esploader.chip.getChipDescription(S.esploader)); } catch (e) { log("getChipDescription falhou: " + e.message); }
+          }
+          log("Chip detectado: " + (chipName || "desconhecido"));
+          const chipKey = chipName.includes("S3") ? "s3" : chipName.includes("S2") ? "s2" : null;
+          if (!chipKey) throw new Error("Chip não suportado pelo atualizador: " + (chipName || "desconhecido"));
+          // A identificação pelo cabo disse OUTRO chip? Então esta porta é
+          // outra placa (a controladora de verdade continua em outra linha).
+          if (S.info && !S.info.bootloader && /^s[23]$/.test(S.info.chip) && S.info.chip !== chipKey) {
+            const e = new Error(`o chip desta porta é ${chipKey.toUpperCase()}, mas a controladora identificada é ${S.info.chip.toUpperCase()}`);
+            e.wrongDevice = true; e.nothingWritten = true; throw e;
+          }
+          await assertIsControllerChip(S.esploader, chipKey);
+          S.chipKey = chipKey;
+          if (S.info) S.info.chip = chipKey;
+        } catch (err) {
+          lastError = err;
+          await closeTransportSafe(S.transport); S.transport = null; S.esploader = null;
+          if (err && err.wrongDevice) throw err;   // porta errada não se resolve tentando de novo
+          log(`Tentativa ${attempt} falhou: ${err.message}`);
+          if (attempt < maxRetries) { log("Aguardando antes de nova tentativa..."); await sleep(1000 * attempt); }
+        }
+      }
+      if (!connected) { S.retryFromRom = true; throw lastError || new Error("Falha ao conectar após múltiplas tentativas"); }
+      task("con", "done");
+
+      // Bins deste chip (se o download não aconteceu antes, acontece agora).
+      if (!S.images || !S.images.length || !S.images[0].file.startsWith(S.chipKey === "s3" ? "bin_S3" : "bin_S2")) {
+        task("dl", "active", 0);
+        showArt("download");
+        els.caption.textContent = `Baixando o firmware para ${IMAGES_BY_CHIP[S.chipKey].label}…`;
+        await prefetchImages(S.chipKey, (p) => task("dl", "active", p));
+        task("dl", "done");
+      }
+      await flashNow();
+    }
+
+    async function flashNow() {
+      const esploader = S.esploader;
+      const images = S.images;
+      const restoreKind = S.pendingBackup ? "backup" : (AB.defaultPackFor(S.info && S.info.board, S.chipKey) ? "pack" : null);
+
+      setStep("flash"); setMode("flash");
+      setCopy({
+        title: "Gravando o <em>firmware</em>",
+        desc: "Firmware e editor entrando. Mantenha o cabo conectado e não feche esta aba.",
+        caption: "Tela da controladora parada ou apagada é normal.",
+      });
+      showTasks(TASKS_FLASH(restoreKind));
+      setActions([]);
+      showRing("fw", "FIRMWARE", "preparando…");
+
+      try {
+        const shouldEraseAll = !!S.wantErase;
+        const canEraseBeforeWrite = typeof esploader.eraseFlash === "function";
+        if (shouldEraseAll) {
+          setRing(0, "wait", "APAGANDO", "toda a memória");
+          log("Iniciando Erase All Flash...");
+          if (canEraseBeforeWrite) {
+            try { await esploader.eraseFlash(); log("Erase All Flash concluído."); }
+            catch (eraseErr) {
+              log("Aviso no Erase Flash: " + eraseErr.message);
+              if (/timeout|disconnect/i.test(eraseErr.message)) throw eraseErr;
+              log("Continuando com a gravação...");
+            }
+          }
+          await sleep(500);
+        }
+
+        const fileArray = images.map((img) => ({ data: img.data, address: img.address }));
+        log(`Total: ${fileArray.length} arquivos, ${fileArray.reduce((a, f) => a + f.data.length, 0)} bytes`);
+        task("fw", "active", 0);
+
+        const useEraseInWrite = shouldEraseAll && !canEraseBeforeWrite;
+        await esploader.writeFlash({
+          fileArray,
+          eraseAll: useEraseInWrite,
+          compress: true,
+          flashSize: S.flashSize,
+          reportProgress: (idx, written, total) => {
+            // Duas fases: bootloader/partitions/firmware(/otadata) = FIRMWARE;
+            // littlefs.bin = EDITOR. O contador reinicia em cada arquivo.
+            const isApp = images[idx] && /littlefs\.bin$/.test(images[idx].file);
+            const percent = Math.floor((written / total) * 100);
+            if (isApp) { task("fw", "done"); task("app", "active", percent); setRing(percent, "app", "EDITOR", "WebApp e presets de fábrica"); }
+            else { task("fw", "active", percent); setRing(percent, "fw", "FIRMWARE", images[idx] ? images[idx].file.split("/").pop() : ""); }
+          },
+          calculateMD5Hash: (typeof CryptoJS !== "undefined") ? (image) => CryptoJS.MD5(CryptoJS.enc.Latin1.parse(image)) : undefined,
+        });
+        log("Gravação concluída, finalizando...");
+        task("fw", "done"); task("app", "done");
+
+        // Reinício: S3 pelo override do esptool oficial (limpa FORCE_DOWNLOAD_BOOT
+        // + watchdog RTC) — o reset genérico por RTS pode deixá-lo parado no
+        // ROM, e sem boot não há canal CDC pra devolver o backup. S2: fluxo
+        // original validado (after + hardReset).
+        task("rb", "active");
+        setRing(100, "wait", "REINICIANDO", "a controladora liga sozinha");
+        showArt("reboot");
+        els.caption.textContent = "A tela apaga e volta com o firmware novo.";
+        try {
+          if (S.chipKey === "s3") {
+            try { await resetS3ByWatchdog(esploader); }
+            catch (e) { log("Watchdog S3 falhou (" + e.message + ") — reset padrão."); await esploader.after("hard_reset"); }
+          } else {
+            try { await esploader.after(); } catch (afterErr) { log("Aviso no after(): " + afterErr.message); }
+            await esploader.hardReset();
+          }
+        } catch (e) { log("Reset enviado (dispositivo pode ter desconectado)"); }
+        await disconnectEsp();
+        task("rb", "done");
+
+        if (restoreKind) await restoreAfterFlash(restoreKind);
+        log("=== CONTROLADORA ATUALIZADA ===");
+        if (S.plan.host) {
+          await hostStage();          // nunca lança: o resultado vai em S.host.result
+          if (S.hostFailed) return;   // a tela de erro do host já está no ar
+        }
+        S.busy = false;
+        screenDone();
+      } catch (err) {
+        log("ERRO FATAL: " + err.message);
+        if (err.stack) log(err.stack);
+        await disconnectEsp();
+        S.retryFromRom = true;
+        S.busy = false;
+        screenError(err);
+      }
+    }
+
+    async function resetS3ByWatchdog(loader) {
+      const RTC_CNTL_OPTION1_REG = 0x6000812c, RTC_CNTL_FORCE_DOWNLOAD_BOOT_MASK = 0x1;
+      const RTC_CNTL_WDTCONFIG0_REG = 0x60008098, RTC_CNTL_WDTCONFIG1_REG = 0x6000809c;
+      const RTC_CNTL_WDTWPROTECT_REG = 0x600080b0, RTC_CNTL_WDT_WKEY = 0x50d83aa1;
+      await loader.writeReg(RTC_CNTL_OPTION1_REG, 0, RTC_CNTL_FORCE_DOWNLOAD_BOOT_MASK);
+      await loader.writeReg(RTC_CNTL_WDTWPROTECT_REG, RTC_CNTL_WDT_WKEY);
+      await loader.writeReg(RTC_CNTL_WDTCONFIG1_REG, 2000);
+      try { await loader.writeReg(RTC_CNTL_WDTCONFIG0_REG, 0xd0000102); }
+      catch (e) { await sleep(700); return; }   // o watchdog reiniciou antes da resposta USB
+      try { await loader.writeReg(RTC_CNTL_WDTWPROTECT_REG, 0); } catch (e) { }
+      await sleep(700);
+    }
+
+    // Devolve ao pedal o backup do usuário ou, sem backup, o pacote de fábrica
+    // do display dele (regra em autobackup.js, defaultPackFor). Nunca derruba
+    // a atualização: falha → o backup é BAIXADO pro usuário restaurar.
+    async function restoreAfterFlash(kind) {
+      setMode("restore");
+      task("rs", "active", 0);
+      showArt("restore");
+      setCopy({
+        title: kind === "pack" ? "Aplicando o <em>pacote de fábrica</em>" : "Devolvendo seus <em>dados</em>",
+        desc: kind === "pack" ? "Gravando os presets e imagens de fábrica do seu display." : "Presets, imagens e ícones voltando pro lugar.",
+        caption: "Esperando a controladora ligar…",
+      });
+      let ctl = null;
+      try {
+        let payload = S.pendingBackup;
+        if (kind === "pack") {
+          const url = AB.defaultPackFor(S.info && S.info.board, S.chipKey);
+          log("Sem backup — aplicando o pacote de fábrica " + url);
+          const r = await fetch(url);
+          if (!r.ok) throw new Error("pacote não encontrado (" + url + ")");
+          payload = await r.json();
+          if (!payload || !payload.presets) throw new Error("pacote de fábrica inválido");
+        }
+        const appPort = await AB.waitForAppPort(0x303a, 25000);
+        if (!appPort) throw new Error("a controladora não reapareceu como BFMiDi (PID 80C2)");
+        await sleep(1500);   // o firmware termina o boot antes do PING
+        ctl = await AB.openControl(appPort, log);
+        // ESPELHA a mídia: o que o pedal tem (o pacote de fábrica assado na
+        // imagem) e o backup não tem é apagado antes dos uploads, senão as
+        // sobras comem a cota e os ícones, que entram por último, não cabem.
+        // Só as categorias lidas na extração; o pacote de fábrica é completo.
+        const prune = kind === "pack" ? ["img", "icon"] : (S.backupListed || []);
+        const stats = await AB.injectBackup(ctl, payload, {
+          log, prune, onProgress: (p) => {
+            const pct = typeof p.pct === "number" ? p.pct : 0;
+            task("rs", "active", pct);
+            els.caption.textContent = `Gravando ${backupPhaseLabel(p)}…`;
+          },
+        });
+        log(`Restaurado: ${stats.presets} presets, ${stats.images} imagens, ${stats.icons} ícones, ${stats.userPedals} aparelhos` + (stats.pruned ? ` (${stats.pruned} slot(s) de fábrica apagados antes)` : "") + ".");
+        if (stats.failed.length) {
+          log("Não coube / falhou: " + stats.failed.join(", "));
+          S.restoreWarn = "Nem tudo coube de volta (" + stats.failed.join(", ") + ").";
+          if (S.pendingBackup) AB.downloadBackup(S.pendingBackup);
+        } else if (S.pendingBackup) {
+          await AB.clearStashedBackup();
+        }
+        if (kind === "backup") S.restoreStats = stats;
+        task("rs", "done");
+      } catch (err) {
+        log("Falha ao devolver os dados: " + err.message);
+        task("rs", "fail");
+        if (S.pendingBackup) {
+          S.restoreWarn = "A atualização terminou, mas os dados não puderam ser devolvidos automaticamente (" + err.message + ").";
+          AB.downloadBackup(S.pendingBackup);
+        } else {
+          S.restoreWarn = "O pacote de fábrica não foi aplicado (" + err.message + "). Baixe o Start Pack nesta página e restaure pelo editor.";
+        }
+      } finally {
+        try { if (ctl) await ctl.close(); } catch (e) { }
+      }
+    }
+
+
+    // ══════════════════════════════════════════════════════════════════
+    // PASSO USB HOST — o módulo ESP32-S3 de 4 MB dentro das BFMiDi 3 e S3
+    // ══════════════════════════════════════════════════════════════════
+    // Porte do caminho DO USUÁRIO do editor (aba HOST do card ATUALIZAÇÃO:
+    // webApp/host_flash.js + components/hostupdatewizard.jsx). A controladora
+    // continua no cabo DEVICE e é por ele (o canal CDC) que saem o comando de
+    // modo download e a conferência da versão no fim; quem recebe os bins é um
+    // SEGUNDO cabo do computador na porta HOST. A ponte UART pela controladora
+    // (runHostFlashViaController) ficou de fora de propósito: gravava o host
+    // na mesma rodada da controladora e, parando no meio, deixava hosts
+    // truncados em campo (decisão de out/2026).
+    function hostPortKind(p) {
+      const info = portInfo(p);
+      if (info.usbVendorId !== 0x303a) return "";
+      if (HOST_ROM_PIDS.includes(info.usbProductId)) return "rom";
+      if (info.usbProductId === HOST_UPDATE_PID) return "update";
+      if (info.usbProductId === 0x80c2 || info.usbProductId === 0x0002) return "controller";
+      return "";
+    }
+    async function hostConnectedPorts() {
+      let ports = [];
+      try { ports = await serialLib().getPorts(); } catch { return []; }
+      return ports.filter((p) => p.connected === true && p !== S.device && !S.badPorts.has(p) && ["rom", "update"].includes(hostPortKind(p)));
+    }
+    // Nunca escolhe a primeira porta de uma lista ambígua: numa rodada nova só
+    // a identidade que surgiu DEPOIS do comando é autodetectada; na retomada
+    // (host já no ROM) uma única porta autorizada pode ser reusada.
+    function chooseHostPort(ports, recovering) {
+      const fresh = ports.filter((p) => !S.host.before.includes(p));
+      const eligible = recovering ? ports : fresh;
+      if (eligible.length === 1) return { port: eligible[0], reason: "" };
+      return { port: null, reason: eligible.length > 1 ? "multiple" : ports.length ? "unidentified" : "" };
+    }
+    async function waitHostPort(timeoutMs, recovering) {
+      const deadline = Date.now() + timeoutMs;
+      for (;;) {
+        const m = chooseHostPort(await hostConnectedPorts(), recovering);
+        if (m.port) return m.port;
+        if (m.reason) { log("porta do host: seleção manual (" + m.reason + ")"); return null; }
+        if (Date.now() >= deadline) return null;
+        await sleep(400);
+      }
+    }
+    async function portWentAway(port, timeoutMs) {
+      const deadline = Date.now() + timeoutMs;
+      while (Date.now() < deadline) {
+        if (port.connected === false) return true;
+        try { if (!(await serialLib().getPorts()).includes(port)) return true; } catch { }
+        await sleep(200);
+      }
+      return false;
+    }
+    // LEITURA SEM PERDA (porte do esp_flash.js do editor): o readLoop do
+    // esptool-js abandona um reader.read() quando o timeout ganha, e o próximo
+    // pedaço vai pra leitura abandonada. Aqui a leitura pendente é guardada e
+    // reaproveitada na volta seguinte. Só no transporte do HOST: o da
+    // controladora fica como foi validado no pedal.
+    function fixReadLoop(t) {
+      if (!t || typeof t.readLoop !== "function" || t._bfReadLoopFixed) return t;
+      t._bfReadLoopFixed = true;
+      t.readLoop = async function* readLoop(timeout) {
+        if (!this.reader) return;
+        try {
+          for (;;) {
+            if (!this._bfRead || this._bfReadOf !== this.reader) { this._bfRead = this.reader.read(); this._bfReadOf = this.reader; }
+            let timer = null;
+            const expired = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error("Read timeout exceeded")), timeout); });
+            let r;
+            try { r = await Promise.race([this._bfRead, expired]); } finally { clearTimeout(timer); }
+            this._bfRead = null;
+            if (r === null) break;
+            const { value, done } = r;
+            if (done || !value) break;
+            yield value;
+          }
+        } catch { /* tempo esgotado: a leitura pendente fica pra próxima volta */ }
+        finally { this.buffer = new Uint8Array(0); }
+      };
+      return t;
+    }
+
+    // Canal CDC com a controladora pro passo do host: o que ficou aberto da
+    // identificação, ou um novo depois que ela reiniciou com o firmware novo.
+    async function ensureCtl() {
+      if (S.ctl) { try { await S.ctl.send("PING", 2500); return S.ctl; } catch { S.ctl = null; } }
+      let lastErr = null;
+      for (let a = 1; a <= 3; a++) {
+        try {
+          const appPort = await AB.waitForAppPort(0x303a, 25000);
+          if (!appPort) throw new Error("a controladora não reapareceu como BFMiDi (PID 80C2)");
+          await sleep(1500);
+          setDevice(appPort);
+          S.ctl = await AB.openControl(appPort, log);
+          return S.ctl;
+        } catch (e) { lastErr = e; log("canal com a controladora: " + e.message); await sleep(2000); }
+      }
+      throw lastErr;
+    }
+    async function hostStatus(fresh) {
+      if (!S.ctl) return null;
+      try { return await S.ctl.call("GET", fresh ? "/usb_host/status" : "/usb_host/status?cached=1", undefined, 6000); }
+      catch (e) { return null; }
+    }
+    // O host responde AGORA? Pedido novo + leitura do cache 0,8 s depois; só
+    // vale um quadro com menos de 1,5 s (o `online` sozinho é validade de 3 s).
+    async function hostAnswerStatus() {
+      await hostStatus(true); await sleep(800);
+      const st = await hostStatus(false);
+      if (!st || st.offline) return null;
+      if (!("last_seen_ms" in st)) return st.online ? st : null;
+      return (st.online && Number(st.last_seen_ms) < 1500) ? st : null;
+    }
+    async function waitHostAnswering(timeoutMs) {
+      const deadline = Date.now() + timeoutMs;
+      while (Date.now() < deadline) { if (await hostAnswerStatus()) return hostStatus(false); await sleep(700); }
+      return null;
+    }
+    const statusIsUpdateMode = (st) => !!st && (String(st.product || "") === "USB Host Update" || /Modo update TinyUSB/i.test(String(st.status_text || "")));
+
+    // MODO DOWNLOAD pelo cabo DEVICE: SysEx update_mode SEM alvo (persistência
+    // USB-OTG) — o host reinicia no bootloader e aparece no PC pela porta HOST
+    // como 303A:0009. Confirmação: (a) o ACK do comando = um quadro NOVO do
+    // host depois do POST com last_ack 0 (o host só confirma depois de gravar
+    // a flag na NVS); (b) depois, SILÊNCIO (dois pedidos novos sem resposta).
+    // Host anterior ao 3.0 para no modo update (4002) e continua respondendo —
+    // o próprio status dele diz. O `online` caindo sozinho não prova nada.
+    async function enterHostRomForCable() {
+      const frameAt = (st, at) => (st && st.protocol_ok !== false && Number.isFinite(Number(st.last_seen_ms))) ? at - Number(st.last_seen_ms) : 0;
+      const before = await hostStatus(false);
+      const baseAt = before ? frameAt(before, Date.now()) : Infinity;
+      let r = null;
+      try { r = await S.ctl.call("POST", "/usb_host/update_mode", "", 8000); }
+      catch (e) { const err = new Error("a controladora não mandou o comando (" + e.message + ")"); err.hostNoMode = true; throw err; }
+      if (!r || r.sent !== true) { const err = new Error("a controladora não aceitou o comando de modo de gravação"); err.hostNoMode = true; throw err; }
+      let acked = false;
+      const ackDeadline = Date.now() + 3000;
+      while (Date.now() < ackDeadline) {
+        await sleep(200);
+        const t0 = Date.now();
+        const st = await hostStatus(false);
+        if (!st || !(frameAt(st, t0) > baseAt)) continue;
+        if (statusIsUpdateMode(st)) return { ok: true, via: "update", acked: true };
+        if (/Modo download ROM/i.test(String(st.status_text || ""))) return { ok: true, via: "rom", acked: true };
+        const ack = Number(st.last_ack);
+        if (ack === 0) { acked = true; break; }
+        if (Number.isFinite(ack) && ack !== 255) return { ok: false, reason: "nack", ack };
+      }
+      await sleep(acked ? 2000 : 800);
+      let quiet = 0;
+      const deadline = Date.now() + 9000;
+      while (Date.now() < deadline) {
+        const st = await hostAnswerStatus();
+        if (st) { if (statusIsUpdateMode(st)) return { ok: true, via: "update", acked }; quiet = 0; }
+        else if (++quiet >= 2) return { ok: true, via: acked ? "rom" : "silent", acked };
+        await sleep(1200);
+      }
+      return { ok: false, reason: "stillAnswering", acked };
+    }
+
+    // Hosts anteriores ao 3.0 param no firmware de MODO UPDATE (CDC 4002): a
+    // linha "BOOT" os leva ao ROM, que aparece como OUTRA porta.
+    async function sendBootCommand(port) {
+      try { await port.open({ baudRate: 115200 }); } catch { return false; }
+      let sent = false;
+      try {
+        try { await port.setSignals({ dataTerminalReady: true, requestToSend: false }); } catch { }
+        await sleep(200);
+        const w = port.writable.getWriter();
+        try { await w.write(new TextEncoder().encode("BOOT\r\n")); sent = true; } finally { w.releaseLock(); }
+        await sleep(400);
+      } catch { }
+      try { await port.close(); } catch { }
+      return sent;
+    }
+    async function bootHostFromUpdateMode(port) {
+      let sent = false;
+      for (let a = 1; a <= 4 && !sent; a++) {
+        sent = await sendBootCommand(port);
+        if (!sent && port.connected === false) sent = true;
+        if (!sent && a < 4) await sleep(1500 * a);
+      }
+      if (!sent) { const err = new Error("não consegui abrir a porta do USB Host (modo update antigo)"); err.nothingWritten = true; throw err; }
+      if (!(await portWentAway(port, 4000))) return port;
+      return waitHostPort(6000, true);
+    }
+
+    // TELA DA CONTROLADORA durante a gravação do host ("ATUALIZANDO USB HOST"
+    // com a porcentagem real, firmware 14.9+): no máximo uma chamada por 5% e
+    // 500 ms; 100 e off saem sempre; 404 uma vez cala o resto da rodada.
+    let hostScreen = { ok: true, lastPct: -1, lastAt: 0, inflight: false };
+    async function hostScreenSet(pct) {
+      if (!hostScreen.ok || !S.ctl) return;
+      const final = pct === "off" || pct === 100;
+      if (!final) {
+        if (pct - hostScreen.lastPct < 5 && hostScreen.lastPct >= 0) return;
+        if (Date.now() - hostScreen.lastAt < 500 || hostScreen.inflight) return;
+      }
+      hostScreen.inflight = true; hostScreen.lastPct = final ? -1 : pct; hostScreen.lastAt = Date.now();
+      try { await S.ctl.call("POST", "/update/screen", "text=host&pct=" + pct, 4000); }
+      catch (e) { if (/USB 404/.test(String(e.message))) { hostScreen.ok = false; log("controladora sem a tela de atualização (firmware anterior à 14.9)"); } }
+      finally { hostScreen.inflight = false; }
+    }
+
+    // Versão gravada DENTRO do app.bin (esp_app_desc_t): o PROJECT_VER do host.
+    function hostAppVersionOf(bin) {
+      if (!bin || bin.length < 0x50) return "";
+      const u32 = (o) => (bin.charCodeAt(o) | (bin.charCodeAt(o + 1) << 8) | (bin.charCodeAt(o + 2) << 16) | (bin.charCodeAt(o + 3) << 24)) >>> 0;
+      if (u32(0x20) !== 0xabcd5432) return "";
+      let v = "";
+      for (let i = 0x30; i < 0x50; i++) { const c = bin.charCodeAt(i); if (!c) break; v += String.fromCharCode(c); }
+      return v;
+    }
+    // Baixa e confere os três bins ANTES de encostar no host; a versão de
+    // dentro do app.bin é conferida contra o version.json (publicados fora de
+    // par, a página ofereceria a mesma atualização pra sempre).
+    async function prefetchHostFiles(onProgress) {
+      if (S.host.pkg) return S.host.pkg;
+      const m = S.hostManifest;
+      const files = (m && Array.isArray(m.files) && m.files.length) ? m.files : HOST_FLASH_IMAGES;
+      const total = files.reduce((a, f) => a + (f.size || 1), 0);
+      let done = 0, appVersion = "";
+      const fileArray = [];
+      for (const f of files) {
+        const sz = f.size || 1;
+        const data = await fetchBin({ file: f.path, size: f.size, sha256: f.sha256, base: HOST_BASE },
+          (p) => onProgress(Math.floor((done + sz * p / 100) / total * 100)));
+        if (f.address + data.length > HOST_FLASH_KB * 1024) throw new Error(f.path + " não cabe na flash do USB Host");
+        if (f.address === 0x10000) appVersion = hostAppVersionOf(data);
+        fileArray.push({ data, address: f.address });
+        done += sz; onProgress(Math.floor(done / total * 100));
+      }
+      if (m && m.version && appVersion && cmpVersions(appVersion, m.version) !== 0) {
+        throw new Error("publicação do USB Host inconsistente (app.bin " + appVersion + ", version.json " + m.version + ")");
+      }
+      S.host.pkg = { fileArray, appVersion, version: (m && m.version) || appVersion };
+      log(`USB Host: ${fileArray.length} arquivos prontos (${S.host.pkg.version || "?"}).`);
+      return S.host.pkg;
+    }
+    async function readFlashSizeKb(loader) {
+      try { const kb = await loader.getFlashSize(); return Number.isFinite(kb) && kb > 0 ? kb : 0; } catch { return 0; }
+    }
+    // O chip do outro lado É o USB HOST? O ROM do host e o da controladora S3
+    // têm o mesmo VID/PID e o mesmo CHIP_NAME; quem separa é a flash (4 MB ×
+    // 16 MB). Sem confirmar os 4 MB nada é gravado.
+    async function assertIsHostChip(loader) {
+      const chipName = String(loader.chip?.CHIP_NAME || "");
+      if (!chipName.includes("ESP32-S3")) { const err = new Error("chip incorreto: esperado ESP32-S3, detectado " + (chipName || "desconhecido")); err.wrongDevice = true; throw err; }
+      const kb = await readFlashSizeKb(loader);
+      if (!kb) { const err = new Error("não consegui confirmar a memória de 4 MB do USB Host; nada foi gravado"); err.wrongDevice = true; throw err; }
+      if (kb !== HOST_FLASH_KB) {
+        const err = new Error(kb === 16384 ? "esta porta é a controladora (BFMiDi), não o USB Host" : "memória de " + (kb / 1024) + " MB — o USB Host tem 4 MB");
+        err.wrongDevice = true; throw err;
+      }
+    }
+
+    // ── o estágio ──
+    let hostStageDone = null;   // resolve() do hostStage em curso
+    function finishHostStage() { const r = hostStageDone; hostStageDone = null; if (r) r(); }
+    // Nunca lança: o resultado vai em S.host.result (ou S.hostFailed + tela de
+    // erro). `recovering` = o host já está no ROM (gravação anterior parou no
+    // meio, com a BFMiDi ainda ligada): sem comando, a porta autorizada serve.
+    function hostStage(opts = {}) {
+      return new Promise((resolve) => {
+        hostStageDone = resolve;
+        hostStageRun(!!opts.recovering).catch((e) => hostFail(e));
+      });
+    }
+    const HOST_TASKS = (want, recovering) => [
+      { k: "hdl", label: `Baixar e conferir o firmware do USB Host${want ? ` (${want})` : ""}` },
+      { k: "hmode", label: "Colocar o USB Host em modo de gravação", skip: recovering },
+      { k: "hport", label: "Encontrar a porta do USB Host no computador" },
+      { k: "hflash", label: "Gravar o USB Host" },
+      { k: "hver", label: "Conferir a versão pela controladora" },
+    ];
+    async function hostStageRun(recovering) {
+      S.host.result = null; S.host.ctlLost = false;
+      hostScreen = { ok: true, lastPct: -1, lastAt: 0, inflight: false };
+      setStep("host"); setMode("prepare");
+      const want = (S.hostManifest && S.hostManifest.version) || "";
+      // o download corre enquanto o usuário liga o cabo
+      let pkgErr = null;
+      const pkgP = prefetchHostFiles(() => { }).catch((e) => { pkgErr = e; return null; });
+
+      showArt("hostPlug");
+      setCopy({
+        title: recovering ? "Vamos <em>terminar o USB Host</em>" : "Agora o <em>USB Host</em>: ligue o segundo cabo",
+        desc: `Tire o que estiver na porta <b>HOST</b> e ligue nela um <b>segundo cabo USB</b> do computador. O cabo da <b>DEVICE</b> fica.`,
+        extra: `<div class="tips"><span class="tip">${svgIcon.cable}Porta <b>&nbsp;HOST</b> · cabo de dados, sem hub</span><span class="tip is-warn">${svgIcon.warn}Pedais fora da HOST até o fim</span></div>
+               <p class="note">USB Host ${esc(S.host.version || "antigo")} → <b>${esc(want)}</b>, cerca de um minuto.${recovering ? " O módulo continua em modo de gravação da tentativa anterior." : ""}</p>`,
+        caption: "A porta HOST é USB-C em todas as placas.",
+      });
+      await new Promise((resolve) => setActions([{ label: "Cabo ligado na HOST — continuar", icon: "bolt", onClick: resolve }]));
+      setActions([]);
+      showTasks(HOST_TASKS(want, recovering));
+      setCopy({ title: "Atualizando o <em>USB Host</em>", desc: "Pelo cabo DEVICE a controladora comanda; pelo cabo HOST o firmware entra. Mantenha os dois até o fim.", caption: "" });
+
+      task("hdl", "active", 0);
+      showArt("download");
+      els.caption.textContent = `Baixando o firmware ${want} do USB Host…`;
+      const pkg = await pkgP;
+      if (!pkg) { const e = pkgErr || new Error("download do USB Host falhou"); e.nothingWritten = true; throw e; }
+      task("hdl", "done");
+
+      if (!recovering) {
+        task("hmode", "active");
+        showArt("boot");
+        els.caption.textContent = "A controladora está pedindo ao módulo que entre em modo de gravação…";
+        await ensureCtl();
+        S.host.before = await hostConnectedPorts();   // portas que já estavam lá não são deste comando
+        await hostScreenSet(0);
+        if (S.host.pcMode) {
+          log("USB Host em modo computador (JTAG): a porta já está no PC, sem comando.");
+        } else {
+          const r = await enterHostRomForCable();
+          log("modo de gravação do host: " + (r.ok ? r.via : "falhou (" + r.reason + ")"));
+          if (!r.ok) {
+            const err = new Error(r.reason === "stillAnswering" ? "o USB Host não entrou em modo de gravação (continua respondendo)" : "o USB Host recusou o modo de gravação");
+            err.hostNoMode = true; err.nothingWritten = true; throw err;
+          }
+        }
+        S.host.inRom = true;
+        task("hmode", "done");
+      }
+
+      task("hport", "active");
+      showArt("hostWait");
+      els.caption.textContent = "Procurando a porta do USB Host no computador…";
+      const port = await waitHostPort(10000, recovering || !!S.host.pcMode);
+      if (!port) { screenHostAwaitPort(); return; }   // o clique de autorizar continua o fluxo
+      await hostFlashWith(port);
+    }
+
+    function screenHostAwaitPort(note) {
+      setMode("await-port");
+      const suffix = IS_MAC ? "(cu.usbmodem…)" : "(COM…)";
+      showFrameHtml(`<div class="pdlg" aria-hidden="true">
+        <div class="ti">${esc(location.host || "esta página")} quer se conectar a uma porta serial</div>
+        <div class="list"><div class="row">${svgIcon.usb}<span>ESP32-S3 ${esc(suffix)}</span></div></div>
+        <div class="btns"><span class="btn">Cancelar</span><span class="btn is-primary">Conectar</span></div>
+        <svg class="cursor" viewBox="0 0 24 24"><path d="M5 3 L5 19 L9.5 15 L12.6 21.4 L15.2 20.2 L12.2 13.9 L18.4 13.6 Z"/></svg></div>`);
+      setCopy({
+        title: "Autorize a porta do <em>USB Host</em>",
+        desc: "O módulo apareceu como um aparelho novo pelo cabo da HOST. Clique abaixo, escolha a linha <b>ESP32-S3</b> e confirme em <b>Conectar</b>.",
+        extra: (note ? `<div class="warnbox">${esc(note)}</div>` : "") +
+          `<div class="tips"><span class="tip">${svgIcon.usb}ESP32-S3 ${esc(suffix)}</span><span class="tip is-warn">${svgIcon.warn}Não é a BFMiDi do cabo DEVICE</span></div>
+           <p class="note">Escolheu a linha errada? A página confere a memória do chip antes de gravar e pede de novo. Nada é gravado na porta errada.</p>`,
+        caption: "A janela do navegador parece com esta.",
+      });
+      setActions([{ label: "Autorizar a porta do USB Host", icon: "usb", pulse: true, onClick: hostAuthorize }]);
+    }
+    async function hostAuthorize() {
+      let port = null;
+      try {
+        port = await serialLib().requestPort({ filters: [...HOST_ROM_PIDS, HOST_UPDATE_PID].map((pid) => ({ usbVendorId: 0x303a, usbProductId: pid })) });
+      } catch (e) {
+        if (e && e.name === "NotFoundError") { screenHostAwaitPort("A janela fechou sem escolher a porta. Clique de novo e escolha a linha ESP32-S3."); return; }
+        hostFail(e); return;
+      }
+      if (port === S.device || S.badPorts.has(port) || !["rom", "update"].includes(hostPortKind(port))) {
+        screenHostAwaitPort("Essa porta não é a do USB Host. Escolha a que apareceu depois de ligar o cabo na HOST.");
+        return;
+      }
+      setMode("prepare"); setActions([]);
+      showTasks(HOST_TASKS((S.hostManifest && S.hostManifest.version) || "", !S.host.before));
+      taskDoneUpTo("hport"); task("hport", "active");
+      setCopy({ title: "Atualizando o <em>USB Host</em>", desc: "Porta autorizada. Conectando ao módulo em modo de gravação.", caption: "" });
+      await hostFlashWith(port);
+    }
+
+    async function hostFlashWith(port) {
+      try {
+        if (hostPortKind(port) === "update") {
+          log("host antigo no modo update (4002): mandando BOOT");
+          task("hmode", "active");
+          const rom = await bootHostFromUpdateMode(port);
+          if (!rom) { screenHostAwaitPort("O bootloader apareceu como uma porta nova: autorize de novo."); return; }
+          port = rom;
+          if (port === S.device || hostPortKind(port) !== "rom") { screenHostAwaitPort("Essa porta não é a do USB Host."); return; }
+          task("hmode", "done");
+        }
+        const info = portInfo(port);
+        log(`porta do host: VID=0x${(info.usbVendorId || 0).toString(16)} PID=0x${(info.usbProductId || 0).toString(16)}`);
+        task("hport", "done");
+        setMode("flash");
+        task("hflash", "active", 0);
+        showRing("host", "USB HOST", "conectando ao módulo…");
+        els.caption.textContent = "A tela da controladora mostra ATUALIZANDO USB HOST.";
+        // Na porta USB-JTAG (1001) é sempre o reset do próprio S3 (default_reset):
+        // ele LEVA o chip ao bootloader mesmo sem o firmware ajudar. A porta OTG
+        // do ROM (0009) já é o bootloader e não tem reset por sinal: no_reset.
+        const mode = info.usbProductId === 0x1001 ? "default_reset" : "no_reset";
+        let transport = null, loader = null, lastErr = null;
+        for (let a = 1; a <= 4 && !loader; a++) {
+          try {
+            transport = fixReadLoop(wrapSignals(new Transport(port, true)));
+            const l = new ESPLoader({ transport, baudrate: 115200, romBaudrate: 115200, terminal: espLoaderTerminal });
+            await l.main(mode);
+            loader = l;
+          } catch (e) {
+            lastErr = e;
+            await closeTransportSafe(transport); transport = null;
+            log(`host: tentativa ${a} falhou: ${e.message}`);
+            const openFail = /open|in use|busy|access/i.test(String(e && e.message));
+            if (a < 4) await sleep((openFail ? 1500 : 700) * a);
+          }
+        }
+        if (!loader) {
+          const err = new Error("não consegui falar com o USB Host: " + (lastErr && lastErr.message));
+          err.hostNoSync = true; err.nothingWritten = true; throw err;
+        }
+        let stage = "chip";
+        try {
+          await assertIsHostChip(loader);
+          const pkg = S.host.pkg;
+          const names = ["bootloader", "tabela de partições", "aplicativo"];
+          stage = "flash";
+          await loader.writeFlash({
+            fileArray: pkg.fileArray, eraseAll: false, compress: true, flashSize: "4MB", flashMode: "keep", flashFreq: "keep",
+            calculateMD5Hash: (typeof CryptoJS !== "undefined") ? (image) => CryptoJS.MD5(CryptoJS.enc.Latin1.parse(image)) : undefined,
+            reportProgress: (idx, written, total) => {
+              const v = idx / pkg.fileArray.length + (total ? (written / total) / pkg.fileArray.length : 0);
+              const pct = Math.round(v * 100);
+              task("hflash", "active", pct);
+              setRing(pct, "host", "USB HOST", names[idx] || "");
+              void hostScreenSet(Math.min(99, pct));
+            },
+          });
+          stage = "reset";
+          setRing(100, "wait", "REINICIANDO", "o módulo volta sozinho");
+          try { await resetS3ByWatchdog(loader); }
+          catch (e) { log("watchdog do host falhou (" + e.message + ") — reset padrão."); try { await loader.after("hard_reset", info.usbProductId === 0x0009); } catch { } }
+        } catch (e) {
+          if (e && typeof e === "object") { if (stage === "flash") e.partial = true; else if (!e.partial) e.nothingWritten = true; }
+          throw e;
+        } finally { await closeTransportSafe(transport); }
+        // Rodando o firmware, a USB do host vira porta HOST e some do PC.
+        const rebooted = await portWentAway(port, 6000);
+        log("USB Host gravado" + (rebooted ? "." : " — a porta continua de pé (ficou no bootloader?)."));
+        S.host.inRom = false;
+        task("hflash", "done");
+        await hostScreenSet(100);
+
+        task("hver", "active");
+        setRing(100, "wait", "CONFERINDO", "pela controladora");
+        const want = S.host.pkg.version || S.host.pkg.appVersion || "";
+        let st = null;
+        if (!S.host.ctlLost) {
+          try { await ensureCtl(); st = await waitHostAnswering(25000); }
+          catch (e) { log("sem canal com a controladora pra conferir: " + e.message); }
+        }
+        await hostScreenSet("off");
+        const v = st && st.host_version ? String(st.host_version) : "";
+        log("host respondeu: " + (st ? (v || "sem versão") : "não"));
+        if (v && want && cmpVersions(v, want) === 0) {
+          S.host.result = { outcome: "ok", version: v, from: S.host.version || "antigo" };
+          S.host.version = v; S.host.need = false;
+          task("hver", "done");
+        } else if (v && want) {
+          S.host.result = { outcome: "oldVersion", version: v, want }; task("hver", "fail");
+        } else {
+          S.host.result = { outcome: "unverified", version: want }; task("hver", "fail");
+        }
+        finishHostStage();
+      } catch (err) {
+        if (err && err.wrongDevice && !err.partial) {
+          // a controladora na linha errada: nada gravado, escolhe de novo
+          log("Porta errada no passo do host: " + err.message);
+          S.badPorts.add(port);
+          screenHostAwaitPort("Essa porta não é a do USB Host: " + err.message + ". Nada foi gravado. Escolha a outra linha.");
+          return;
+        }
+        hostFail(err);
+      }
+    }
+    function hostFail(err) {
+      log("Erro no USB Host: " + (err && err.message));
+      if (err && err.stack) log(err.stack);
+      // Escrita que começou e não terminou = firmware incompleto; o host fica
+      // no bootloader enquanto a BFMiDi estiver ligada, e a nova tentativa
+      // pula o comando. Nada escrito = o estado é o de antes.
+      if (err && err.partial) S.host.inRom = true;
+      S.hostFailed = true;
+      S.busy = false;
+      hostScreenSet("off").catch(() => { });
+      screenError(err);
+      finishHostStage();
+    }
+    // Só o host (controladora já em dia, ou "Regravar o USB Host").
+    async function startHostOnly() {
+      if (S.busy) return;
+      S.busy = true; S.hostFailed = false;
+      S.plan = { ctrl: false, host: true };
+      setRail(["connect", "identify", "host", "done"]);
+      await hostStage({ recovering: false });
+      if (S.hostFailed) return;
+      S.busy = false;
+      screenDone();
+    }
+
+
+    // ══════════════════════════════════════════════════════════════════
+    // USB HOST · STATUS E FERRAMENTAS (botão "USB Host" no passo 2)
+    // ══════════════════════════════════════════════════════════════════
+    // O status cru do módulo lido pela controladora (pedido novo a cada 3 s
+    // enquanto o painel está aberto) e as ferramentas que fazem sentido com o
+    // cabo DEVICE: reiniciar por comando (0x2A, host 3.1+), colocar em modo
+    // de gravação (SysEx sem alvo — depois o cabo HOST grava), regravar o
+    // firmware publicado e retomar um host que já ficou no ROM.
+    const hostDlg = $("hostDlg");
+    let hostDlgTimer = null, hostDlgBusy = false, hostDlgLast = null;
+    function hostDlgMsg(html, cls) { const m = $("hostDlgMsg"); m.className = "hdlg-msg " + (cls || ""); m.innerHTML = html || ""; }
+    function hostDlgRow(k, v, cls, wide) { return `<div class="hrow${wide ? " is-wide" : ""}"><span>${esc(k)}</span><b class="${cls || ""}">${esc(v)}</b></div>`; }
+    function renderHostDlg(st) {
+      const g = $("hostDlgGrid");
+      if (!st) { g.innerHTML = hostDlgRow("Estado", S.ctl ? "sem resposta da controladora" : "controladora desconectada", "is-warn", true); return; }
+      const age = Number(st.last_seen_ms);
+      const alive = !!st.online && (!("last_seen_ms" in st) || age < 3000);
+      const pub = S.hostManifest && S.hostManifest.version;
+      const ver = st.status_seen ? (st.host_version || "sem versão") : "—";
+      const devs = Array.isArray(st.devices) ? st.devices : [];
+      const estado = S.host.inRom ? "em modo de gravação" : alive ? "respondendo" : (st.status_seen ? "sem resposta agora" : "nunca respondeu");
+      g.innerHTML = [
+        hostDlgRow("Estado", estado, alive ? "is-ok" : "is-warn"),
+        hostDlgRow("Versão", ver + (pub ? ` · publicada ${pub}` : ""), pub && st.status_seen && hostNeedsUpdate(st.host_version, pub) ? "is-new" : (st.status_seen ? "is-ok" : "")),
+        hostDlgRow("Modo", st.mode_label || "—"),
+        hostDlgRow("Último quadro", Number.isFinite(age) && st.status_seen ? (age < 1000 ? "agora" : Math.round(age / 1000) + " s atrás") : "—"),
+        hostDlgRow("Conexão", st.status_text || "—", "", true),
+        hostDlgRow("Aparelhos USB", devs.length ? devs.map((d) => `${d.product || d.kind || "?"}${d.port != null ? " · porta " + d.port : ""}${d.ready === false ? " (não pronto)" : ""}`).join(", ") : (st.devices_reported ? "nenhum" : "—"), "", true),
+        hostDlgRow("Bluetooth", st.ble_enabled ? (st.ble_connected ? "ligado · conectado" : "ligado") : "desligado"),
+        hostDlgRow("Filtro MIDI", st.midi_filter_channel ? "canal " + st.midi_filter_channel : "todos os canais"),
+        hostDlgRow("Último ACK", (st.last_ack === 255 || st.last_ack == null) ? "—" : String(st.last_ack)),
+        hostDlgRow("Reinício por comando", st.restart || "—"),
+      ].join("");
+    }
+    async function hostDlgRefresh(fresh) {
+      if (!S.ctl) { renderHostDlg(null); return; }
+      const st = await hostStatus(fresh !== false);
+      if (st) hostDlgLast = st;
+      renderHostDlg(st);
+    }
+    function hostDlgTools(disabled) {
+      const pub = S.hostManifest && S.hostManifest.version;
+      const tools = [
+        ["refresh", "Atualizar status", "refresh"],
+        ["restart", "Reiniciar o USB Host", "bolt"],
+        pub ? ["reflash", `Regravar o firmware ${pub}`, "download"] : null,
+        ["dlmode", "Colocar em modo de gravação", "usb"],
+        pub ? ["recover", "Gravar host já em modo de gravação", "usb"] : null,
+        ["copy", "Copiar status", "spark"],
+      ].filter(Boolean);
+      $("hostDlgTools").innerHTML = tools.map(([id, label, icon]) => `<button type="button" class="btn is-ghost" data-tool="${id}" ${disabled ? "disabled" : ""}>${svgIcon[icon]}<span>${esc(label)}</span></button>`).join("");
+    }
+    function openHostDialog() {
+      if (!S.ctl || !S.host.has || S.busy) return;
+      hostDlgMsg("");
+      hostDlgTools(false);
+      renderHostDlg(hostDlgLast);
+      if (!hostDlg.open) hostDlg.showModal();
+      hostDlgRefresh(true);
+      clearInterval(hostDlgTimer);
+      hostDlgTimer = setInterval(() => { if (!hostDlgBusy && hostDlg.open && S.mode === "ready") hostDlgRefresh(true); }, 3000);
+    }
+    function closeHostDialog() { clearInterval(hostDlgTimer); hostDlgTimer = null; if (hostDlg.open) hostDlg.close(); }
+    hostDlg.addEventListener("close", () => { clearInterval(hostDlgTimer); hostDlgTimer = null; });
+    hostDlg.addEventListener("cancel", (e) => { if (hostDlgBusy) e.preventDefault(); });
+    $("hostDlgClose").addEventListener("click", () => { if (!hostDlgBusy) closeHostDialog(); });
+    $("hostDlgTools").addEventListener("click", async (e) => {
+      const btn = e.target.closest("[data-tool]");
+      if (!btn || hostDlgBusy) return;
+      const id = btn.dataset.tool;
+      if (id === "refresh") { hostDlgMsg("Pedindo um status novo…"); await hostDlgRefresh(true); hostDlgMsg(""); return; }
+      if (id === "copy") {
+        try { await navigator.clipboard.writeText(JSON.stringify(hostDlgLast || {}, null, 2)); hostDlgMsg("Status copiado.", "is-ok"); }
+        catch { hostDlgMsg("Não deu pra copiar.", "is-warn"); }
+        return;
+      }
+      if (id === "reflash") { closeHostDialog(); startHostOnly(); return; }
+      if (id === "recover") { closeHostDialog(); startHostRecover(); return; }
+      hostDlgBusy = true; S.busy = true; hostDlgTools(true);
+      try {
+        if (id === "restart") await toolRestartHost();
+        else if (id === "dlmode") await toolHostDownloadMode();
+      } catch (err) {
+        hostDlgMsg(esc(err.message), "is-warn");
+        log("ferramenta do host: " + err.message);
+      } finally { hostDlgBusy = false; S.busy = false; hostDlgTools(false); }
+    });
+    // Reinício por comando: a controladora publica o andamento no campo
+    // `restart` do status (sent → ok → done | fail), lido do CACHE — um pedido
+    // novo atendido entre o ACK e a queda seria confundido com o boot novo.
+    async function toolRestartHost() {
+      hostDlgMsg("Mandando o comando de reinício…");
+      try { await S.ctl.call("POST", "/usb_host/restart", "", 6000); }
+      catch (e) { if (/USB 404/.test(String(e.message))) throw new Error("Esta controladora não tem o comando de reinício (firmware anterior)."); throw e; }
+      let st = null;
+      const ackDeadline = Date.now() + 5000;
+      while (Date.now() < ackDeadline) { await sleep(300); st = await hostStatus(false); if (st && st.restart && st.restart !== "sent") break; }
+      if (!st || !st.restart || st.restart === "sent" || st.restart === "fail") throw new Error("O USB Host não confirmou o reinício (host anterior ao 3.1, ou mudo).");
+      hostDlgMsg("Confirmou. Esperando voltar…");
+      const bootDeadline = Date.now() + 15000;
+      while (st.restart !== "done" && Date.now() < bootDeadline) { await sleep(500); st = (await hostStatus(false)) || st; }
+      if (st.restart !== "done") throw new Error("O USB Host reiniciou, mas não voltou a responder no prazo.");
+      hostDlgLast = st; renderHostDlg(st);
+      hostDlgMsg("USB Host reiniciado e respondendo.", "is-ok");
+    }
+    async function toolHostDownloadMode() {
+      if (!window.confirm("Colocar o USB Host em modo de gravação?\n\nEle para de responder (os aparelhos USB param) até ser gravado pelo cabo na porta HOST ou até a controladora ser desligada e ligada.")) return;
+      hostDlgMsg("Mandando o comando…");
+      S.host.before = await hostConnectedPorts();
+      const r = await enterHostRomForCable();
+      if (!r.ok) throw new Error(r.reason === "stillAnswering" ? "O USB Host continua respondendo: não entrou em modo de gravação." : "O USB Host recusou o comando.");
+      S.host.inRom = true;
+      log("modo de gravação do host pela ferramenta: " + r.via);
+      await hostDlgRefresh(false);
+      hostDlgMsg("Em modo de gravação. Ligue o cabo na porta HOST e use <b>Gravar host já em modo de gravação</b>.", "is-ok");
+    }
+    // Host já no ROM (ferramenta acima, ou gravação que parou no meio): o
+    // passo HOST sem o comando, aceitando a porta autorizada.
+    async function startHostRecover() {
+      if (S.busy || !S.hostManifest) return;
+      S.busy = true; S.hostFailed = false;
+      S.plan = { ctrl: false, host: true };
+      setRail(["connect", "identify", "host", "done"]);
+      await hostStage({ recovering: true });
+      if (S.hostFailed) return;
+      S.busy = false;
+      screenDone();
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // recomeço / erro / eventos
+    // ══════════════════════════════════════════════════════════════════
+    async function resetAll() {
+      await closeCtl(); await disconnectEsp();
+      S.device = null; S.lastPortInfo = null; S.info = null; S.chipKey = null; S.images = null;
+      S.pendingBackup = null; S.retryFromRom = false; S.manualDisconnect = false;
+      S.beforePorts = []; S.badPorts = new Set();
+      screenConnect();
+      autoDetect();
+    }
+    async function retryAfterError() {
+      await disconnectEsp();
+      S.manualDisconnect = false;
+      if (S.hostFailed) {
+        // A controladora já está pronta: só o host é refeito. Gravação que
+        // parou no meio deixou o host no ROM (enquanto a BFMiDi estiver
+        // ligada): a retomada pula o comando e aceita a porta já autorizada.
+        S.hostFailed = false;
+        S.busy = true;
+        await hostStage({ recovering: S.host.inRom });
+        if (S.hostFailed) return;
+        S.busy = false;
+        screenDone();
+        return;
+      }
+      await closeCtl();
+      if (S.retryFromRom) {
+        // A controladora pode estar parada no ROM: a porta autorizada (ou uma
+        // nova) é retomada no passo da gravação, sem repetir backup.
+        S.retryFromRom = false;
+        screenAwaitPort();
+        setCopy({ title: "Vamos <em>tentar de novo</em>", desc: "Se a tela da controladora está apagada, ela continua em modo de gravação: clique abaixo e escolha a porta. Se a tela acendeu, desligue e ligue o cabo e clique também — o fluxo recomeça pela identificação." });
+        setActions([
+          { label: "Escolher a porta e gravar", icon: "usb", pulse: true, onClick: () => continueAfterReset(true) },
+          { label: "Recomeçar do início", kind: "ghost", onClick: () => resetAll() },
+        ]);
+        return;
+      }
+      S.device = null; S.lastPortInfo = null; S.info = null;
+      screenConnect();
+      autoDetect();
+    }
+
+    // Controladora já autorizada e conectada: identifica sem clique.
+    async function autoDetect() {
+      if (S.mode !== "idle" || S.manualDisconnect || S.busy) return;
+      const port = await findGrantedPort();
+      if (port) { log("Controladora autorizada encontrada — identificando."); connectFlow(false); }
+    }
+
+    const lib = serialLib();
+    if (lib && lib.addEventListener) {
+      lib.addEventListener("connect", (e) => {
+        if (S.mode === "idle" && !S.busy) { S.manualDisconnect = false; autoDetect(); }
+      });
+      lib.addEventListener("disconnect", async (e) => {
+        if (S.step === "host" && S.device && e.target === S.device) { S.host.ctlLost = true; log("A porta DEVICE caiu durante o passo do USB Host."); return; }
+        if ((S.mode === "ready" || S.mode === "reading") && S.device && e.target === S.device) {
+          closeHostDialog();
+          log("A controladora foi desconectada.");
+          await closeCtl();
+          S.device = null; S.lastPortInfo = null; S.info = null;
+          screenConnect("A controladora foi desconectada. Ligue o cabo de novo pra continuar.");
+        }
+      });
+    }
+
+    // Backup de uma sessão anterior (F5 no meio do fluxo): NUNCA é injetado —
+    // pode ser de outra controladora. Só serve para baixar.
+    AB.loadStashedBackup().then((rec) => {
+      if (!rec) return;
+      S.recoveredBackup = rec.obj;
+      els.dl.hidden = false;
+      log(`Backup de ${new Date(rec.at).toLocaleString()} recuperado do navegador — use "Baixar backup guardado".`);
+    }).catch(() => { });
+    els.dl.addEventListener("click", () => { const o = S.pendingBackup || S.recoveredBackup; if (o) AB.downloadBackup(o); });
+
+    // Start Packs via blob: o GitHub Pages manda application/json e alguns
+    // navegadores ABREM o JSON em vez de baixar.
+    document.addEventListener("click", async (e) => {
+        const a = e.target && e.target.closest ? e.target.closest("[data-pack]") : null;
+        if (!a) return;
+        e.preventDefault();
+        const url = a.getAttribute("href"), name = a.getAttribute("download") || url.split("/").pop();
+        try {
+          const res = await fetch(url); if (!res.ok) throw new Error("HTTP " + res.status);
+          const obj = URL.createObjectURL(await res.blob());
+          const tmp = document.createElement("a"); tmp.href = obj; tmp.download = name;
+          document.body.appendChild(tmp); tmp.click(); tmp.remove();
+          setTimeout(() => URL.revokeObjectURL(obj), 2000);
+        } catch (err) { log("Falha no download (" + name + "): " + err.message); window.location.href = url; }
+    });
+
+    // botões redondos da placa de status (um item por vez)
+    els.frame.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-act]");
+      if (!b || S.mode !== "ready" || S.busy) return;
+      if (b.dataset.act === "ctrl") startUpdate({ hostToo: false });
+      else if (b.dataset.act === "host") startHostOnly();
+    });
+
+    // ── início ──
+    log("User Agent: " + navigator.userAgent);
+    setRail(S.rail);
+    await Promise.all([loadManifest(), loadHostManifest()]);
+    if (!serialLib()) {
+      screenNeedBrowser();
+    } else {
+      screenConnect();
+      autoDetect();
+    }
+  </script>
+</body>
+
+</html>
