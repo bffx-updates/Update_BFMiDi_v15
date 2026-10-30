@@ -1,0 +1,20 @@
+v15.3 — Novidades
+• AUTO CONFIG: botão ao lado do MODO de cada footswitch no LIVE. Você
+  escolhe o que o footswitch vai fazer (ligar um efeito, bater o
+  tempo, chamar um preset do aparelho, alternar valores...), o efeito
+  ou parâmetro do seu aparelho e a cor, e o editor monta o modo, o
+  MIDI, o LED e o ícone sozinho. Inclui os parâmetros que só existem
+  pela USB (Kemper, GP-5, Nano Cortex, Zoom).
+• MENU DO RODAPÉ (ícone de ajustes): organizado por SWITCH, PRESET,
+  LAYER, BANCO e CANAL MIDI, com operações em lote: colar um switch em
+  vários, trocar switches, presets e bancos de lugar, colar um layer
+  em vários bancos, substituir um canal MIDI em todos os presets e
+  apagar os dados de um preset ou de um switch.
+• ATUALIZAÇÃO: o card do editor mostra a versão da controladora e do
+  USB host e abre o atualizador online, que grava pelo cabo e guarda
+  e devolve seus presets sozinho.
+• MODO PALCO: opção para os footswitches mostrarem o fundo de cada
+  preset do banco e chamarem o preset com um toque.
+• Cada controladora passa a ter um ID próprio na rede
+  (bfmidi-XXXXXX), tirado da MAC; antes placas do mesmo lote
+  repetiam o ID.
