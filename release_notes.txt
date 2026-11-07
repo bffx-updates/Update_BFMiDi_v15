@@ -1,0 +1,17 @@
+v15.7 — Novidades
+• CONFIGURAÇÕES › HARDWARE › STATUS (nova): a saúde da controladora
+  numa tela só — memória interna, PSRAM, memória de presets,
+  travamentos, footswitches, Wi-Fi e erros — atualizada a cada 5 s.
+• STATUS › ÚLTIMOS MOVIMENTOS: a lista do que foi mudado na
+  controladora (preset salvo, ícone ou modo de um FS alterado, config
+  global, imagens, backup restaurado, atualização), com data e hora,
+  pelo Wi-Fi ou pelo cabo. Fica guardada mesmo desligando.
+• O backup passa a levar os últimos movimentos e a saúde da
+  controladora, e o Backup View mostra os dois.
+• Mais memória livre para o Wi-Fi e o sistema (firmware compilado de
+  um jeito novo), principalmente nas controladoras ESP32-S2.
+• Celular com sinal fraco no Wi-Fi não trava mais os footswitches
+  enquanto manda um pedido para a controladora.
+• BLACKBOX: a controladora registra travamentos, lentidão, quedas de
+  Wi-Fi e falhas de memória; o suporte vê tudo no LOG VIEW do
+  Backup View a partir de um backup.
