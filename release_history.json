@@ -5,7 +5,7 @@
     {
       "version": "15.12",
       "date": "2026-11-13",
-      "title": "",
+      "title": "USB para MIDI OUT",
       "items": [
         "USB PARA MIDI OUT: o MIDI que o computador manda pela porta USB da controladora (Reaper, Ableton ou outro DAW) agora pode sair pelo MIDI OUT (TRS/DIN5) e chegar aos pedais do USB Host. Passam PC, CC, notas e clock; SysEx não passa. Ligue em CONFIGURAÇÕES › HARDWARE › TEMPOS (vem desligado). Com um Kemper no modo amigável o repasse fica parado."
       ]
@@ -13,7 +13,7 @@
     {
       "version": "15.11",
       "date": "2026-11-13",
-      "title": "",
+      "title": "Filtro do USB Host por pedal",
       "items": [
         "USB HOST: interruptor FILTRO DO USB HOST em cada pedal USB MIDI. Ligado (padrão), o host escolhe o canal e entrega no canal 1, para GP-5, TONEX e pedais sem seletor de canal. Desligado, o pedal recebe todos os canais sem troca de canal, e quem decide a qual canal obedecer é o seletor de canal MIDI do próprio pedal. Resolve dois pedais no USB em canais diferentes (cada um no canal escolhido no app dele). Precisa do USB Host 4.3.",
         "LEDS › CORES: modo CUSTOM, uma cor de LED para cada preset."
