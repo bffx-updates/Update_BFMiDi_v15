@@ -1,0 +1,146 @@
+{
+  "version": "15.12",
+  "generated": "2026-11-13T13:42:39.866Z",
+  "fw": {
+    "s3": {
+      "version": "15.12",
+      "file": "bin_S3/firmware.bin",
+      "size": 2236768,
+      "sha256": "c5d1f849bdeb584f317fc01a31b2835f0629bb25be031ab243eb088d6fab23e5",
+      "built": "2026-11-13T13:42:30.880Z",
+      "flash": [
+        {
+          "file": "bin_S3/bootloader.bin",
+          "address": 0,
+          "size": 20224,
+          "sha256": "bdea43dadcd34d981c7f8c5e47ad7baa377fadcca3500d15112914689554d5a9"
+        },
+        {
+          "file": "bin_S3/partitions.bin",
+          "address": 32768,
+          "size": 3072,
+          "sha256": "121d99567600bfb4e6b0f57f779838a4d77f2357a7ece5fd0288b04f2b9501ab"
+        },
+        {
+          "file": "bin_S3/firmware.bin",
+          "address": 65536,
+          "size": 2236768,
+          "sha256": "c5d1f849bdeb584f317fc01a31b2835f0629bb25be031ab243eb088d6fab23e5"
+        },
+        {
+          "file": "bin_S3/otadata.bin",
+          "address": 7405568,
+          "size": 8192,
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0"
+        },
+        {
+          "file": "bin_S3/littlefs.bin",
+          "address": 7471104,
+          "size": 5242880,
+          "sha256": "7ed475c0e07e516c755bd4fc64479a27bceca0b5a73e39c37a46069363c8ac9d"
+        }
+      ],
+      "notes": "v15.12 — Novidades\n• USB PARA MIDI OUT: o MIDI que o computador manda pela porta USB\n  da controladora (Reaper, Ableton ou outro DAW) agora pode sair\n  pelo MIDI OUT (TRS/DIN5) e chegar aos pedais do USB Host. Passam\n  PC, CC, notas e clock; SysEx não passa. Ligue em\n  CONFIGURAÇÕES › HARDWARE › TEMPOS (vem desligado). Com um Kemper\n  no modo amigável o repasse fica parado."
+    },
+    "s2": {
+      "version": "15.12",
+      "file": "bin_S2/firmware.bin",
+      "size": 2190752,
+      "sha256": "65fd44e204b2b14e4ea139450ea4539d758be560fe509779192a9bb316ce8d6a",
+      "built": "2026-11-13T13:42:07.840Z",
+      "flash": [
+        {
+          "file": "bin_S2/bootloader.bin",
+          "address": 4096,
+          "size": 21152,
+          "sha256": "aea315316c46b4b9e6ccf2784c675d13acbac4e75e7a19ce793f9dd2337f431e"
+        },
+        {
+          "file": "bin_S2/partitions.bin",
+          "address": 32768,
+          "size": 3072,
+          "sha256": "d9a882d96e959148c5f5132b954ed72d634be081dcac3a59e687f9cc4727d93b"
+        },
+        {
+          "file": "bin_S2/firmware.bin",
+          "address": 65536,
+          "size": 2190752,
+          "sha256": "65fd44e204b2b14e4ea139450ea4539d758be560fe509779192a9bb316ce8d6a"
+        },
+        {
+          "file": "bin_S2/littlefs.bin",
+          "address": 2621440,
+          "size": 1572864,
+          "sha256": "09e12ad423736c8f5a6d2d51682f6b28c0ed688820384c56fd60728c6e849b8a"
+        }
+      ],
+      "notes": "v15.12 — Novidades\n• USB PARA MIDI OUT: o MIDI que o computador manda pela porta USB\n  da controladora (Reaper, Ableton ou outro DAW) agora pode sair\n  pelo MIDI OUT (TRS/DIN5) e chegar aos pedais do USB Host. Passam\n  PC, CC, notas e clock; SysEx não passa. Ligue em\n  CONFIGURAÇÕES › HARDWARE › TEMPOS (vem desligado). Com um Kemper\n  no modo amigável o repasse fica parado."
+    }
+  },
+  "webapp": {
+    "version": "15.12",
+    "build": "15.12+c6c28272469a",
+    "files": [
+      {
+        "path": "/app.css.gz",
+        "url": "data/app.css.gz",
+        "size": 113796,
+        "sha256": "af9aef9dc776320e77c908a689749ff7a3f1af1b365d9d50c1b0e21e26396b5e"
+      },
+      {
+        "path": "/app.js.gz",
+        "url": "data/app.js.gz",
+        "size": 429249,
+        "sha256": "14add60ea888b5fbd02cf6b775e627547b5e5cf0daa9870c7d594905aa4f3731"
+      },
+      {
+        "path": "/icons/app-192.png",
+        "url": "data/icons/app-192.png",
+        "size": 19440,
+        "sha256": "6cbb4bbe2f498ee5107de4549925845cb82ce98c0d648b518fbade9a40060642"
+      },
+      {
+        "path": "/icons/app.svg",
+        "url": "data/icons/app.svg",
+        "size": 913,
+        "sha256": "30e927e92ed32ae273c2435c6ae262461960661bda0ce28ca5d33a79ffe2ce5f"
+      },
+      {
+        "path": "/icons/sw-modes/sw-mode-banner.jpg",
+        "url": "data/icons/sw-modes/sw-mode-banner.jpg",
+        "size": 32280,
+        "sha256": "0a9fa9974f6271f139237f9cfcd726475dd68bec67614d4bd5c7a52db2734f24"
+      },
+      {
+        "path": "/icons/sw-sheet.png",
+        "url": "data/icons/sw-sheet.png",
+        "size": 87060,
+        "sha256": "754389f1d549eaf3d375ebba60cd58fdf0bc316179417f2597ee8e5f87ef33ea"
+      },
+      {
+        "path": "/index.html",
+        "url": "data/index.html",
+        "size": 1940,
+        "sha256": "db7236a11673b27b246b7f01a0c854b0e94ebbf7a9a34cf27045fcf8d4194dbf"
+      },
+      {
+        "path": "/manifest.webmanifest",
+        "url": "data/manifest.webmanifest",
+        "size": 824,
+        "sha256": "2798fc6bdf65605ff9fc422a2b03f2b9dfe7c07c709d9ae080af3ac1a70f921c"
+      },
+      {
+        "path": "/sw.js",
+        "url": "data/sw.js",
+        "size": 3557,
+        "sha256": "a468fcc81d3cc05a2ee55a9fc0a1f61dbb28bc392429eaef155febae40045aea"
+      },
+      {
+        "path": "/webapp_version.txt",
+        "url": "data/webapp_version.txt",
+        "size": 18,
+        "sha256": "b5114796d7e92ccc9109f3ef32392598220be67eff7b8dd31640ef093dd438f0"
+      }
+    ]
+  }
+}

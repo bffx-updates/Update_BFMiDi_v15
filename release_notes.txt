@@ -1,0 +1,7 @@
+v15.12 — Novidades
+• USB PARA MIDI OUT: o MIDI que o computador manda pela porta USB
+  da controladora (Reaper, Ableton ou outro DAW) agora pode sair
+  pelo MIDI OUT (TRS/DIN5) e chegar aos pedais do USB Host. Passam
+  PC, CC, notas e clock; SysEx não passa. Ligue em
+  CONFIGURAÇÕES › HARDWARE › TEMPOS (vem desligado). Com um Kemper
+  no modo amigável o repasse fica parado.
