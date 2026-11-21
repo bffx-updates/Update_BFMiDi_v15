@@ -1,0 +1,146 @@
+{
+  "version": "15.20",
+  "generated": "2026-11-21T01:21:15.624Z",
+  "fw": {
+    "s3": {
+      "version": "15.20",
+      "file": "bin_S3/firmware.bin",
+      "size": 2241232,
+      "sha256": "142dd85b50ca275f8fe42cc469e1b3d9e4798391aa550e9d1d0b814edd8a6d10",
+      "built": "2026-11-21T01:21:01.962Z",
+      "flash": [
+        {
+          "file": "bin_S3/bootloader.bin",
+          "address": 0,
+          "size": 20224,
+          "sha256": "bdea43dadcd34d981c7f8c5e47ad7baa377fadcca3500d15112914689554d5a9"
+        },
+        {
+          "file": "bin_S3/partitions.bin",
+          "address": 32768,
+          "size": 3072,
+          "sha256": "121d99567600bfb4e6b0f57f779838a4d77f2357a7ece5fd0288b04f2b9501ab"
+        },
+        {
+          "file": "bin_S3/firmware.bin",
+          "address": 65536,
+          "size": 2241232,
+          "sha256": "142dd85b50ca275f8fe42cc469e1b3d9e4798391aa550e9d1d0b814edd8a6d10"
+        },
+        {
+          "file": "bin_S3/otadata.bin",
+          "address": 7405568,
+          "size": 8192,
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0"
+        },
+        {
+          "file": "bin_S3/littlefs.bin",
+          "address": 7471104,
+          "size": 5242880,
+          "sha256": "24c4702532ac395ac93ac2854cbf3008d59531dc3dfa60d00599d8dd18327a52"
+        }
+      ],
+      "notes": "v15.20 — Novidades\n• SETLIST · ESTÚDIO DA FOLHA: na parte em FOLHA, o botão EDITAR NA\n  TELA mostra a folha como ela vai sair no palco, no celular ou no\n  tablet, e deixa editar linha por linha: cada linha é cifra ou letra,\n  dá para mover, dividir, apagar, criar folha nova e ver quanto ainda\n  cabe. As folhas aparecem numeradas, como as telas do palco.\n• CIFRAS NA GRADE: cada acorde fica preso a uma casa acima da letra, e\n  a letra tem um tamanho fixo por bloco (3 pares de cifra e letra por\n  tela no tamanho M).\n• No celular deitado, quando a parte é uma folha na grade, a tela do\n  setlist usa sozinha o layout LETRA E CIFRA, para a letra ficar\n  legível.\n• O mesmo estúdio está no editor de setlist do site."
+    },
+    "s2": {
+      "version": "15.20",
+      "file": "bin_S2/firmware.bin",
+      "size": 2195104,
+      "sha256": "87910cebc656686442c0bbc6dba58cc50ae6d9eb3f140cbcb7ecf6ff470cd962",
+      "built": "2026-11-21T01:20:41.834Z",
+      "flash": [
+        {
+          "file": "bin_S2/bootloader.bin",
+          "address": 4096,
+          "size": 21152,
+          "sha256": "aea315316c46b4b9e6ccf2784c675d13acbac4e75e7a19ce793f9dd2337f431e"
+        },
+        {
+          "file": "bin_S2/partitions.bin",
+          "address": 32768,
+          "size": 3072,
+          "sha256": "d9a882d96e959148c5f5132b954ed72d634be081dcac3a59e687f9cc4727d93b"
+        },
+        {
+          "file": "bin_S2/firmware.bin",
+          "address": 65536,
+          "size": 2195104,
+          "sha256": "87910cebc656686442c0bbc6dba58cc50ae6d9eb3f140cbcb7ecf6ff470cd962"
+        },
+        {
+          "file": "bin_S2/littlefs.bin",
+          "address": 2621440,
+          "size": 1572864,
+          "sha256": "3d6c4c65c9eb73d1bd1525ea20f191efacad9a7ecbac12e8e506f85d05654b71"
+        }
+      ],
+      "notes": "v15.20 — Novidades\n• SETLIST · ESTÚDIO DA FOLHA: na parte em FOLHA, o botão EDITAR NA\n  TELA mostra a folha como ela vai sair no palco, no celular ou no\n  tablet, e deixa editar linha por linha: cada linha é cifra ou letra,\n  dá para mover, dividir, apagar, criar folha nova e ver quanto ainda\n  cabe. As folhas aparecem numeradas, como as telas do palco.\n• CIFRAS NA GRADE: cada acorde fica preso a uma casa acima da letra, e\n  a letra tem um tamanho fixo por bloco (3 pares de cifra e letra por\n  tela no tamanho M).\n• No celular deitado, quando a parte é uma folha na grade, a tela do\n  setlist usa sozinha o layout LETRA E CIFRA, para a letra ficar\n  legível.\n• O mesmo estúdio está no editor de setlist do site."
+    }
+  },
+  "webapp": {
+    "version": "15.20",
+    "build": "15.20+c7cf3678cade",
+    "files": [
+      {
+        "path": "/app.css.gz",
+        "url": "data/app.css.gz",
+        "size": 118293,
+        "sha256": "75f624f16e9e1f166b9a92e6a7ef64f29838171513342aafca13c9f37da87205"
+      },
+      {
+        "path": "/app.js.gz",
+        "url": "data/app.js.gz",
+        "size": 453217,
+        "sha256": "22b0ee0c4598d982a4d4183ecffc54921fa7dfdd0d3ab1909058ebda85ad7f06"
+      },
+      {
+        "path": "/icons/app-192.png",
+        "url": "data/icons/app-192.png",
+        "size": 19440,
+        "sha256": "6cbb4bbe2f498ee5107de4549925845cb82ce98c0d648b518fbade9a40060642"
+      },
+      {
+        "path": "/icons/app.svg",
+        "url": "data/icons/app.svg",
+        "size": 913,
+        "sha256": "30e927e92ed32ae273c2435c6ae262461960661bda0ce28ca5d33a79ffe2ce5f"
+      },
+      {
+        "path": "/icons/sw-modes/sw-mode-banner.jpg",
+        "url": "data/icons/sw-modes/sw-mode-banner.jpg",
+        "size": 32280,
+        "sha256": "0a9fa9974f6271f139237f9cfcd726475dd68bec67614d4bd5c7a52db2734f24"
+      },
+      {
+        "path": "/icons/sw-sheet.png",
+        "url": "data/icons/sw-sheet.png",
+        "size": 87060,
+        "sha256": "754389f1d549eaf3d375ebba60cd58fdf0bc316179417f2597ee8e5f87ef33ea"
+      },
+      {
+        "path": "/index.html",
+        "url": "data/index.html",
+        "size": 1940,
+        "sha256": "dba32a35f16e34e00ba8f0709dd3e07cd08795f3e10e2b00317181bb7b7fb4c9"
+      },
+      {
+        "path": "/manifest.webmanifest",
+        "url": "data/manifest.webmanifest",
+        "size": 824,
+        "sha256": "2798fc6bdf65605ff9fc422a2b03f2b9dfe7c07c709d9ae080af3ac1a70f921c"
+      },
+      {
+        "path": "/sw.js",
+        "url": "data/sw.js",
+        "size": 3557,
+        "sha256": "b32163a67ed57f87c32d018d8fbc029380a0bbb7a97198d6ff2e78d37528ac6e"
+      },
+      {
+        "path": "/webapp_version.txt",
+        "url": "data/webapp_version.txt",
+        "size": 18,
+        "sha256": "ed0f68fdda258ea8588fffbc3927799349684b7ee9b6b87708312b40a985ef50"
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+v15.20 — Novidades
+• SETLIST · ESTÚDIO DA FOLHA: na parte em FOLHA, o botão EDITAR NA
+  TELA mostra a folha como ela vai sair no palco, no celular ou no
+  tablet, e deixa editar linha por linha: cada linha é cifra ou letra,
+  dá para mover, dividir, apagar, criar folha nova e ver quanto ainda
+  cabe. As folhas aparecem numeradas, como as telas do palco.
+• CIFRAS NA GRADE: cada acorde fica preso a uma casa acima da letra, e
+  a letra tem um tamanho fixo por bloco (3 pares de cifra e letra por
+  tela no tamanho M).
+• No celular deitado, quando a parte é uma folha na grade, a tela do
+  setlist usa sozinha o layout LETRA E CIFRA, para a letra ficar
+  legível.
+• O mesmo estúdio está no editor de setlist do site.
