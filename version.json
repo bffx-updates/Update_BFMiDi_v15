@@ -1,0 +1,146 @@
+{
+  "version": "16.0",
+  "generated": "2026-11-25T19:51:51.174Z",
+  "fw": {
+    "s3": {
+      "version": "16.0",
+      "file": "bin_S3/firmware.bin",
+      "size": 2287440,
+      "sha256": "0c64e44daddb92bb39a1e3cfad8a8e6f5717cddd5d119a72088424df6b8e09c7",
+      "built": "2026-11-25T19:07:03.474Z",
+      "flash": [
+        {
+          "file": "bin_S3/bootloader.bin",
+          "address": 0,
+          "size": 20224,
+          "sha256": "547e46be4ccb993befd1f846d23866aa262be7e1eb53c1a818cf8adf8ed4823c"
+        },
+        {
+          "file": "bin_S3/partitions.bin",
+          "address": 32768,
+          "size": 3072,
+          "sha256": "121d99567600bfb4e6b0f57f779838a4d77f2357a7ece5fd0288b04f2b9501ab"
+        },
+        {
+          "file": "bin_S3/firmware.bin",
+          "address": 65536,
+          "size": 2287440,
+          "sha256": "0c64e44daddb92bb39a1e3cfad8a8e6f5717cddd5d119a72088424df6b8e09c7"
+        },
+        {
+          "file": "bin_S3/otadata.bin",
+          "address": 7405568,
+          "size": 8192,
+          "sha256": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0"
+        },
+        {
+          "file": "bin_S3/littlefs.bin",
+          "address": 7471104,
+          "size": 5242880,
+          "sha256": "c850dcc144a71514d00977c89f39dc7d4a1d67c3edf1b69c0343bf35b2263217"
+        }
+      ],
+      "notes": "v16.0 — Novidades\n• ENDEREÇOS NOVOS: o atualizador online e o editor online passaram para\n  a linha v16 (Update_BFMiDi_v16 e Editor_BFMiDi_v16). Os endereços v15\n  continuam no ar e levam a esta versão.\n• TELA ESTENDIDA: o antigo MODO PALCO agora se chama TELA ESTENDIDA, e\n  pode abrir sozinho ao entrar no app (CONFIGURAÇÕES › EDITOR).\n• DESIGN MINIMALISTA e VISUAL HÍBRIDO na tela do pedal, com tema, cor de\n  destaque (inclusive a COR DO LED de cada footswitch), barra, cantos,\n  cabeçalho e o tamanho do ícone e do texto.\n• No editor, a grade dos footswitches e a prévia do display seguem o\n  visual escolhido."
+    },
+    "s2": {
+      "version": "16.0",
+      "file": "bin_S2/firmware.bin",
+      "size": 2241360,
+      "sha256": "91cfe90526c7d02b28a38748c5cb60824d51d621e1dfac545380513108f5dafb",
+      "built": "2026-11-25T19:06:05.760Z",
+      "flash": [
+        {
+          "file": "bin_S2/bootloader.bin",
+          "address": 4096,
+          "size": 21152,
+          "sha256": "91721732966e4ea63ecdb053c4394de2c2e6a6ae7831b7aea1892b065d1f8e22"
+        },
+        {
+          "file": "bin_S2/partitions.bin",
+          "address": 32768,
+          "size": 3072,
+          "sha256": "d9a882d96e959148c5f5132b954ed72d634be081dcac3a59e687f9cc4727d93b"
+        },
+        {
+          "file": "bin_S2/firmware.bin",
+          "address": 65536,
+          "size": 2241360,
+          "sha256": "91cfe90526c7d02b28a38748c5cb60824d51d621e1dfac545380513108f5dafb"
+        },
+        {
+          "file": "bin_S2/littlefs.bin",
+          "address": 2621440,
+          "size": 1572864,
+          "sha256": "cfbb8f6dd71f8bab63ffefee0659430d43ff697321141bc333ef746f9da7a963"
+        }
+      ],
+      "notes": "v16.0 — Novidades\n• ENDEREÇOS NOVOS: o atualizador online e o editor online passaram para\n  a linha v16 (Update_BFMiDi_v16 e Editor_BFMiDi_v16). Os endereços v15\n  continuam no ar e levam a esta versão.\n• TELA ESTENDIDA: o antigo MODO PALCO agora se chama TELA ESTENDIDA, e\n  pode abrir sozinho ao entrar no app (CONFIGURAÇÕES › EDITOR).\n• DESIGN MINIMALISTA e VISUAL HÍBRIDO na tela do pedal, com tema, cor de\n  destaque (inclusive a COR DO LED de cada footswitch), barra, cantos,\n  cabeçalho e o tamanho do ícone e do texto.\n• No editor, a grade dos footswitches e a prévia do display seguem o\n  visual escolhido."
+    }
+  },
+  "webapp": {
+    "version": "16.0",
+    "build": "16.0+19c3432f5b3e",
+    "files": [
+      {
+        "path": "/app.css.gz",
+        "url": "data/app.css.gz",
+        "size": 119864,
+        "sha256": "f4c410a0bab5c0ba5977b58fd2bf8558aab5a37847833f867f51fa4d1fff77e9"
+      },
+      {
+        "path": "/app.js.gz",
+        "url": "data/app.js.gz",
+        "size": 464167,
+        "sha256": "1e8278e37e80b7145617aa250f80d91ce0ca43a91fdb77044710b772b8a2fa43"
+      },
+      {
+        "path": "/icons/app-192.png",
+        "url": "data/icons/app-192.png",
+        "size": 19440,
+        "sha256": "6cbb4bbe2f498ee5107de4549925845cb82ce98c0d648b518fbade9a40060642"
+      },
+      {
+        "path": "/icons/app.svg",
+        "url": "data/icons/app.svg",
+        "size": 913,
+        "sha256": "30e927e92ed32ae273c2435c6ae262461960661bda0ce28ca5d33a79ffe2ce5f"
+      },
+      {
+        "path": "/icons/sw-modes/sw-mode-banner.jpg",
+        "url": "data/icons/sw-modes/sw-mode-banner.jpg",
+        "size": 32280,
+        "sha256": "0a9fa9974f6271f139237f9cfcd726475dd68bec67614d4bd5c7a52db2734f24"
+      },
+      {
+        "path": "/icons/sw-sheet.png",
+        "url": "data/icons/sw-sheet.png",
+        "size": 87060,
+        "sha256": "754389f1d549eaf3d375ebba60cd58fdf0bc316179417f2597ee8e5f87ef33ea"
+      },
+      {
+        "path": "/index.html",
+        "url": "data/index.html",
+        "size": 1940,
+        "sha256": "d5c32cdcf4e5e982e4a7c3d4571f5c6d999ea47620ca13508dc861298fb428bf"
+      },
+      {
+        "path": "/manifest.webmanifest",
+        "url": "data/manifest.webmanifest",
+        "size": 824,
+        "sha256": "2798fc6bdf65605ff9fc422a2b03f2b9dfe7c07c709d9ae080af3ac1a70f921c"
+      },
+      {
+        "path": "/sw.js",
+        "url": "data/sw.js",
+        "size": 3557,
+        "sha256": "15acff2c5189e476edf8e88624a783e12a45a6f034f9230e6437dbde81ecf8ce"
+      },
+      {
+        "path": "/webapp_version.txt",
+        "url": "data/webapp_version.txt",
+        "size": 17,
+        "sha256": "3893fa3b4754f8e53bc38ef8c65bf6dea0c5966853f8b95ba028ee4502e427f7"
+      }
+    ]
+  }
+}

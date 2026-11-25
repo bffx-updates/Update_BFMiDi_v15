@@ -1,0 +1,11 @@
+v16.0 — Novidades
+• ENDEREÇOS NOVOS: o atualizador online e o editor online passaram para
+  a linha v16 (Update_BFMiDi_v16 e Editor_BFMiDi_v16). Os endereços v15
+  continuam no ar e levam a esta versão.
+• TELA ESTENDIDA: o antigo MODO PALCO agora se chama TELA ESTENDIDA, e
+  pode abrir sozinho ao entrar no app (CONFIGURAÇÕES › EDITOR).
+• DESIGN MINIMALISTA e VISUAL HÍBRIDO na tela do pedal, com tema, cor de
+  destaque (inclusive a COR DO LED de cada footswitch), barra, cantos,
+  cabeçalho e o tamanho do ícone e do texto.
+• No editor, a grade dos footswitches e a prévia do display seguem o
+  visual escolhido.
